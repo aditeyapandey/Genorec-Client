@@ -1,0 +1,52 @@
+{
+  "name": "genorec",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "babel-preset-react-app": "9.1.2",
+    "genorec-engine": "file:genorec-engine-1.0.0.tgz",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-json-prettify": "^0.2.0",
+    "react-json-tree": "0.13.0",
+    "react-json-view": "1.19.1",
+    "react-scripts": "3.4.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-es2016": "^7.0.0-beta.53",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-stage-0": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.1",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-plugin-transform-class-properties": "^6.24.1"
+  }
+}
