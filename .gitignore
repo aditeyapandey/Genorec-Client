@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /src/encodingselection
+/src/assets/input copy.json
 
 # testing
 /coverage

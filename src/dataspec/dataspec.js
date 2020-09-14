@@ -46,8 +46,8 @@ class Dataspec extends React.Component{
         return(
             <>
             <div className="w3-half">
-                <h3 >Data Specification </h3>
-                <div className="w3-container w3-padding-32 " style={{margin:"32px 0"}}>
+                <h3 className="w3-center" >Data Specification </h3>
+                <div className="w3-container w3-center w3-padding-32 " style={{margin:"32px 0"}}>
                     <input type="file" className="w3-button w3-indigo w3-margin-top w3-center" onChange={this.onFileChange}/>
                     <div className="w3-margin-top" style={{"maxHeight":"600px","overflowY":"scroll","textAlign":"left"}}>
                         {/* <ReactJson className="w3-margin-top" src={this.state.data} theme="monokai" validationMessage="Validation Error" displayDataTypes={false}	 />            */}

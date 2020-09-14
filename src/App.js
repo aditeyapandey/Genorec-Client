@@ -10,7 +10,6 @@ class App extends React.Component{
     this.state = {currentState:0,"displayComponent":"Dataspec"};
     
     this.nextState = this.nextState.bind(this)
-    console.log("hello")
   }
 
   nextState(){
