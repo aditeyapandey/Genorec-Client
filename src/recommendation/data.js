@@ -1,15 +1,17 @@
-let encodingImages = {}
+let images = {}
 
-encodingImages['dotplot'] = require('../assets/dotplot.jpg')
-encodingImages['linechart'] = require('../assets/linechart.jpg')
-encodingImages['barsize'] = require('../assets/barsize.jpg')
-encodingImages['barsaturation'] = require('../assets/barsaturation.jpg')
-encodingImages['barhue'] = require('../assets/barhue.jpg')
-encodingImages['areasize'] = require('../assets/areasize.jpg')
-encodingImages['areasaturation'] = require('../assets/areasaturation.jpg')
-encodingImages['areahue'] = require('../assets/areahue.jpg')
-encodingImages['annotation']  = require('../assets/annotation.jpg')
+images['dotplot'] = require('../assets/dotplot.jpg')
+images['linechart'] = require('../assets/linechart.jpg')
+images['barsize'] = require('../assets/barsize.jpg')
+images['barsaturation'] = require('../assets/barsaturation.jpg')
+images['barhue'] = require('../assets/barhue.jpg')
+images['areasize'] = require('../assets/areasize.jpg')
+images['areasaturation'] = require('../assets/areasaturation.jpg')
+images['areahue'] = require('../assets/areahue.jpg')
+images['annotation']  = require('../assets/annotation.jpg')
+images['circular'] = require("../assets/circular.jpg")
+images['linear'] = require("../assets/linear.jpg")
 
 
 
-export const visuals = encodingImages
+export const visuals = images
