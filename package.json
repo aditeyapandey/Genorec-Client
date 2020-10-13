@@ -8,12 +8,17 @@
     "@testing-library/user-event": "^7.2.1",
     "babel-preset-react-app": "9.1.2",
     "genorec-engine": "file:genorec-engine-1.0.0.tgz",
-    "react": "^16.13.1",
+    "react": "16.13.1",
     "react-dom": "^16.13.1",
     "react-json-prettify": "^0.2.0",
     "react-json-tree": "0.13.0",
     "react-json-view": "1.19.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-vega": "7.4.1",
+    "react-vega-lite": "6.1.0",
+    "vega": "5.17.0",
+    "vega-lib": "4.4.0",
+    "vega-lite": "4.16.8"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -40,8 +40,6 @@ class Dataspec extends React.Component{
       }; 
 
      
-      
-
     render(){
         return(
             <>

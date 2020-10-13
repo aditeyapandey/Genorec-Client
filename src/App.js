@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Dataspec from "./dataspec/dataspec"
-import Encoding from "./encodingselection/encoding"
+
+
 
 class App extends React.Component{ 
 
@@ -24,18 +25,14 @@ class App extends React.Component{
       this.setState({"displayComponent":"Encoding"})
     }
   }
+  
 
  render(){
   return (
     <div className="App">
       <Header className="Header"/>
-      {(() => {
-        switch (this.state.displayComponent) {
-          case "Dataspec":   return <Dataspec next = {this.nextState} />;
-          case "Encoding": return <Encoding />;
-          default:      return <Dataspec/>;
-        }})()}
-        <Footer />
+      <Dataspec next = {this.nextState} />
+      <Footer />
     </div>
   );
 }

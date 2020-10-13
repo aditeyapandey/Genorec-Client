@@ -1,5 +1,7 @@
 import React from 'react';
 import * as encoding from '../recommendation/data.js'; 
+import Scatter from "../vegacontainer/scatter"
+
 
 
 class Recommendation extends React.Component{
@@ -13,7 +15,6 @@ class Recommendation extends React.Component{
         }
 
         nextStep() {
-
             var tablinks = document.getElementsByClassName("tablink");
             tablinks[this.state.currentStep].className = tablinks[this.state.currentStep].className.replace(" w3-light-grey", "");
             tablinks[this.state.currentStep+1].className += " w3-light-grey"; 
@@ -25,9 +26,6 @@ class Recommendation extends React.Component{
               if(this.state.currentStep==2){
                 this.setState({"displayComponent":"Layout"})
               }
-
-    
-
         }    
 
         prevStep(){
@@ -140,6 +138,7 @@ function Encoding(props){
                     <div class="w3-col s3 w3-margin-bottom">
                         <div class="w3-container w3-center w3-white">
                             <img src={ encoding.visuals[element] } alt="Norway" style={{"width":"100%"}}/>
+                            {/* <Scatter /> */}
                             <p> {element}</p>
                             <p class="w3-opacity">Score {similarityScore.toFixed(4)*100}%</p>
                         </div>
@@ -237,7 +236,7 @@ function Layout(props){
 
         return trackPossibilities.map((element, i) =>{
         const layoutReco = element["layoutRecommendation"] 
-        return( <div className="w3-row w3-margin-left"> <h6>Track Option {i+1} </h6> 
+        return( <div className="w3-row w3-margin-left"> <h6>Layout Option {i+1} </h6> 
 
                 <div class=" w3-row w3-col w3-center s3 w3-margin-bottom">
                     <div class="w3-container w3-white">
