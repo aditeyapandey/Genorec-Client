@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactJson from "react-json-view"
-import Encoding from "../encodingselection/encoding"
 import Recommendation from "../recommendation/container"
 import testInputData from "../assets/input.json"
 
@@ -14,15 +13,15 @@ class Dataspec extends React.Component{
         //Upload Data
         this.state = {buttonDisplay:""};
         //Default Data
-        let recommendation = genorecEngine.setInput(testInputData)
-        this.state = {buttonDisplay:"",data:testInputData,recommendation};
+        // let recommendation = genorecEngine.getRecommendation(testInputData)
+        // this.state = {buttonDisplay:"",data:testInputData,recommendation};
       }
      handleFileRead = (e) => {
         const content = this.fileReader.result;
         let input
         try{
             input = JSON.parse(content)
-            let recommendation = genorecEngine.setInput(input)
+            let recommendation = genorecEngine.getRecommendation(input)
             this.setState({ data:input, buttonDisplay:"true", recommendation }); 
         }
         catch{

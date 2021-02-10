@@ -7,9 +7,9 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "babel-preset-react-app": "9.1.2",
-    "genorec-engine": "file:genorec-engine-1.0.0.tgz",
+    "generate-react-cli": "5.2.3",
     "react": "16.13.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "16.14.0",
     "react-json-prettify": "^0.2.0",
     "react-json-tree": "0.13.0",
     "react-json-view": "1.19.1",
@@ -42,15 +42,14 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/core": "7.12.10",
+    "@babel/plugin-proposal-class-properties": "7.12.1",
+    "@babel/preset-env": "7.12.11",
     "@babel/preset-es2016": "^7.0.0-beta.53",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-react": "7.12.10",
     "@babel/preset-stage-0": "^7.0.0",
-    "@babel/register": "^7.0.0",
+    "@babel/register": "7.12.10",
     "babel-cli": "^6.26.0",
-    "babel-loader": "^8.0.1",
     "babel-minify-webpack-plugin": "^0.2.0",
     "babel-plugin-transform-class-properties": "^6.24.1"
   }
