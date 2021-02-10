@@ -1,13 +1,14 @@
 import React from 'react';
 import './Inputpage.css';
+import { inputFileFormats } from "../global/globalvar"
 
 class Inputpage extends React.Component{
 
   constructor(props) {
     super(props);
+    console.log(inputFileFormats)
     this.state = {"minFiles":0,"maxFiles":5,"bed":0};
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
-
     }
 
  onChangeFileQuantity(event){
@@ -27,11 +28,11 @@ class Inputpage extends React.Component{
             
 
             <div class="w3-row-padding">
-                <div class="w3-quarter w3-margin-top w3-margin-bottom">
+                <div className="w3-quarter w3-margin-top w3-margin-bottom">
                   <label>BED</label>
                   <input className=" w3-input w3-border w3-center" onChange={this.onChangeFileQuantity} type="number" name="bed" value={this.state.bed}   min={this.state.minFiles} max={this.state.maxFiles}/>
                </div>
-               <div class="w3-quarter w3-margin-top w3-margin-bottom">
+               <div className="w3-quarter w3-margin-top w3-margin-bottom">
                   <label>BED</label>
                   <input className=" w3-input w3-border w3-center" onChange={this.onChangeFileQuantity} type="number" name="bed" value={this.state.bed}   min={this.state.minFiles} max={this.state.maxFiles}/>
                </div>
