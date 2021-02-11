@@ -1,10 +1,10 @@
 export const inputFileFormats = {
-    "bed":{"setCount":0},
-    "bedpe":{"setCount":0},
-    "bigwig":{"setCount":0},
-    "cooler":{"setCount":0},
-    "seg":{"setCount":0},
-    "vcf":{"setCount":0}
-}
+  bed: 0 ,
+  bedpe: 0,
+  bigwig: 0,
+  cooler: 0,
+  seg: 0,
+  vcf: 0,
+};
 
-export default { inputFileFormats: inputFileFormats } 
+export default { inputFileFormats: inputFileFormats };
