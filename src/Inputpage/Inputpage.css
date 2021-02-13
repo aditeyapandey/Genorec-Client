@@ -1,0 +1,10 @@
+@media screen and (min-width: 601px) {   
+    img{
+    	width:75%
+    } 
+}
+@media screen and (max-width: 600px) {   
+    img{
+    	width:20%
+    } 
+}
