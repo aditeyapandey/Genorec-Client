@@ -8,10 +8,10 @@ export const inputFileFormats = {
 };
 
 export const colorScheme = {
-  bed: "w3-pale-red" ,
-  bedpe: "w3-pale-green",
-  bigwig: "w3-pale-yellow",
-  cooler: "w3-pale-blue",
+  bed: "w3-deep-orange" ,
+  bedpe: "w3-teal",
+  bigwig: "w3-khaki",
+  cooler: "w3-cyan",
   seg: "w3-amber",
   vcf: "w3-blue-gray",
 }

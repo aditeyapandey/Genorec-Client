@@ -33,10 +33,11 @@ class Inputpage extends React.Component {
   }
 
   createDivForFileInput(name) {
+    let fileTypeColor = colorScheme[name]
     return (
       <>
-        <div className={"w3-quarter w3-margin-top w3-margin-bottom"}>
-          <label>{name.toUpperCase()}</label>
+        <div className={"w3-margin-top w3-margin-bottom"}>
+          <label>   <span className={"dot "+fileTypeColor}></span> {name.toUpperCase()}</label>
           <input
             className="w3-input w3-border w3-center"
             onChange={this.onChangeFileQuantity}
@@ -55,10 +56,9 @@ class Inputpage extends React.Component {
     let fileTypeToCaps = fileType.toUpperCase()
     let fileTypeColor = colorScheme[fileType]
     let activeFields = fileInputFieldsActive[fileType]
-    console.log(activeFields)
     return (
       <>
-        <div className="w3-third w3-margin-bottom w3-margin-top">
+        <div className="w3-quarter w3-margin-bottom">
           <div className={"w3-container w3-margin w3-center " + fileTypeColor}>
             <h4>{fileTypeToCaps}</h4>
           </div>
@@ -74,12 +74,6 @@ class Inputpage extends React.Component {
                 <option value="3">Option 3</option>
               </select>
             </div>
-            {/* <div class="w3-col s2  w3-center">
-              {" "}
-              <a className="w3-button w3-circle w3-large w3-theme">
-                <i class="fa fa-plus"></i>
-              </a>
-            </div> */}
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
@@ -96,38 +90,28 @@ class Inputpage extends React.Component {
           </div>
           {/* Interconnection Radio Input */}
           <div className="w3-margin w3-row">
-            <div className="w3-center w3-half">
+
+            <div className="w3-center w3-hover-opacity w3-half">
+              <img
+                src={require("../assets/interconnection_none.png")}
+                class="w3-round"
+                alt="point"
+              />
+              <p> No </p>
+            </div>
+            <div className="w3-center w3-hover-opacity w3-half">
               <img
                 src={require("../assets/interconnection_between.png")}
                 class="w3-round"
-                alt="Interconnection"
-                style={{ width: "25%" }}
+                alt="segment"
               />
-              <p> Interconnection </p>
-            </div>
-            <div className="w3-center w3-quarter">
-              <input
-                class=" w3-center w3-radio"
-                type="radio"
-                name="gender"
-                value="yes"
-              />
-              <label className="w3-center w3-margin-left">Yes</label>
-            </div>
-            <div className="w3-center w3-quarter">
-              <input
-                class="w3-radio w3-center"
-                type="radio"
-                name="gender"
-                value="no"
-                checked
-              />
-              <label className="w3-center w3-margin-left">No</label>
+              <p> Yes </p>
             </div>
           </div>
           {/* Feature Input */}
           <div className="w3-margin w3-row">
-            <div className="w3-center w3-hover-opacity w3-third">
+
+            <div className="w3-center w3-hover-opacity w3-half">
               <img
                 src={require("../assets/pointsparse.png")}
                 class="w3-round"
@@ -135,15 +119,18 @@ class Inputpage extends React.Component {
               />
               <p> Point </p>
             </div>
-            <div className="w3-center w3-hover-opacity w3-third">
+            <div className="w3-center w3-hover-opacity w3-half">
               <img
-                src={require("../assets/segmentsparse.png")}
+                src={require("../assets/segmentcontiguous.png")}
                 class="w3-round"
                 alt="segment"
               />
               <p> Segment </p>
             </div>
-            <div className="w3-center  w3-hover-opacity w3-third">
+          </div>
+          <div className="w3-margin w3-row">
+
+          <div className="w3-center w3-hover-opacity w3-half">
               <img
                 src={require("../assets/pointcontiguous.png")}
                 class="w3-round"
@@ -151,12 +138,20 @@ class Inputpage extends React.Component {
               />
               <p> Contiguous </p>
             </div>
+            <div className="w3-center w3-hover-opacity w3-half">
+              <img
+                src={require("../assets/segmentsparse.png")}
+                class="w3-round"
+                alt="segment"
+              />
+              <p> Sparse </p>
+            </div>
           </div>
           {/* Define the attributes */}
           <div className="w3-margin w3-row">
             <div className="w3-center  w3-hover-opacity w3-third">
               <input className=" w3-input w3-border w3-center" type="number" />
-              <p>Quantitative</p>
+              <p>Quant</p>
             </div>
             <div className="w3-center  w3-hover-opacity w3-third">
               <input className=" w3-input w3-border w3-center" type="number" />
@@ -199,21 +194,26 @@ class Inputpage extends React.Component {
 
     return (
       <>
-        <header className="w3-display-container w3-auto w3-margin-top">
-          <div className="w3-center w3-light-gray w3-padding w3-col">
-            <div className="w3-container w3-light-blue">
+      <div className="w3-row">
+        <div className="w3-display-container w3-content  w3-margin w3-col l2">
+          <div className="w3-center w3-margin-bottom w3-margin-top w3-light-gray w3-padding w3-col">
+            <div className="w3-container  w3-light-blue">
               <h2>
-                <i className="fa fa-table w3-margin-right"></i>Add Dataset
+                <i className="fa fa-table w3-margin-right"></i> Add Dataset
               </h2>
             </div>
             <div className="w3-row-padding">{fileFormatDivs}</div>
-            <button style={{display: this.state.showRecommendButton ? '' : 'none' }} onClick={this.describeData} className="w3-button w3-deep-purple"> Visualization Recommendation</button>
+            <button style={{display: this.state.showRecommendButton ? '' : 'none' }} onClick={this.describeData} className="w3-button w3-deep-purple">  Recommendation</button>
           </div>
-        </header>
+        </div>
 
-        <div className="w3-auto">
+        <div className="w3-display-container w3-col l6">
           <div className="w3-padding-16">
             {this.createDataDescriptionBoxes()}
+          </div>
+        </div>
+        <div className="w3-display-container w3-margin w3-col l2">
+          <p>Recommendation</p>
           </div>
         </div>
       </>

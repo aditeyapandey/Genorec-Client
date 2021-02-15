@@ -1,6 +1,6 @@
 @media screen and (min-width: 601px) {   
     img{
-    	width:75%
+    	width:40%
     } 
 }
 @media screen and (max-width: 600px) {   
@@ -8,3 +8,10 @@
     	width:20%
     } 
 }
+
+.dot {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+  }
