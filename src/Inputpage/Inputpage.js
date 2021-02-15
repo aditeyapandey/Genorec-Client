@@ -1,30 +1,44 @@
 import React from "react";
 import "./Inputpage.css";
-import { inputFileFormats } from "../global/globalvar";
+import { inputFileFormats,colorScheme,fileInputFieldsActive } from "../global/globalvar";
 
 class Inputpage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { minFiles: 0, maxFiles: 5, inputFileFormats };
+    this.state = { minFiles: 0, maxFiles: 5, totalFiles:0 ,inputFileFormats, showRecommendButton:false };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
+    // this.describeData = this.describeData.bind(this);
+    this.createDataDescriptionBoxes = this.createDataDescriptionBoxes.bind(this)
+
+  }
+
+  countTotalFiles(inputFileFormats){
+    return Object.keys(inputFileFormats).reduce((sum,key)=>sum+parseFloat(inputFileFormats[key]||0),0);
   }
 
   onChangeFileQuantity(event) {
     let inputFileFormats = { ...this.state.inputFileFormats };
     inputFileFormats[event.target.name] = event.target.value;
+    let localTotalFiles = this.countTotalFiles(inputFileFormats)
+    let showRecommendButton = false
+    if(localTotalFiles>0){
+      showRecommendButton = true
+    }
+
     this.setState({
       inputFileFormats: inputFileFormats,
+      showRecommendButton: showRecommendButton
     });
   }
 
   createDivForFileInput(name) {
     return (
       <>
-        <div className="w3-quarter w3-margin-top w3-margin-bottom">
+        <div className={"w3-quarter w3-margin-top w3-margin-bottom"}>
           <label>{name.toUpperCase()}</label>
           <input
-            className=" w3-input w3-border w3-center"
+            className="w3-input w3-border w3-center"
             onChange={this.onChangeFileQuantity}
             type="number"
             name={name}
@@ -37,16 +51,20 @@ class Inputpage extends React.Component {
     );
   }
 
-  createDataDescriptionBox() {
+  dataDescriptionBox(fileType) {
+    let fileTypeToCaps = fileType.toUpperCase()
+    let fileTypeColor = colorScheme[fileType]
+    let activeFields = fileInputFieldsActive[fileType]
+    console.log(activeFields)
     return (
       <>
         <div className="w3-third w3-margin-bottom w3-margin-top">
-          <div class="w3-container w3-margin w3-center w3-pale-red">
-            <h4>BED</h4>
+          <div className={"w3-container w3-margin w3-center " + fileTypeColor}>
+            <h4>{fileTypeToCaps}</h4>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div class="w3-col s10  w3-center">
+            <div class="w3-col s12  w3-center">
               <select className="w3-select" name="option">
                 <option value="" disabled selected>
                   Assembly Build{" "}
@@ -56,17 +74,17 @@ class Inputpage extends React.Component {
                 <option value="3">Option 3</option>
               </select>
             </div>
-            <div class="w3-col s2  w3-center">
+            {/* <div class="w3-col s2  w3-center">
               {" "}
               <a className="w3-button w3-circle w3-large w3-theme">
                 <i class="fa fa-plus"></i>
               </a>
-            </div>
+            </div> */}
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div class="w3-col s10  w3-center">
-              <select className="w3-select" name="option">
+            <div class="w3-col s12  w3-center">
+              <select disabled={!activeFields["assembly2"]} className="w3-select" name="option">
                 <option value="" disabled selected>
                   Assembly Build{" "}
                 </option>
@@ -138,7 +156,6 @@ class Inputpage extends React.Component {
           <div className="w3-margin w3-row">
             <div className="w3-center  w3-hover-opacity w3-third">
               <input className=" w3-input w3-border w3-center" type="number" />
-
               <p>Quantitative</p>
             </div>
             <div className="w3-center  w3-hover-opacity w3-third">
@@ -154,6 +171,24 @@ class Inputpage extends React.Component {
       </>
     );
   }
+
+  createDataDescriptionBoxes(){
+    const dataDescriptionBoxes = []
+
+    let fileTypes = Object.keys(this.state.inputFileFormats)
+
+    fileTypes.forEach(val=>{
+      let fileCount = this.state.inputFileFormats[val]
+
+      for (let i=0;i<fileCount;i++)
+      {
+        dataDescriptionBoxes.push(this.dataDescriptionBox(val))
+      }
+    })
+    return dataDescriptionBoxes
+  }
+
+  
 
   render() {
     const fileFormatDivs = [];
@@ -172,16 +207,13 @@ class Inputpage extends React.Component {
               </h2>
             </div>
             <div className="w3-row-padding">{fileFormatDivs}</div>
-            <button className="w3-button w3-deep-purple"> Describe Data</button>
+            <button style={{display: this.state.showRecommendButton ? '' : 'none' }} onClick={this.describeData} className="w3-button w3-deep-purple"> Visualization Recommendation</button>
           </div>
         </header>
 
         <div className="w3-auto">
           <div className="w3-padding-16">
-            {this.createDataDescriptionBox()}
-            {this.createDataDescriptionBox()}
-            {this.createDataDescriptionBox()}
-            {this.createDataDescriptionBox()}
+            {this.createDataDescriptionBoxes()}
           </div>
         </div>
       </>
