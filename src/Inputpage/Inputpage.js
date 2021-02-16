@@ -56,6 +56,9 @@ class Inputpage extends React.Component {
     let fileTypeToCaps = fileType.toUpperCase()
     let fileTypeColor = colorScheme[fileType]
     let activeFields = fileInputFieldsActive[fileType]
+    let interconnection = !activeFields["interconnection"] ? "w3-opacity-max":""
+    let granularity = !activeFields["granularity"] ? "w3-opacity-max":""
+    let availability = !activeFields["availability"] ? "w3-opacity-max":""
     return (
       <>
         <div className="w3-quarter w3-margin-bottom">
@@ -89,9 +92,9 @@ class Inputpage extends React.Component {
             </div>
           </div>
           {/* Interconnection Radio Input */}
-          <div className="w3-margin w3-row">
+          <div className={"w3-margin w3-row "+interconnection}>
 
-            <div className="w3-center w3-hover-opacity w3-half">
+            <div className={"w3-center w3-hover-opacity w3-half"}>
               <img
                 src={require("../assets/interconnection_none.png")}
                 class="w3-round"
@@ -99,7 +102,7 @@ class Inputpage extends React.Component {
               />
               <p> No </p>
             </div>
-            <div className="w3-center w3-hover-opacity w3-half">
+            <div className="w3-center w3-half">
               <img
                 src={require("../assets/interconnection_between.png")}
                 class="w3-round"
@@ -109,7 +112,7 @@ class Inputpage extends React.Component {
             </div>
           </div>
           {/* Feature Input */}
-          <div className="w3-margin w3-row">
+          <div className={"w3-margin w3-row "+granularity}>
 
             <div className="w3-center w3-hover-opacity w3-half">
               <img
@@ -128,8 +131,8 @@ class Inputpage extends React.Component {
               <p> Segment </p>
             </div>
           </div>
-          <div className="w3-margin w3-row">
 
+          <div className={"w3-margin w3-row "+availability}>
           <div className="w3-center w3-hover-opacity w3-half">
               <img
                 src={require("../assets/pointcontiguous.png")}

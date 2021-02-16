@@ -21,23 +21,17 @@ export const fileInputFieldsActive = {
     assembly1:true,
     assembly2:false,
     interconnection:false,
-    point: false,
-    segment:true,
-    continous:false,
-    quant: true,
-    categorical: true,
-    text:true
+    granularity:false,
+    availability:false,
+    data:true
   } ,
   bedpe: {
     assembly1:true,
     assembly2:true,
     interconnection:true,
-    point: false,
-    segment:true,
-    continous:false,
-    quant: true,
-    categorical: true,
-    text:true
+    granularity:false,
+    availability:false,
+    data:true
   },
   bigwig: 0,
   cooler: 0,
