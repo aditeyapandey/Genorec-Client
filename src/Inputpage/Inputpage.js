@@ -60,15 +60,22 @@ class Inputpage extends React.Component {
     let currentCount = inputFileFormats[updatedFileType];
 
     //Add or Remove Data Input Files
+    //Add needs to 
+    console.log(currentCount)
+    console.log(updatedCount)
     if (currentCount < updatedCount) {
-      this.dataFileTypesAdded.push(updatedFileType);
-      let fileid = ""+updatedFileType+updatedCount
-      this.dataDescriptionBoxes.push(this.dataDescriptionBox(updatedFileType,fileid,updatedCount));
+      for(var index = parseInt(currentCount)+1; index<=updatedCount; index++){
+        this.dataFileTypesAdded.push(updatedFileType);
+        let fileid = ""+updatedFileType+index
+        this.dataDescriptionBoxes.push(this.dataDescriptionBox(updatedFileType,fileid,index));
+      }
     } 
     else {
-     let removeIndex = Math.max(...this.getAllIndexes(this.dataFileTypesAdded,updatedFileType));
-     this.dataFileTypesAdded.splice(removeIndex,1)
-     this.dataDescriptionBoxes.splice(removeIndex,1);
+     for(let index = currentCount; index>updatedCount; index--){
+      let removeIndex = Math.max(...this.getAllIndexes(this.dataFileTypesAdded,updatedFileType));
+      this.dataFileTypesAdded.splice(removeIndex,1)
+      this.dataDescriptionBoxes.splice(removeIndex,1);
+    }
     }
 
     inputFileFormats[event.target.name] = event.target.value;
