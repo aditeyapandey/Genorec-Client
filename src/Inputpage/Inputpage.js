@@ -1,43 +1,62 @@
 import React from "react";
 import "./Inputpage.css";
-import { inputFileFormats,colorScheme,fileInputFieldsActive } from "../global/globalvar";
+import {
+  inputFileFormats,
+  colorScheme,
+  fileInputFieldsActive,
+} from "../global/globalvar";
+import { contains } from "vega-lite";
 
 class Inputpage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { minFiles: 0, maxFiles: 5, totalFiles:0 ,inputFileFormats, showRecommendButton:false };
+    this.state = {
+      minFiles: 0,
+      maxFiles: 5,
+      totalFiles: 0,
+      inputFileFormats,
+      showRecommendButton: false,
+    };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
     // this.describeData = this.describeData.bind(this);
-    this.createDataDescriptionBoxes = this.createDataDescriptionBoxes.bind(this)
-
+    this.createDataDescriptionBoxes = this.createDataDescriptionBoxes.bind(
+      this
+    );
   }
 
-  countTotalFiles(inputFileFormats){
-    return Object.keys(inputFileFormats).reduce((sum,key)=>sum+parseFloat(inputFileFormats[key]||0),0);
+  countTotalFiles(inputFileFormats) {
+    return Object.keys(inputFileFormats).reduce(
+      (sum, key) => sum + parseFloat(inputFileFormats[key] || 0),
+      0
+    );
   }
 
   onChangeFileQuantity(event) {
     let inputFileFormats = { ...this.state.inputFileFormats };
     inputFileFormats[event.target.name] = event.target.value;
-    let localTotalFiles = this.countTotalFiles(inputFileFormats)
-    let showRecommendButton = false
-    if(localTotalFiles>0){
-      showRecommendButton = true
+    let localTotalFiles = this.countTotalFiles(inputFileFormats);
+    let showRecommendButton = false;
+    if (localTotalFiles > 0) {
+      showRecommendButton = true;
     }
 
     this.setState({
       inputFileFormats: inputFileFormats,
-      showRecommendButton: showRecommendButton
+      showRecommendButton: showRecommendButton,
     });
   }
 
   createDivForFileInput(name) {
-    let fileTypeColor = colorScheme[name]
+    let fileTypeColor = colorScheme[name];
     return (
       <>
         <div className={"w3-margin-top w3-margin-bottom"}>
-          <label>   <span className={"dot "+fileTypeColor}></span> {name.toUpperCase()}</label>
+          <label>
+            {" "}
+            <span className={"dot " + fileTypeColor}></span>{" "}
+            {name.toUpperCase()}
+          </label>
           <input
             className="w3-input w3-border w3-center"
             onChange={this.onChangeFileQuantity}
@@ -53,15 +72,19 @@ class Inputpage extends React.Component {
   }
 
   dataDescriptionBox(fileType) {
-    let fileTypeToCaps = fileType.toUpperCase()
-    let fileTypeColor = colorScheme[fileType]
-    let activeFields = fileInputFieldsActive[fileType]
-    let interconnection = !activeFields["interconnection"] ? "w3-opacity-max":""
-    let granularity = !activeFields["granularity"] ? "w3-opacity-max":""
-    let availability = !activeFields["availability"] ? "w3-opacity-max":""
+    let fileTypeToCaps = fileType.toUpperCase();
+    let fileTypeColor = colorScheme[fileType];
+    let activeFields = fileInputFieldsActive[fileType];
+    let interconnection = !activeFields["interconnection"]
+      ? "w3-opacity-max"
+      : "";
+    let granularity = !activeFields["granularity"] ? "w3-opacity-max" : "";
+    let availability = !activeFields["availability"] ? "w3-opacity-max" : "";
+    let dataTypeInput = !activeFields["data"];
+    let dataTypeInputOpacity = !activeFields["data"] ? "w3-opacity-max" : "";
     return (
       <>
-        <div className="w3-quarter w3-margin-bottom">
+        <div className="w3-third w3-border-bottom w3-margin-bottom">
           <div className={"w3-container w3-margin w3-center " + fileTypeColor}>
             <h4>{fileTypeToCaps}</h4>
           </div>
@@ -81,7 +104,11 @@ class Inputpage extends React.Component {
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
             <div class="w3-col s12  w3-center">
-              <select disabled={!activeFields["assembly2"]} className="w3-select" name="option">
+              <select
+                disabled={!activeFields["assembly2"]}
+                className="w3-select"
+                name="option"
+              >
                 <option value="" disabled selected>
                   Assembly Build{" "}
                 </option>
@@ -92,8 +119,7 @@ class Inputpage extends React.Component {
             </div>
           </div>
           {/* Interconnection Radio Input */}
-          <div className={"w3-margin w3-row "+interconnection}>
-
+          <div className={"w3-margin w3-row " + interconnection}>
             <div className={"w3-center w3-hover-opacity w3-half"}>
               <img
                 src={require("../assets/interconnection_none.png")}
@@ -112,8 +138,7 @@ class Inputpage extends React.Component {
             </div>
           </div>
           {/* Feature Input */}
-          <div className={"w3-margin w3-row "+granularity}>
-
+          <div className={"w3-margin w3-row " + granularity}>
             <div className="w3-center w3-hover-opacity w3-half">
               <img
                 src={require("../assets/pointsparse.png")}
@@ -132,8 +157,8 @@ class Inputpage extends React.Component {
             </div>
           </div>
 
-          <div className={"w3-margin w3-row "+availability}>
-          <div className="w3-center w3-hover-opacity w3-half">
+          <div className={"w3-margin w3-row " + availability}>
+            <div className="w3-center w3-hover-opacity w3-half">
               <img
                 src={require("../assets/pointcontiguous.png")}
                 class="w3-round"
@@ -151,17 +176,29 @@ class Inputpage extends React.Component {
             </div>
           </div>
           {/* Define the attributes */}
-          <div className="w3-margin w3-row">
-            <div className="w3-center  w3-hover-opacity w3-third">
-              <input className=" w3-input w3-border w3-center" type="number" />
+          <div className={"w3-margin w3-row " + dataTypeInputOpacity}>
+            <div className="w3-center w3-third">
+              <input
+                disabled={dataTypeInput}
+                className=" w3-input w3-border w3-center"
+                type="number"
+              />
               <p>Quant</p>
             </div>
-            <div className="w3-center  w3-hover-opacity w3-third">
-              <input className=" w3-input w3-border w3-center" type="number" />
+            <div className="w3-center  w3-third">
+              <input
+                disabled={dataTypeInput}
+                className=" w3-input w3-border w3-center"
+                type="number"
+              />
               <p>Categorical</p>
             </div>
-            <div className="w3-center  w3-hover-opacity w3-third">
-              <input className=" w3-input w3-border w3-center" type="number" />
+            <div className="w3-center w3-third">
+              <input
+                disabled={dataTypeInput}
+                className=" w3-input w3-border w3-center"
+                type="number"
+              />
               <p>Text</p>
             </div>
           </div>
@@ -170,23 +207,20 @@ class Inputpage extends React.Component {
     );
   }
 
-  createDataDescriptionBoxes(){
-    const dataDescriptionBoxes = []
+  createDataDescriptionBoxes() {
+    const dataDescriptionBoxes = [];
 
-    let fileTypes = Object.keys(this.state.inputFileFormats)
+    let fileTypes = Object.keys(this.state.inputFileFormats);
 
-    fileTypes.forEach(val=>{
-      let fileCount = this.state.inputFileFormats[val]
+    fileTypes.forEach((val) => {
+      let fileCount = this.state.inputFileFormats[val];
 
-      for (let i=0;i<fileCount;i++)
-      {
-        dataDescriptionBoxes.push(this.dataDescriptionBox(val))
+      for (let i = 0; i < fileCount; i++) {
+        dataDescriptionBoxes.push(this.dataDescriptionBox(val));
       }
-    })
-    return dataDescriptionBoxes
+    });
+    return dataDescriptionBoxes;
   }
-
-  
 
   render() {
     const fileFormatDivs = [];
@@ -197,26 +231,35 @@ class Inputpage extends React.Component {
 
     return (
       <>
-      <div className="w3-row">
-        <div className="w3-display-container w3-content  w3-margin w3-col l2">
-          <div className="w3-center w3-margin-bottom w3-margin-top w3-light-gray w3-padding w3-col">
-            <div className="w3-container  w3-light-blue">
-              <h2>
-                <i className="fa fa-table w3-margin-right"></i> Add Dataset
-              </h2>
+        <div className="w3-row">
+          <div className="w3-display-container w3-content  w3-margin w3-col l2">
+            <div className="w3-center w3-margin-bottom w3-margin-top w3-light-gray w3-padding w3-col">
+              <div className="w3-container  w3-light-blue">
+                <h2>
+                  <i className="fa fa-table w3-margin-right"></i> Add Dataset
+                </h2>
+              </div>
+              <div className="w3-row-padding">{fileFormatDivs}</div>
+              <button
+                style={{
+                  display: this.state.showRecommendButton ? "" : "none",
+                }}
+                onClick={this.describeData}
+                className="w3-button w3-deep-purple"
+              >
+                {" "}
+                Recommendation
+              </button>
             </div>
-            <div className="w3-row-padding">{fileFormatDivs}</div>
-            <button style={{display: this.state.showRecommendButton ? '' : 'none' }} onClick={this.describeData} className="w3-button w3-deep-purple">  Recommendation</button>
           </div>
-        </div>
 
-        <div className="w3-display-container w3-col l6">
-          <div className="w3-padding-16">
-            {this.createDataDescriptionBoxes()}
+          <div className="w3-display-container w3-col l6">
+            <div className="w3-padding-16">
+              {this.createDataDescriptionBoxes()}
+            </div>
           </div>
-        </div>
-        <div className="w3-display-container w3-margin w3-col l2">
-          <p>Recommendation</p>
+          <div className="w3-display-container w3-margin w3-col l2">
+            <p>Recommendation</p>
           </div>
         </div>
       </>

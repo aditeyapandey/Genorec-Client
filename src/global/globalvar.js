@@ -33,10 +33,38 @@ export const fileInputFieldsActive = {
     availability:false,
     data:true
   },
-  bigwig: 0,
-  cooler: 0,
-  seg: 0,
-  vcf: 0,
+  bigwig: {
+    assembly1:true,
+    assembly2:false,
+    interconnection:false,
+    granularity:true,
+    availability:false,
+    data:false
+  },
+  cooler: {
+    assembly1:true,
+    assembly2:true,
+    interconnection:false,
+    granularity:true,
+    availability:false,
+    data:false
+  },
+  seg: {
+    assembly1:true,
+    assembly2:false,
+    interconnection:false,
+    granularity:true,
+    availability:false,
+    data:false
+  },
+  vcf: {
+    assembly1:true,
+    assembly2:false,
+    interconnection:false,
+    granularity:true,
+    availability:false,
+    data:true
+  }
 }
 
 export default { inputFileFormats: inputFileFormats, colorScheme:colorScheme, fileInputFieldsActive:fileInputFieldsActive };
