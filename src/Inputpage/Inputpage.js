@@ -5,7 +5,13 @@ import {
   colorScheme,
   fileInputFieldsActive,
 } from "../global/globalvar";
-import { contains } from "vega-lite";
+import {
+  createDropDownList,
+  createNetworkInput,
+  createGranularityInput,
+  createAvailablityInput,
+  createDataTypeInput,
+} from "./createdomcomponents";
 
 class Inputpage extends React.Component {
   constructor(props) {
@@ -19,12 +25,14 @@ class Inputpage extends React.Component {
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
-    // this.describeData = this.describeData.bind(this);
-    this.createDataDescriptionBoxes = this.createDataDescriptionBoxes.bind(
-      this
-    );
+    // this.createDataDescriptionBoxes = this.createDataDescriptionBoxes.bind(
+    //   this
+    // );
+    this.dataFileTypesAdded = [];
+    this.dataDescriptionBoxes =[]
   }
 
+  //Utility Functions
   countTotalFiles(inputFileFormats) {
     return Object.keys(inputFileFormats).reduce(
       (sum, key) => sum + parseFloat(inputFileFormats[key] || 0),
@@ -32,8 +40,37 @@ class Inputpage extends React.Component {
     );
   }
 
+  getAllIndexes(arr, val) {
+    var indexes = [],
+      i;
+    for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
+    return indexes;
+  }
+  //Utility Functions end
+
   onChangeFileQuantity(event) {
+    //Changed type and counts
+    let updatedFileType = event.target.name;
+    let updatedCount = event.target.value;
+
+    //existing counts
     let inputFileFormats = { ...this.state.inputFileFormats };
+
+    //Identify the current count for updated file
+    let currentCount = inputFileFormats[updatedFileType];
+
+    //Add or Remove Data Input Files
+    if (currentCount < updatedCount) {
+      this.dataFileTypesAdded.push(updatedFileType);
+      let fileid = ""+updatedFileType+updatedCount
+      this.dataDescriptionBoxes.push(this.dataDescriptionBox(updatedFileType,fileid,updatedCount));
+    } 
+    else {
+     let removeIndex = Math.max(...this.getAllIndexes(this.dataFileTypesAdded,updatedFileType));
+     this.dataFileTypesAdded.splice(removeIndex,1)
+     this.dataDescriptionBoxes.splice(removeIndex,1);
+    }
+
     inputFileFormats[event.target.name] = event.target.value;
     let localTotalFiles = this.countTotalFiles(inputFileFormats);
     let showRecommendButton = false;
@@ -46,6 +83,23 @@ class Inputpage extends React.Component {
       showRecommendButton: showRecommendButton,
     });
   }
+
+  // createDataDescriptionBoxes() {
+  //   console.log(this.dataFileTypesAdded);
+  //   const dataDescriptionBoxes = [];
+
+  //   let fileTypes = Object.keys(this.state.inputFileFormats);
+  //   fileTypes.forEach((val) => {
+  //     let fileCount = this.state.inputFileFormats[val];
+
+  //     for (let i = 0; i < fileCount; i++) {
+  //       dataDescriptionBoxes.push(this.dataDescriptionBox(val));
+  //     }
+  //   });
+  //   return dataDescriptionBoxes;
+  // }
+
+
 
   createDivForFileInput(name) {
     let fileTypeColor = colorScheme[name];
@@ -71,10 +125,12 @@ class Inputpage extends React.Component {
     );
   }
 
-  dataDescriptionBox(fileType) {
+  dataDescriptionBox(fileType,fileid,id) {
     let fileTypeToCaps = fileType.toUpperCase();
     let fileTypeColor = colorScheme[fileType];
     let activeFields = fileInputFieldsActive[fileType];
+    let assembly1 = false;
+    let assembly2 = !activeFields["assembly2"];
     let interconnection = !activeFields["interconnection"]
       ? "w3-opacity-max"
       : "";
@@ -84,142 +140,40 @@ class Inputpage extends React.Component {
     let dataTypeInputOpacity = !activeFields["data"] ? "w3-opacity-max" : "";
     return (
       <>
-        <div className="w3-third w3-border-bottom w3-margin-bottom">
+        <div id={fileid} className="w3-third w3-border-bottom w3-margin-bottom">
           <div className={"w3-container w3-margin w3-center " + fileTypeColor}>
-            <h4>{fileTypeToCaps}</h4>
+            <h4>{fileTypeToCaps} {id}</h4>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
             <div class="w3-col s12  w3-center">
-              <select className="w3-select" name="option">
-                <option value="" disabled selected>
-                  Assembly Build{" "}
-                </option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-              </select>
+              {createDropDownList(assembly1,fileid)}
             </div>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
             <div class="w3-col s12  w3-center">
-              <select
-                disabled={!activeFields["assembly2"]}
-                className="w3-select"
-                name="option"
-              >
-                <option value="" disabled selected>
-                  Assembly Build{" "}
-                </option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-              </select>
+              {createDropDownList(assembly2,fileid)}
             </div>
           </div>
           {/* Interconnection Radio Input */}
           <div className={"w3-margin w3-row " + interconnection}>
-            <div className={"w3-center w3-hover-opacity w3-half"}>
-              <img
-                src={require("../assets/interconnection_none.png")}
-                class="w3-round"
-                alt="point"
-              />
-              <p> No </p>
-            </div>
-            <div className="w3-center w3-half">
-              <img
-                src={require("../assets/interconnection_between.png")}
-                class="w3-round"
-                alt="segment"
-              />
-              <p> Yes </p>
-            </div>
+            {createNetworkInput()}
           </div>
           {/* Feature Input */}
           <div className={"w3-margin w3-row " + granularity}>
-            <div className="w3-center w3-hover-opacity w3-half">
-              <img
-                src={require("../assets/pointsparse.png")}
-                class="w3-round"
-                alt="point"
-              />
-              <p> Point </p>
-            </div>
-            <div className="w3-center w3-hover-opacity w3-half">
-              <img
-                src={require("../assets/segmentcontiguous.png")}
-                class="w3-round"
-                alt="segment"
-              />
-              <p> Segment </p>
-            </div>
+            {createGranularityInput()}
           </div>
-
           <div className={"w3-margin w3-row " + availability}>
-            <div className="w3-center w3-hover-opacity w3-half">
-              <img
-                src={require("../assets/pointcontiguous.png")}
-                class="w3-round"
-                alt="segment"
-              />
-              <p> Contiguous </p>
-            </div>
-            <div className="w3-center w3-hover-opacity w3-half">
-              <img
-                src={require("../assets/segmentsparse.png")}
-                class="w3-round"
-                alt="segment"
-              />
-              <p> Sparse </p>
-            </div>
+            {createAvailablityInput()}
           </div>
           {/* Define the attributes */}
           <div className={"w3-margin w3-row " + dataTypeInputOpacity}>
-            <div className="w3-center w3-third">
-              <input
-                disabled={dataTypeInput}
-                className=" w3-input w3-border w3-center"
-                type="number"
-              />
-              <p>Quant</p>
-            </div>
-            <div className="w3-center  w3-third">
-              <input
-                disabled={dataTypeInput}
-                className=" w3-input w3-border w3-center"
-                type="number"
-              />
-              <p>Categorical</p>
-            </div>
-            <div className="w3-center w3-third">
-              <input
-                disabled={dataTypeInput}
-                className=" w3-input w3-border w3-center"
-                type="number"
-              />
-              <p>Text</p>
-            </div>
+            {createDataTypeInput(dataTypeInput)}
           </div>
         </div>
       </>
     );
-  }
-
-  createDataDescriptionBoxes() {
-    const dataDescriptionBoxes = [];
-
-    let fileTypes = Object.keys(this.state.inputFileFormats);
-
-    fileTypes.forEach((val) => {
-      let fileCount = this.state.inputFileFormats[val];
-
-      for (let i = 0; i < fileCount; i++) {
-        dataDescriptionBoxes.push(this.dataDescriptionBox(val));
-      }
-    });
-    return dataDescriptionBoxes;
   }
 
   render() {
@@ -232,7 +186,7 @@ class Inputpage extends React.Component {
     return (
       <>
         <div className="w3-row">
-          <div className="w3-display-container w3-content  w3-margin w3-col l2">
+          <div className="w3-display-container w3-content w3-margin w3-col l2">
             <div className="w3-center w3-margin-bottom w3-margin-top w3-light-gray w3-padding w3-col">
               <div className="w3-container  w3-light-blue">
                 <h2>
@@ -253,13 +207,19 @@ class Inputpage extends React.Component {
             </div>
           </div>
 
-          <div className="w3-display-container w3-col l6">
+          <div className="w3-display-container w3-margin w3-col l6">
             <div className="w3-padding-16">
-              {this.createDataDescriptionBoxes()}
+              {this.dataDescriptionBoxes}
+              {/* {this.createDataDescriptionBoxes()} */}
             </div>
           </div>
-          <div className="w3-display-container w3-margin w3-col l2">
-            <p>Recommendation</p>
+
+          <div className="w3-display-container  w3-margin w3-col l3">
+            <div className="w3-center w3-sand w3-margin w3-padding w3-col">
+              <h2>
+                <i className="fa fa-th-list"></i> Recommendation
+              </h2>
+            </div>
           </div>
         </div>
       </>
