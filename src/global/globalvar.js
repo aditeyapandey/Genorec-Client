@@ -53,8 +53,8 @@ export const fileInputFieldsActive = {
     assembly1:true,
     assembly2:false,
     interconnection:false,
-    granularity:true,
-    availability:false,
+    granularity:false,
+    availability:true,
     data:false
   },
   vcf: {
@@ -67,6 +67,57 @@ export const fileInputFieldsActive = {
   }
 }
 
+export const defaultInputForFiles = {
+bed:{
+  assembly1:"hg38",
+  assembly2:"N.A.",
+  interconnection:false,
+  granularity:"Segment",
+  availability:"Sparse",
+  data:{"quant":1,"cat":0,"text":0}
+},
+bedpe:{
+  assembly1:"hg38",
+  assembly2:"hg38",
+  interconnection:true,
+  granularity:"Segment",
+  availability:"Sparse",
+  data:{"quant":1,"cat":0,"text":0}
+},
+bigwig:{
+  assembly1:"hg38",
+  assembly2:"N.A.",
+  interconnection:false,
+  granularity:"Point",
+  availability:"Continous",
+  data:{"quant":1,"cat":0,"text":0}
+},
+cooler:{
+  assembly1:"hg38",
+  assembly2:"hg19",
+  interconnection:true,
+  granularity:"Segment",
+  availability:"Continous",
+  data:{"quant":1,"cat":0,"text":0}
+},
+seg:{
+  assembly1:"hg38",
+  assembly2:"N.A.",
+  interconnection:false,
+  granularity:"Segment",
+  availability:"Continous",
+  data:{"quant":1,"cat":0,"text":0}
+},
+vcf:{
+  assembly1:"hg38",
+  assembly2:"hg19",
+  interconnection:false,
+  granularity:"Segment",
+  availability:"Sparse",
+  data:{"quant":1,"cat":0,"text":0}
+}
+}
 
 
-export default { inputFileFormats: inputFileFormats, colorScheme:colorScheme, fileInputFieldsActive:fileInputFieldsActive };
+
+export default { inputFileFormats: inputFileFormats, colorScheme:colorScheme, fileInputFieldsActive:fileInputFieldsActive, defaultInputForFiles:defaultInputForFiles };

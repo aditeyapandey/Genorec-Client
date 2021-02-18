@@ -4,6 +4,7 @@ import {
   inputFileFormats,
   colorScheme,
   fileInputFieldsActive,
+  defaultInputForFiles
 } from "../global/globalvar";
 import {
   createDropDownList,
@@ -25,9 +26,6 @@ class Inputpage extends React.Component {
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
-    // this.createDataDescriptionBoxes = this.createDataDescriptionBoxes.bind(
-    //   this
-    // );
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes =[]
   }
@@ -60,9 +58,6 @@ class Inputpage extends React.Component {
     let currentCount = inputFileFormats[updatedFileType];
 
     //Add or Remove Data Input Files
-    //Add needs to 
-    console.log(currentCount)
-    console.log(updatedCount)
     if (currentCount < updatedCount) {
       for(var index = parseInt(currentCount)+1; index<=updatedCount; index++){
         this.dataFileTypesAdded.push(updatedFileType);
@@ -90,21 +85,6 @@ class Inputpage extends React.Component {
       showRecommendButton: showRecommendButton,
     });
   }
-
-  // createDataDescriptionBoxes() {
-  //   console.log(this.dataFileTypesAdded);
-  //   const dataDescriptionBoxes = [];
-
-  //   let fileTypes = Object.keys(this.state.inputFileFormats);
-  //   fileTypes.forEach((val) => {
-  //     let fileCount = this.state.inputFileFormats[val];
-
-  //     for (let i = 0; i < fileCount; i++) {
-  //       dataDescriptionBoxes.push(this.dataDescriptionBox(val));
-  //     }
-  //   });
-  //   return dataDescriptionBoxes;
-  // }
 
 
 
@@ -145,38 +125,41 @@ class Inputpage extends React.Component {
     let availability = !activeFields["availability"] ? "w3-opacity-max" : "";
     let dataTypeInput = !activeFields["data"];
     let dataTypeInputOpacity = !activeFields["data"] ? "w3-opacity-max" : "";
+
+    let defaultValues = defaultInputForFiles[fileType]
+
     return (
       <>
-        <div id={fileid} className="w3-third w3-border-bottom w3-margin-bottom">
+        <div id={fileid} className="w3-third w3-border-bottom ">
           <div className={"w3-container w3-margin w3-center " + fileTypeColor}>
             <h4>{fileTypeToCaps} {id}</h4>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
             <div class="w3-col s12  w3-center">
-              {createDropDownList(assembly1,fileid)}
+              {createDropDownList(assembly1,fileid,defaultValues["assembly1"])}
             </div>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
             <div class="w3-col s12  w3-center">
-              {createDropDownList(assembly2,fileid)}
+              {createDropDownList(assembly2,fileid,defaultValues["assembly1"])}
             </div>
           </div>
           {/* Interconnection Radio Input */}
           <div className={"w3-margin w3-row " + interconnection}>
-            {createNetworkInput()}
+            {createNetworkInput(defaultValues["interconnection"])}
           </div>
           {/* Feature Input */}
           <div className={"w3-margin w3-row " + granularity}>
-            {createGranularityInput()}
+            {createGranularityInput(defaultValues["granularity"])}
           </div>
           <div className={"w3-margin w3-row " + availability}>
-            {createAvailablityInput()}
+            {createAvailablityInput(defaultValues["availability"])}
           </div>
           {/* Define the attributes */}
           <div className={"w3-margin w3-row " + dataTypeInputOpacity}>
-            {createDataTypeInput(dataTypeInput)}
+            {createDataTypeInput(dataTypeInput,defaultValues["data"])}
           </div>
         </div>
       </>
