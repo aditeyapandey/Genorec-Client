@@ -66,7 +66,8 @@ class Inputpage extends React.Component {
         var index = parseInt(currentCount) + 1;
         index <= updatedCount;
         index++
-      ) {
+      ) 
+      {
         this.dataFileTypesAdded.push(updatedFileType);
         let fileid = "" + updatedFileType + index;
         this.dataDescriptionBoxes.push(
@@ -100,7 +101,9 @@ class Inputpage extends React.Component {
 
   // Handling change requests from datasets
 
-  //
+  //Finished handling dataset
+
+
   createDivForFileInput(name) {
     // let fileTypeColor = colorScheme[name];
     return (
@@ -204,20 +207,15 @@ class Inputpage extends React.Component {
       <>
         <div className="w3-row">
           <div className="w3-display-container w3-padding w3-margin">
-            <div className="w3-row w3-center  w3-margin">
+            <div className="w3-row w3-center w3-margin">
               <div className="w3-half">
-                <button class="w3-button w3-block w3-blue-grey">
+                
+                <div className="w3-row">
+                <div className="w3-center w3-blue-grey w3-padding">
                   <h3> <i className="fa fa-table w3-margin-right"></i> Data Description</h3>
-                </button>
-              </div>
-              <div className="w3-half">
-                <button class="w3-button w3-block w3-light-grey">
-                <h3> <i className="fa fa-tasks w3-margin-right"></i> Task Description</h3>
-                </button>
-              </div>
-            </div>
-            <div className="w3-row">
-              <div class="w3-row w3-half">
+                </div>
+                </div>
+
                 <div class="w3-row">
                 <div className="w3-display-container w3-margin">
                 <div className="w3-center w3-light-gray  w3-col">
@@ -233,9 +231,17 @@ class Inputpage extends React.Component {
                 </div>
 
                 <div class="w3-row">{this.dataDescriptionBoxes}</div>
+
               </div>
-              <div class="w3-row w3-half">
-                
+              <div className="w3-half">
+
+                <div className="w3-row">
+                <div className="w3-center w3-light-grey w3-padding">
+                <h3> <i className="fa fa-tasks w3-margin-right"></i> Task Description</h3>
+            </div>
+
+                </div>
+
               </div>
             </div>
           </div>
