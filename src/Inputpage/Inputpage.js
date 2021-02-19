@@ -4,7 +4,7 @@ import {
   inputFileFormats,
   colorScheme,
   fileInputFieldsActive,
-  defaultInputForFiles
+  defaultInputForFiles,
 } from "../global/globalvar";
 import {
   createDropDownList,
@@ -27,7 +27,7 @@ class Inputpage extends React.Component {
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
     this.dataFileTypesAdded = [];
-    this.dataDescriptionBoxes =[]
+    this.dataDescriptionBoxes = [];
   }
 
   //Utility Functions
@@ -44,6 +44,12 @@ class Inputpage extends React.Component {
     for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
     return indexes;
   }
+
+  divideRows(breakpoint){
+
+  }
+
+
   //Utility Functions end
 
   onChangeFileQuantity(event) {
@@ -59,20 +65,26 @@ class Inputpage extends React.Component {
 
     //Add or Remove Data Input Files
     if (currentCount < updatedCount) {
-      for(var index = parseInt(currentCount)+1; index<=updatedCount; index++){
+      for (
+        var index = parseInt(currentCount) + 1;
+        index <= updatedCount;
+        index++
+      ) {
         this.dataFileTypesAdded.push(updatedFileType);
-        let fileid = ""+updatedFileType+index
-        this.dataDescriptionBoxes.push(this.dataDescriptionBox(updatedFileType,fileid,index));
+        let fileid = "" + updatedFileType + index;
+        this.dataDescriptionBoxes.push(
+          this.dataDescriptionBox(updatedFileType, fileid, index)
+        );
       }
-    } 
-    else {
-     for(let index = currentCount; index>updatedCount; index--){
-      let removeIndex = Math.max(...this.getAllIndexes(this.dataFileTypesAdded,updatedFileType));
-      this.dataFileTypesAdded.splice(removeIndex,1)
-      this.dataDescriptionBoxes.splice(removeIndex,1);
+    } else {
+      for (let index = currentCount; index > updatedCount; index--) {
+        let removeIndex = Math.max(
+          ...this.getAllIndexes(this.dataFileTypesAdded, updatedFileType)
+        );
+        this.dataFileTypesAdded.splice(removeIndex, 1);
+        this.dataDescriptionBoxes.splice(removeIndex, 1);
+      }
     }
-    }
-
     inputFileFormats[event.target.name] = event.target.value;
     let localTotalFiles = this.countTotalFiles(inputFileFormats);
     let showRecommendButton = false;
@@ -86,16 +98,14 @@ class Inputpage extends React.Component {
     });
   }
 
-
-
   createDivForFileInput(name) {
-    let fileTypeColor = colorScheme[name];
+    // let fileTypeColor = colorScheme[name];
     return (
       <>
         <div className={"w3-margin-top w3-margin-bottom"}>
           <label>
             {" "}
-            <span className={"dot " + fileTypeColor}></span>{" "}
+            {/* <span className={"dot " + fileTypeColor}></span>{" "} */}
             {name.toUpperCase()}
           </label>
           <input
@@ -112,7 +122,7 @@ class Inputpage extends React.Component {
     );
   }
 
-  dataDescriptionBox(fileType,fileid,id) {
+  dataDescriptionBox(fileType, fileid, id) {
     let fileTypeToCaps = fileType.toUpperCase();
     let fileTypeColor = colorScheme[fileType];
     let activeFields = fileInputFieldsActive[fileType];
@@ -126,25 +136,43 @@ class Inputpage extends React.Component {
     let dataTypeInput = !activeFields["data"];
     let dataTypeInputOpacity = !activeFields["data"] ? "w3-opacity-max" : "";
 
-    let defaultValues = defaultInputForFiles[fileType]
+    let defaultValues = defaultInputForFiles[fileType];
 
     return (
       <>
-        <div id={fileid} className="w3-third w3-border-bottom ">
-          <div className={"w3-container w3-margin w3-center " + fileTypeColor}>
-            <h4>{fileTypeToCaps} {id}</h4>
+        <div
+          id={fileid}
+          className="w3-third w3-left w3-border-bottom w3-margin-bottom"
+        >
+          {/* <div className={"w3-container w3-margin w3-center " + fileTypeColor}> */}
+          <div className={"w3-container w3-margin w3-center w3-khaki"}>
+            <h5>
+              {fileTypeToCaps} {id}
+            </h5>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div class="w3-col s12  w3-center">
-              {createDropDownList(assembly1,fileid,defaultValues["assembly1"])}
+            <div class="w3-col s12 w3-center">
+              {createDropDownList(
+                assembly1,
+                fileid,
+                defaultValues["assembly1"]
+              )}
             </div>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
             <div class="w3-col s12  w3-center">
-              {createDropDownList(assembly2,fileid,defaultValues["assembly1"])}
+              {createDropDownList(
+                assembly2,
+                fileid,
+                defaultValues["assembly2"]
+              )}
             </div>
+          </div>
+          {/* Define the attributes */}
+          <div className={"w3-margin w3-row " + dataTypeInputOpacity}>
+            {createDataTypeInput(dataTypeInput, defaultValues["data"])}
           </div>
           {/* Interconnection Radio Input */}
           <div className={"w3-margin w3-row " + interconnection}>
@@ -156,10 +184,6 @@ class Inputpage extends React.Component {
           </div>
           <div className={"w3-margin w3-row " + availability}>
             {createAvailablityInput(defaultValues["availability"])}
-          </div>
-          {/* Define the attributes */}
-          <div className={"w3-margin w3-row " + dataTypeInputOpacity}>
-            {createDataTypeInput(dataTypeInput,defaultValues["data"])}
           </div>
         </div>
       </>
@@ -198,10 +222,19 @@ class Inputpage extends React.Component {
           </div>
 
           <div className="w3-display-container w3-margin w3-col l6">
-            <div className="w3-padding-16">
-              {this.dataDescriptionBoxes}
-              {/* {this.createDataDescriptionBoxes()} */}
+            <div className="w3-row w3-center  w3-margin">
+              <div className="w3-half">
+                <button class="w3-button w3-block w3-blue-grey">
+                  Data Description
+                </button>
+              </div>
+              <div className="w3-half">
+                <button class="w3-button w3-block w3-light-grey">
+                  Task Description
+                </button>
+              </div>
             </div>
+            <div className="w3-row">{this.dataDescriptionBoxes}</div>
           </div>
 
           <div className="w3-display-container  w3-margin w3-col l3">

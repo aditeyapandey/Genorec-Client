@@ -1,10 +1,10 @@
 export const inputFileFormats = {
-  bed: 0 ,
-  bedpe: 0,
   bigwig: 0,
-  cooler: 0,
+  bed: 0,
+  bedpe: 0,
   seg: 0,
   vcf: 0,
+  cooler: 0,
 };
 
 export const colorScheme = {
@@ -67,29 +67,80 @@ export const fileInputFieldsActive = {
   }
 }
 
+// export const defaultInputForFiles = {
+// bed:{
+//   assembly1:"hg38",
+//   assembly2:"N.A.",
+//   interconnection:false,
+//   granularity:"Segment",
+//   availability:"Sparse",
+//   data:{"quant":1,"cat":0,"text":0}
+// },
+// bedpe:{
+//   assembly1:"hg38",
+//   assembly2:"hg38",
+//   interconnection:true,
+//   granularity:"Segment",
+//   availability:"Sparse",
+//   data:{"quant":1,"cat":0,"text":0}
+// },
+// bigwig:{
+//   assembly1:"hg38",
+//   assembly2:"N.A.",
+//   interconnection:false,
+//   granularity:"Point",
+//   availability:"Continous",
+//   data:{"quant":1,"cat":0,"text":0}
+// },
+// cooler:{
+//   assembly1:"hg38",
+//   assembly2:"hg19",
+//   interconnection:true,
+//   granularity:"Segment",
+//   availability:"Continous",
+//   data:{"quant":1,"cat":0,"text":0}
+// },
+// seg:{
+//   assembly1:"hg38",
+//   assembly2:"N.A.",
+//   interconnection:false,
+//   granularity:"Segment",
+//   availability:"Continous",
+//   data:{"quant":1,"cat":0,"text":0}
+// },
+// vcf:{
+//   assembly1:"hg38",
+//   assembly2:"hg19",
+//   interconnection:false,
+//   granularity:"Segment",
+//   availability:"Sparse",
+//   data:{"quant":1,"cat":0,"text":0}
+// }
+// }
+
 export const defaultInputForFiles = {
-bed:{
-  assembly1:"hg38",
-  assembly2:"N.A.",
-  interconnection:false,
-  granularity:"Segment",
-  availability:"Sparse",
-  data:{"quant":1,"cat":0,"text":0}
-},
-bedpe:{
-  assembly1:"hg38",
-  assembly2:"hg38",
-  interconnection:true,
-  granularity:"Segment",
-  availability:"Sparse",
-  data:{"quant":1,"cat":0,"text":0}
-},
+  bed:{
+    assembly1:"hg38",
+    assembly2:"N.A.",
+    interconnection:false,
+    granularity:"Segment",
+    availability:"Sparse",
+    data:{"quant":1,"cat":0,"text":0}
+  },
+  bedpe:{
+    assembly1:"hg38",
+    assembly2:"hg38",
+    interconnection:true,
+    granularity:"Segment",
+    availability:"Sparse",
+    data:{"quant":1,"cat":0,"text":0}
+  },
 bigwig:{
   assembly1:"hg38",
   assembly2:"N.A.",
   interconnection:false,
   granularity:"Point",
-  availability:"Continous",
+  availability:"Sparse",
   data:{"quant":1,"cat":0,"text":0}
 },
 cooler:{
@@ -105,18 +156,18 @@ seg:{
   assembly2:"N.A.",
   interconnection:false,
   granularity:"Segment",
-  availability:"Continous",
-  data:{"quant":1,"cat":0,"text":0}
-},
-vcf:{
-  assembly1:"hg38",
-  assembly2:"hg19",
-  interconnection:false,
-  granularity:"Segment",
   availability:"Sparse",
   data:{"quant":1,"cat":0,"text":0}
-}
-}
+},
+  vcf:{
+    assembly1:"hg38",
+    assembly2:"hg19",
+    interconnection:false,
+    granularity:"Segment",
+    availability:"Sparse",
+    data:{"quant":1,"cat":0,"text":0}
+  }
+  }
 
 
 

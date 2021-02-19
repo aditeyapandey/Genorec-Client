@@ -2,11 +2,19 @@
     img{
     	width:40%;
     } 
+
+.selected {
+    border: 2px solid rgb(226, 74, 74);
+}
 }
 @media screen and (max-width: 600px) {   
     img{
     	width:20%;
     } 
+
+.selected {
+    border: 2px solid rgb(226, 74, 74);
+}
 }
 
 .dot {

@@ -26,32 +26,33 @@ export const createDropDownList = (disabledVal, fileid, defaultValue) => {
 };
 
 export const createNetworkInput = (defaultValue) => {
-  let styleNoNetwork = {};
-  let styleNetwork = {};
+  let noNetworkSelected = ""
+  let networkSelected = ""
   if (defaultValue) {
-    styleNetwork["border"] = "5px solid rgb(226, 74, 74)";
+    networkSelected = "selected"
   } else {
-    styleNoNetwork["border"] = "5px solid rgb(226, 74, 74)";
+    noNetworkSelected = "selected"
   }
   return (
     <>
-      <div className={"w3-center w3-hover-opacity w3-half"}>
-        <span className="w3-border">
-          <img
-            src={require("../assets/interconnection_none.png")}
-            className="w3-round"
-            style={styleNoNetwork}
-            alt="point"
-          />
-        </span>
+    <div className={"w3-center w3-hover-opacity w3-third"}>
+        <p> Connection </p>
+      </div>
+      <div className={"w3-center w3-hover-opacity w3-third"}>
+        <img
+          src={require("../assets/interconnection_none.png")}
+          className={"w3-round "+noNetworkSelected}
+       
+          alt="no network"
+        />
         <p> No </p>
       </div>
-      <div className="w3-center w3-half">
+      <div className="w3-center w3-third">
         <img
           src={require("../assets/interconnection_between.png")}
-          className="w3-round"
-          alt="segment"
-          style={styleNetwork}
+          className={"w3-round "+networkSelected}
+          alt="network"
+
         />
         <p> Yes </p>
       </div>
@@ -60,33 +61,34 @@ export const createNetworkInput = (defaultValue) => {
 };
 
 export const createGranularityInput = (granularity) => {
-    let pointStyle = {};
-    let segmentStyle = {};
-    console.log(granularity)
-    if (granularity==="Segment") 
-      {
-        segmentStyle["border"] = "5px solid rgb(226, 74, 74)";
-      } else 
-      {
-        pointStyle["border"] = "5px solid rgb(226, 74, 74)";
-      }
+  let pointSelected = {};
+  let segmentSelected = {};
+  if (granularity === "Point") {
+    pointSelected="selected"
+  } else {
+    segmentSelected="selected"
+  } 
+
   return (
     <>
-      <div className="w3-center w3-hover-opacity w3-half">
+     <div className={"w3-center w3-hover-opacity w3-third"}>
+        <p> Feature Type 1 </p>
+        {/* <p> Granularity </p> */}
+      </div>
+      <div  className="w3-center w3-hover-opacity w3-third">
         <img
           src={require("../assets/pointsparse.png")}
-          class="w3-round"
+          className={"w3-round "+pointSelected}
           alt="point"
-          style={pointStyle}
-        />
+        ></img>
+
         <p> Point </p>
       </div>
-      <div className="w3-center w3-hover-opacity w3-half">
+      <div className="w3-center w3-hover-opacity w3-third">
         <img
           src={require("../assets/segmentcontiguous.png")}
-          class="w3-round"
+          className={"w3-round "+segmentSelected}
           alt="segment"
-          style={segmentStyle}
         />
         <p> Segment </p>
       </div>
@@ -95,40 +97,46 @@ export const createGranularityInput = (granularity) => {
 };
 
 export const createAvailablityInput = (availability) => {
-    let continousStyle= {};
-    let sparseStyle = {};
-    if (availability==="Sparse") 
-      {
-        sparseStyle["border"] = "5px solid rgb(226, 74, 74)";
-      } else 
-      {
-        continousStyle["border"] = "5px solid rgb(226, 74, 74)";
-      }
+  let continousSelected = "";
+  let sparseSelected = "";
+  if (availability === "Sparse") {
+    sparseSelected = "selected";
+  } else {
+    continousSelected = "selected";
+  }
+//   let continousStyle = {};
+//   let sparseStyle = {};
+//   if (availability === "Sparse") {
+//     sparseStyle["border"] = "5px solid rgb(226, 74, 74)";
+//   } else {
+//     continousStyle["border"] = "5px solid rgb(226, 74, 74)";
+//   } 
   return (
     <>
-      <div className="w3-center w3-hover-opacity w3-half">
-        <img
-          src={require("../assets/pointcontiguous.png")}
-          class="w3-round"
-          alt="segment"
-          style={continousStyle}
-        />
-        <p> Contiguous </p>
+         <div className={"w3-center w3-hover-opacity w3-third"}>
+        <p> Feature Type 2 </p>
       </div>
-      <div className="w3-center w3-hover-opacity w3-half">
+      <div  className="w3-center w3-hover-opacity w3-third">
         <img
           src={require("../assets/segmentsparse.png")}
-          class="w3-round"
-          alt="segment"
-          style={sparseStyle}
+          className={"w3-round "+sparseSelected}
+          alt="sparse"
         />
         <p> Sparse </p>
+      </div>
+      <div className="w3-center w3-hover-opacity w3-third">
+        <img
+          src={require("../assets/pointcontiguous.png")}
+          className={"w3-round "+continousSelected}
+          alt="continous"
+        />
+        <p> Contiguous </p>
       </div>
     </>
   );
 };
 
-export const createDataTypeInput = (dataTypeInput,defaultValue) => {
+export const createDataTypeInput = (dataTypeInput, defaultValue) => {
   return (
     <>
       <div className="w3-center w3-third">
