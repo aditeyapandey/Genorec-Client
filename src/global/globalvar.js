@@ -4,16 +4,16 @@ export const inputFileFormats = {
   bedpe: 0,
   seg: 0,
   vcf: 0,
-  cooler: 0,
+  cooler: 0
 };
 
 export const colorScheme = {
   bed: "w3-deep-orange" ,
   bedpe: "w3-teal",
   bigwig: "w3-khaki",
-  cooler: "w3-cyan",
   seg: "w3-amber",
   vcf: "w3-blue-gray",
+  cooler: "w3-cyan"
 }
 
 export const fileInputFieldsActive = {
@@ -140,7 +140,7 @@ bigwig:{
   assembly2:"N.A.",
   interconnection:false,
   granularity:"Point",
-  availability:"Sparse",
+  availability:"Continous",
   data:{"quant":1,"cat":0,"text":0}
 },
 cooler:{

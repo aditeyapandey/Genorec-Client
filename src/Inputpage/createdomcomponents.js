@@ -81,7 +81,6 @@ export const createGranularityInput = (granularity) => {
           className={"w3-round "+pointSelected}
           alt="point"
         ></img>
-
         <p> Point </p>
       </div>
       <div className="w3-center w3-hover-opacity w3-third">

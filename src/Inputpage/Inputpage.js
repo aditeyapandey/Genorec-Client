@@ -22,12 +22,14 @@ class Inputpage extends React.Component {
       maxFiles: 5,
       totalFiles: 0,
       inputFileFormats,
+      inputData: {},
       showRecommendButton: false,
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
+    this.dataInput = {};
   }
 
   //Utility Functions
@@ -44,14 +46,9 @@ class Inputpage extends React.Component {
     for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
     return indexes;
   }
-
-  divideRows(breakpoint){
-
-  }
-
-
   //Utility Functions end
 
+  //Adding Dataset
   onChangeFileQuantity(event) {
     //Changed type and counts
     let updatedFileType = event.target.name;
@@ -85,24 +82,30 @@ class Inputpage extends React.Component {
         this.dataDescriptionBoxes.splice(removeIndex, 1);
       }
     }
+
     inputFileFormats[event.target.name] = event.target.value;
-    let localTotalFiles = this.countTotalFiles(inputFileFormats);
-    let showRecommendButton = false;
-    if (localTotalFiles > 0) {
-      showRecommendButton = true;
-    }
+
+    //Show recommendation logic goes here
+    // let localTotalFiles = this.countTotalFiles(inputFileFormats);
+    // let showRecommendButton = false;
+    // if (localTotalFiles > 0) {
+    //   showRecommendButton = true;
+    // }
 
     this.setState({
       inputFileFormats: inputFileFormats,
-      showRecommendButton: showRecommendButton,
     });
   }
+  //Finished adding dataset
 
+  // Handling change requests from datasets
+
+  //
   createDivForFileInput(name) {
     // let fileTypeColor = colorScheme[name];
     return (
       <>
-        <div className={"w3-margin-top w3-margin-bottom"}>
+        <div className={"w3-col l2 w3-margin-top w3-margin-bottom"}>
           <label>
             {" "}
             {/* <span className={"dot " + fileTypeColor}></span>{" "} */}
@@ -142,7 +145,7 @@ class Inputpage extends React.Component {
       <>
         <div
           id={fileid}
-          className="w3-third w3-left w3-border-bottom w3-margin-bottom"
+          className="w3-quarter w3-left w3-border-bottom w3-margin-bottom"
         >
           {/* <div className={"w3-container w3-margin w3-center " + fileTypeColor}> */}
           <div className={"w3-container w3-margin w3-center w3-khaki"}>
@@ -200,48 +203,49 @@ class Inputpage extends React.Component {
     return (
       <>
         <div className="w3-row">
-          <div className="w3-display-container w3-content w3-margin w3-col l2">
-            <div className="w3-center w3-margin-bottom w3-margin-top w3-light-gray w3-padding w3-col">
-              <div className="w3-container  w3-light-blue">
-                <h2>
-                  <i className="fa fa-table w3-margin-right"></i> Add Dataset
-                </h2>
-              </div>
-              <div className="w3-row-padding">{fileFormatDivs}</div>
-              <button
-                style={{
-                  display: this.state.showRecommendButton ? "" : "none",
-                }}
-                onClick={this.describeData}
-                className="w3-button w3-deep-purple"
-              >
-                {" "}
-                Recommendation
-              </button>
-            </div>
-          </div>
-
-          <div className="w3-display-container w3-margin w3-col l6">
+          <div className="w3-display-container w3-padding w3-margin">
             <div className="w3-row w3-center  w3-margin">
               <div className="w3-half">
                 <button class="w3-button w3-block w3-blue-grey">
-                  Data Description
+                  <h3> <i className="fa fa-table w3-margin-right"></i> Data Description</h3>
                 </button>
               </div>
               <div className="w3-half">
                 <button class="w3-button w3-block w3-light-grey">
-                  Task Description
+                <h3> <i className="fa fa-tasks w3-margin-right"></i> Task Description</h3>
                 </button>
               </div>
             </div>
-            <div className="w3-row">{this.dataDescriptionBoxes}</div>
-          </div>
+            <div className="w3-row">
+              <div class="w3-row w3-half">
+                <div class="w3-row">
+                <div className="w3-display-container w3-margin">
+                <div className="w3-center w3-light-gray  w3-col">
+                  <div className="w3-container  w3-light-blue">
+                        <h5>
+                           Add
+                          Dataset
+                        </h5>
+                      </div>
+                      <div className="w3-row-padding">{fileFormatDivs}</div>
+                  </div>
+                  </div>
+                </div>
 
-          <div className="w3-display-container  w3-margin w3-col l3">
-            <div className="w3-center w3-sand w3-margin w3-padding w3-col">
-              <h2>
-                <i className="fa fa-th-list"></i> Recommendation
-              </h2>
+                <div class="w3-row">{this.dataDescriptionBoxes}</div>
+              </div>
+              <div class="w3-row w3-half">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w3-row">
+          <div className="w3-display-container w3-padding w3-margin ">
+            <div className="w3-center w3-sand w3-margin w3-padding">
+              <h3>
+                <i className="fa fa-th-list w3-margin-right"></i> Recommendation
+              </h3>
             </div>
           </div>
         </div>
