@@ -22,14 +22,17 @@ class Inputpage extends React.Component {
       maxFiles: 5,
       totalFiles: 0,
       inputFileFormats,
-      inputData: {},
+      inputConfigurationData: {},
       showRecommendButton: false,
+      dataDescriptionBoxes: []
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
+    this.onChangeFileDataUpdate =  this.onChangeFileDataUpdate.bind(this)
     this.dataFileTypesAdded = [];
-    this.dataDescriptionBoxes = [];
-    this.dataInput = {};
+    this.inputConfigurationData={}
+
+    // this.dataDescriptionBoxes = [];
   }
 
   //Utility Functions
@@ -53,6 +56,8 @@ class Inputpage extends React.Component {
     //Changed type and counts
     let updatedFileType = event.target.name;
     let updatedCount = event.target.value;
+    let currentDataConfigurationInput = this.state.inputConfigurationData
+
 
     //existing counts
     let inputFileFormats = { ...this.state.inputFileFormats };
@@ -70,42 +75,49 @@ class Inputpage extends React.Component {
       {
         this.dataFileTypesAdded.push(updatedFileType);
         let fileid = "" + updatedFileType + index;
-        this.dataDescriptionBoxes.push(
+        currentDataConfigurationInput[fileid] =Object.assign({},defaultInputForFiles[updatedFileType]);
+        this.state.dataDescriptionBoxes.push(
           this.dataDescriptionBox(updatedFileType, fileid, index)
         );
       }
     } else {
       for (let index = currentCount; index > updatedCount; index--) {
+        
         let removeIndex = Math.max(
           ...this.getAllIndexes(this.dataFileTypesAdded, updatedFileType)
         );
+        let fileid = "" + updatedFileType + index;
+        delete currentDataConfigurationInput[fileid]
         this.dataFileTypesAdded.splice(removeIndex, 1);
-        this.dataDescriptionBoxes.splice(removeIndex, 1);
+        this.state.dataDescriptionBoxes.splice(removeIndex, 1);
       }
     }
 
     inputFileFormats[event.target.name] = event.target.value;
 
-    //Show recommendation logic goes here
-    // let localTotalFiles = this.countTotalFiles(inputFileFormats);
-    // let showRecommendButton = false;
-    // if (localTotalFiles > 0) {
-    //   showRecommendButton = true;
-    // }
-
     this.setState({
       inputFileFormats: inputFileFormats,
+      inputConfigurationData: currentDataConfigurationInput
     });
   }
-  //Finished adding dataset
 
-  // Handling change requests from datasets
-
-  //Finished handling dataset
-
+onChangeFileDataUpdate (fileid,componentid,value,addtionalInput)
+{
+  let configurationData = this.state.inputConfigurationData
+  console.log(fileid,componentid,value)
+  if(componentid==="data"){
+    configurationData[fileid][componentid][addtionalInput] = parseInt(value)
+  }
+  else{
+    configurationData[fileid][componentid] = value
+  }
+  this.setState({
+    inputConfigurationData: configurationData
+  });
+  console.log(this.state.inputConfigurationData)
+}
 
   createDivForFileInput(name) {
-    // let fileTypeColor = colorScheme[name];
     return (
       <>
         <div className={"w3-col l2 w3-margin-top w3-margin-bottom"}>
@@ -135,13 +147,12 @@ class Inputpage extends React.Component {
     let assembly1 = false;
     let assembly2 = !activeFields["assembly2"];
     let interconnection = !activeFields["interconnection"]
-      ? "w3-opacity-max"
+      ? "w3-opacity-max disabledClick"
       : "";
-    let granularity = !activeFields["granularity"] ? "w3-opacity-max" : "";
-    let availability = !activeFields["availability"] ? "w3-opacity-max" : "";
+    let granularity = !activeFields["granularity"] ? "w3-opacity-max disabledClick" : "";
+    let availability = !activeFields["availability"] ? "w3-opacity-max disabledClick" : "";
     let dataTypeInput = !activeFields["data"];
     let dataTypeInputOpacity = !activeFields["data"] ? "w3-opacity-max" : "";
-
     let defaultValues = defaultInputForFiles[fileType];
 
     return (
@@ -162,7 +173,9 @@ class Inputpage extends React.Component {
               {createDropDownList(
                 assembly1,
                 fileid,
-                defaultValues["assembly1"]
+                defaultValues["assembly1"],
+                "assembly1",
+                this.onChangeFileDataUpdate
               )}
             </div>
           </div>
@@ -172,24 +185,26 @@ class Inputpage extends React.Component {
               {createDropDownList(
                 assembly2,
                 fileid,
-                defaultValues["assembly2"]
+                defaultValues["assembly2"],
+                "assembly2",
+                this.onChangeFileDataUpdate
               )}
             </div>
           </div>
           {/* Define the attributes */}
           <div className={"w3-margin w3-row " + dataTypeInputOpacity}>
-            {createDataTypeInput(dataTypeInput, defaultValues["data"])}
+            {createDataTypeInput(dataTypeInput, fileid,"data", this.onChangeFileDataUpdate)}
           </div>
           {/* Interconnection Radio Input */}
           <div className={"w3-margin w3-row " + interconnection}>
-            {createNetworkInput(defaultValues["interconnection"])}
+            {createNetworkInput(defaultValues["interconnection"],fileid,"interconnection", this.onChangeFileDataUpdate)}
           </div>
           {/* Feature Input */}
           <div className={"w3-margin w3-row " + granularity}>
-            {createGranularityInput(defaultValues["granularity"])}
+            {createGranularityInput(defaultValues["granularity"],fileid,"granularity", this.onChangeFileDataUpdate)}
           </div>
           <div className={"w3-margin w3-row " + availability}>
-            {createAvailablityInput(defaultValues["availability"])}
+            {createAvailablityInput(defaultValues["availability"],fileid,"availability", this.onChangeFileDataUpdate)}
           </div>
         </div>
       </>
@@ -221,8 +236,7 @@ class Inputpage extends React.Component {
                 <div className="w3-center w3-light-gray  w3-col">
                   <div className="w3-container  w3-light-blue">
                         <h5>
-                           Add
-                          Dataset
+                           Dataset Formats
                         </h5>
                       </div>
                       <div className="w3-row-padding">{fileFormatDivs}</div>
@@ -230,8 +244,7 @@ class Inputpage extends React.Component {
                   </div>
                 </div>
 
-                <div class="w3-row">{this.dataDescriptionBoxes}</div>
-
+                <div class="w3-row">{this.state.dataDescriptionBoxes}</div>
               </div>
               <div className="w3-half">
 
