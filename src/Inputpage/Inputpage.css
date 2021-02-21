@@ -2,6 +2,10 @@
     img{
     	width:40%;
     } 
+    .taskimg
+    {
+        width:80%;
+    }
 
 .selected {
     border: 2px solid rgb(226, 74, 74);

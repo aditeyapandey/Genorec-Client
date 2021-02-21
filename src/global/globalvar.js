@@ -4,68 +4,68 @@ export const inputFileFormats = {
   bedpe: 0,
   seg: 0,
   vcf: 0,
-  cooler: 0
+  cooler: 0,
 };
 
 export const colorScheme = {
-  bed: "w3-deep-orange" ,
+  bed: "w3-deep-orange",
   bedpe: "w3-teal",
   bigwig: "w3-khaki",
   seg: "w3-amber",
   vcf: "w3-blue-gray",
-  cooler: "w3-cyan"
-}
+  cooler: "w3-cyan",
+};
 
 export const fileInputFieldsActive = {
   bed: {
-    assembly1:true,
-    assembly2:false,
-    interconnection:false,
-    granularity:false,
-    availability:false,
-    data:true
-  } ,
+    assembly1: true,
+    assembly2: false,
+    interconnection: false,
+    granularity: false,
+    availability: false,
+    data: true,
+  },
   bedpe: {
-    assembly1:true,
-    assembly2:true,
-    interconnection:true,
-    granularity:false,
-    availability:false,
-    data:true
+    assembly1: true,
+    assembly2: true,
+    interconnection: true,
+    granularity: false,
+    availability: false,
+    data: true,
   },
   bigwig: {
-    assembly1:true,
-    assembly2:false,
-    interconnection:false,
-    granularity:true,
-    availability:false,
-    data:false
+    assembly1: true,
+    assembly2: false,
+    interconnection: false,
+    granularity: true,
+    availability: false,
+    data: false,
   },
   cooler: {
-    assembly1:true,
-    assembly2:true,
-    interconnection:false,
-    granularity:true,
-    availability:false,
-    data:false
+    assembly1: true,
+    assembly2: true,
+    interconnection: false,
+    granularity: true,
+    availability: false,
+    data: false,
   },
   seg: {
-    assembly1:true,
-    assembly2:false,
-    interconnection:false,
-    granularity:false,
-    availability:true,
-    data:false
+    assembly1: true,
+    assembly2: false,
+    interconnection: false,
+    granularity: false,
+    availability: true,
+    data: false,
   },
   vcf: {
-    assembly1:true,
-    assembly2:false,
-    interconnection:false,
-    granularity:true,
-    availability:false,
-    data:true
-  }
-}
+    assembly1: true,
+    assembly2: false,
+    interconnection: false,
+    granularity: true,
+    availability: false,
+    data: true,
+  },
+};
 
 // export const defaultInputForFiles = {
 // bed:{
@@ -119,56 +119,68 @@ export const fileInputFieldsActive = {
 // }
 
 export const defaultInputForFiles = {
-  bed:{
-    assembly1:"hg38",
-    assembly2:"N.A.",
-    interconnection:false,
-    granularity:"Segment",
-    availability:"Sparse",
-    data:{"quant":1,"cat":0,"text":0}
+  bed: {
+    assembly1: "hg38",
+    assembly2: "N.A.",
+    interconnection: false,
+    granularity: "Segment",
+    availability: "Sparse",
+    data: { quant: 1, cat: 0, text: 0 },
   },
-  bedpe:{
-    assembly1:"hg38",
-    assembly2:"hg38",
-    interconnection:true,
-    granularity:"Segment",
-    availability:"Sparse",
-    data:{"quant":1,"cat":0,"text":0}
+  bedpe: {
+    assembly1: "hg38",
+    assembly2: "hg38",
+    interconnection: true,
+    granularity: "Segment",
+    availability: "Sparse",
+    data: { quant: 1, cat: 0, text: 0 },
   },
-bigwig:{
-  assembly1:"hg38",
-  assembly2:"N.A.",
-  interconnection:false,
-  granularity:"Point",
-  availability:"Continous",
-  data:{"quant":1,"cat":0,"text":0}
-},
-cooler:{
-  assembly1:"hg38",
-  assembly2:"hg19",
-  interconnection:true,
-  granularity:"Segment",
-  availability:"Continous",
-  data:{"quant":1,"cat":0,"text":0}
-},
-seg:{
-  assembly1:"hg38",
-  assembly2:"N.A.",
-  interconnection:false,
-  granularity:"Segment",
-  availability:"Sparse",
-  data:{"quant":1,"cat":0,"text":0}
-},
-  vcf:{
-    assembly1:"hg38",
-    assembly2:"hg19",
-    interconnection:false,
-    granularity:"Segment",
-    availability:"Sparse",
-    data:{"quant":1,"cat":0,"text":0}
-  }
-  }
+  bigwig: {
+    assembly1: "hg38",
+    assembly2: "N.A.",
+    interconnection: false,
+    granularity: "Point",
+    availability: "Continous",
+    data: { quant: 1, cat: 0, text: 0 },
+  },
+  cooler: {
+    assembly1: "hg38",
+    assembly2: "hg19",
+    interconnection: true,
+    granularity: "Segment",
+    availability: "Continous",
+    data: { quant: 1, cat: 0, text: 0 },
+  },
+  seg: {
+    assembly1: "hg38",
+    assembly2: "N.A.",
+    interconnection: false,
+    granularity: "Segment",
+    availability: "Sparse",
+    data: { quant: 1, cat: 0, text: 0 },
+  },
+  vcf: {
+    assembly1: "hg38",
+    assembly2: "hg19",
+    interconnection: false,
+    granularity: "Segment",
+    availability: "Sparse",
+    data: { quant: 1, cat: 0, text: 0 },
+  },
+};
 
+export const taskList = [
+  { task: "singleroi", taskLabel: "Single ROI", image: "singleroi.png" },
+  { task: "multipleroi", taskLabel: "Multiple ROI", image: "multipleroi.png" },
+  { task: "multipleattributes", taskLabel: "Multiple Attributes", image: "multipleattributes.png" },
+  { task: "multiplefeatures", taskLabel: "Multiple Features", image: "multiplefeatures.png" },
+  { task: "multiplesequences", taskLabel: "Multiple Sequences", image: "multiplesequences.png" },
+];
 
-
-export default { inputFileFormats: inputFileFormats, colorScheme:colorScheme, fileInputFieldsActive:fileInputFieldsActive, defaultInputForFiles:defaultInputForFiles };
+export default {
+  inputFileFormats: inputFileFormats,
+  colorScheme: colorScheme,
+  fileInputFieldsActive: fileInputFieldsActive,
+  defaultInputForFiles: defaultInputForFiles,
+  taskList: taskList
+};

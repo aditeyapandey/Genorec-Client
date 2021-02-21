@@ -5,6 +5,7 @@ import {
   colorScheme,
   fileInputFieldsActive,
   defaultInputForFiles,
+  taskList
 } from "../global/globalvar";
 import {
   createDropDownList,
@@ -24,15 +25,14 @@ class Inputpage extends React.Component {
       inputFileFormats,
       inputConfigurationData: {},
       showRecommendButton: false,
-      dataDescriptionBoxes: []
+      dataDescriptionBoxes: [],
+      taskList: taskList
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
     this.onChangeFileDataUpdate =  this.onChangeFileDataUpdate.bind(this)
     this.dataFileTypesAdded = [];
     this.inputConfigurationData={}
-
-    // this.dataDescriptionBoxes = [];
   }
 
   //Utility Functions
@@ -211,12 +211,55 @@ onChangeFileDataUpdate (fileid,componentid,value,addtionalInput)
     );
   }
 
+createTaskCards(val)
+{
+  return (
+    <>
+     <div className="w3-display-container w3-margin-top w3-third w3-center">
+                  <img id={val["task"]} className="taskimg" src={require("../assets/"+val["image"])}/>
+                  <h5> {val["taskLabel"]}</h5>
+                  </div>
+    </>
+  )
+}
+
+  createHTMLLayoutTasks(input)
+  {
+    let mainrows = []
+    let allCards = []
+
+    for(let index=0;index<input.length;index++){      
+      if(index%3===0 && index!=0)
+      {
+        mainrows.push(React.createElement(
+          'div',
+          {className: 'w3-row'},
+          allCards
+        ))
+        allCards=[]
+      }
+      allCards.push(this.createTaskCards(input[index]))
+    }
+    if(allCards.length!==0){
+      mainrows.push(React.createElement(
+        'div',
+        {className: 'w3-row'},
+        allCards
+      ))
+    }
+    return mainrows
+  }
+
   render() {
     const fileFormatDivs = [];
+
+    const taskCards = this.createHTMLLayoutTasks(this.state.taskList)
 
     for (let value of Object.keys(this.state.inputFileFormats)) {
       fileFormatDivs.push(this.createDivForFileInput(value));
     }
+    console.log(fileFormatDivs)
+    console.log(taskCards)
 
     return (
       <>
@@ -226,7 +269,7 @@ onChangeFileDataUpdate (fileid,componentid,value,addtionalInput)
               <div className="w3-half">
                 
                 <div className="w3-row">
-                <div className="w3-center w3-blue-grey w3-padding">
+                <div className="w3-center w3-border-right w3-light-grey w3-padding">
                   <h3> <i className="fa fa-table w3-margin-right"></i> Data Description</h3>
                 </div>
                 </div>
@@ -251,8 +294,35 @@ onChangeFileDataUpdate (fileid,componentid,value,addtionalInput)
                 <div className="w3-row">
                 <div className="w3-center w3-light-grey w3-padding">
                 <h3> <i className="fa fa-tasks w3-margin-right"></i> Task Description</h3>
-            </div>
+               </div>
+                </div>
 
+                <div className="w3-row">
+                  {taskCards}
+                {/* <div className="w3-row">
+                  <div className="w3-display-container w3-margin-top w3-third w3-center">
+                  <img className="taskimg" src={require("../assets/singleroi.png")}/>
+                  <h5> Task 1</h5>
+                  </div>
+                  <div className="w3-display-container w3-margin-top w3-third w3-center">
+                  <img className="taskimg" src={require("../assets/multipleroi.png")}/>
+                  <h5> Task 1</h5>
+                  </div>
+                  <div className="w3-display-container w3-margin-top w3-third w3-center">
+                  <img className="taskimg" src={require("../assets/multipleattributes.png")}/>
+                  <h5> Task 1</h5>
+                  </div>
+                  </div>
+                  <div className="w3-row">
+                  <div className="w3-display-container w3-margin-top w3-third w3-center">
+                  <img className="taskimg" src={require("../assets/multiplefeatures.png")}/>
+                  <h5> Task 1</h5>
+                  </div>
+                  <div className="w3-display-container w3-margin-top w3-third w3-center">
+                  <img className="taskimg" src={require("../assets/multiplesequences.png")}/>
+                  <h5> Task 1</h5>
+                  </div>
+                  </div> */}
                 </div>
 
               </div>
