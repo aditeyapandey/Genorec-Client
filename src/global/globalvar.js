@@ -67,57 +67,6 @@ export const fileInputFieldsActive = {
   },
 };
 
-// export const defaultInputForFiles = {
-// bed:{
-//   assembly1:"hg38",
-//   assembly2:"N.A.",
-//   interconnection:false,
-//   granularity:"Segment",
-//   availability:"Sparse",
-//   data:{"quant":1,"cat":0,"text":0}
-// },
-// bedpe:{
-//   assembly1:"hg38",
-//   assembly2:"hg38",
-//   interconnection:true,
-//   granularity:"Segment",
-//   availability:"Sparse",
-//   data:{"quant":1,"cat":0,"text":0}
-// },
-// bigwig:{
-//   assembly1:"hg38",
-//   assembly2:"N.A.",
-//   interconnection:false,
-//   granularity:"Point",
-//   availability:"Continous",
-//   data:{"quant":1,"cat":0,"text":0}
-// },
-// cooler:{
-//   assembly1:"hg38",
-//   assembly2:"hg19",
-//   interconnection:true,
-//   granularity:"Segment",
-//   availability:"Continous",
-//   data:{"quant":1,"cat":0,"text":0}
-// },
-// seg:{
-//   assembly1:"hg38",
-//   assembly2:"N.A.",
-//   interconnection:false,
-//   granularity:"Segment",
-//   availability:"Continous",
-//   data:{"quant":1,"cat":0,"text":0}
-// },
-// vcf:{
-//   assembly1:"hg38",
-//   assembly2:"hg19",
-//   interconnection:false,
-//   granularity:"Segment",
-//   availability:"Sparse",
-//   data:{"quant":1,"cat":0,"text":0}
-// }
-// }
-
 export const defaultInputForFiles = {
   bed: {
     assembly1: "hg38",
@@ -170,12 +119,14 @@ export const defaultInputForFiles = {
 };
 
 export const taskList = [
-  { task: "singleroi", taskLabel: "Single ROI", image: "singleroi.png" },
-  { task: "multipleroi", taskLabel: "Multiple ROI", image: "multipleroi.png" },
-  { task: "multipleattributes", taskLabel: "Multiple Attributes", image: "multipleattributes.png" },
-  { task: "multiplefeatures", taskLabel: "Multiple Features", image: "multiplefeatures.png" },
-  { task: "multiplesequences", taskLabel: "Multiple Sequences", image: "multiplesequences.png" },
-];
+  { task: "singleroi", taskLabel: "Identify Single ROI", image: "singleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute." },
+  { task: "multipleroi", taskLabel: "Compare Multiple ROI", image: "multipleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute." },
+  { task: "multipleattributes", taskLabel: "Compare Multiple Attributes", image: "multipleattributes.png",taskInfo:"You will need atleast 1 assembly build and 2 attributes." },
+  { task: "multiplefeatures", taskLabel: "Compare Multiple Features", image: "multiplefeatures.png", taskInfo: "You will need atleast 1 assembly build and 2 features." },
+  { task: "multiplesequences", taskLabel: "Compare Multiple Sequences", image: "multiplesequences.png", taskInfo: "You will need atleast 2 assembly builds." },
+  { task: "overview", taskLabel: "Summarize Sequences", image: "summarize.png", taskInfo: "Default task which supports exploration of data." },
+]
+;
 
 export default {
   inputFileFormats: inputFileFormats,
