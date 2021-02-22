@@ -380,9 +380,9 @@ class Inputpage extends React.Component {
                 <i className="fa fa-th-list w3-margin-right"></i> Recommendation </h3>
             </div>
           </div>
-          {/* <div className="w3-row w3-display-container w3-padding w3-margin">
+          <div className="w3-row w3-display-container w3-padding w3-margin">
           <Recommendation data={"Test"} />
-          </div> */}
+          </div>
         </div>
       </>
     );
