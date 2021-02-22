@@ -28,7 +28,7 @@ class Inputpage extends React.Component {
       inputFileFormats,
       inputConfigurationData: {},
       showRecommendButton: false,
-      dataDescriptionBoxes: [],
+      // dataDescriptionBoxes: [],
       taskList: taskList,
       orderedDataDescriptionBoxes: [[], [], [], [], []],
     };
@@ -38,6 +38,7 @@ class Inputpage extends React.Component {
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
     this.dataFileTypesAdded = [];
     this.inputConfigurationData = {};
+    this.dataDescriptionBoxes = []
   }
 
   //Utility Functions
@@ -87,7 +88,7 @@ class Inputpage extends React.Component {
           {},
           defaultInputForFiles[updatedFileType]
         );
-        this.state.dataDescriptionBoxes.push(
+        this.dataDescriptionBoxes.push(
           this.dataDescriptionBox(updatedFileType, fileid, index)
         );
 
@@ -103,11 +104,10 @@ class Inputpage extends React.Component {
         let fileid = "" + updatedFileType + index;
         delete currentDataConfigurationInput[fileid];
         this.dataFileTypesAdded.splice(removeIndex, 1);
-        this.state.dataDescriptionBoxes.splice(removeIndex, 1);
-
-        console.log( this.dataFileTypesAdded)
-        console.log( currentDataConfigurationInput)
-
+        
+        var elem = document.querySelector('#'+fileid);
+        elem.remove()
+        // this.dataDescriptionBoxes.splice(removeIndex, 1);
         this.reAlignTheIndexes();
       }
     }
@@ -126,9 +126,9 @@ class Inputpage extends React.Component {
       tempDescriptionBoxes.push([])
     });
 
-    for (let i = 0; i < this.state.dataDescriptionBoxes.length; i++) {
-      let testIndex = Math.floor(i / this.state.dataCardsinRow);
-      tempDescriptionBoxes[testIndex].push(this.state.dataDescriptionBoxes[i]);
+    for (let i = 0; i < this.dataDescriptionBoxes.length; i++) {
+      let rowIndex = Math.floor(i / this.state.dataCardsinRow);
+      tempDescriptionBoxes[rowIndex].push(this.dataDescriptionBoxes[i]);
     }
     this.setState({
       orderedDataDescriptionBoxes: tempDescriptionBoxes
@@ -344,7 +344,9 @@ class Inputpage extends React.Component {
                 </div>
 
                 <div class="w3-row">
-                  {/* {this.state.dataDescriptionBoxes} */}
+                  {/* {
+                  this.dataDescriptionBoxes
+                  } */}
                   {this.state.orderedDataDescriptionBoxes.map((val,index) =>{
                       return (
                         <div className="w3-row">
@@ -378,9 +380,9 @@ class Inputpage extends React.Component {
                 <i className="fa fa-th-list w3-margin-right"></i> Recommendation </h3>
             </div>
           </div>
-          <div className="w3-row w3-display-container w3-padding w3-margin">
+          {/* <div className="w3-row w3-display-container w3-padding w3-margin">
           <Recommendation data={"Test"} />
-          </div>
+          </div> */}
         </div>
       </>
     );
