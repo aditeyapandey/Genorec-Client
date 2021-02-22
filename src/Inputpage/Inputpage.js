@@ -268,9 +268,11 @@ class Inputpage extends React.Component {
   }
 
   createTaskCards(val) {
+
+    let classNameVar = val["disabled"] ? "w3-opacity-max" : "selected"
     return (
       <>
-        <div className="w3-display-container w3-margin-top w3-third w3-center">
+        <div className = {`w3-display-container w3-margin-top w3-third w3-center ${classNameVar}`}>
           <img
             id={val["task"]}
             className="taskimg"
@@ -289,7 +291,7 @@ class Inputpage extends React.Component {
     let allCards = [];
 
     for (let index = 0; index < input.length; index++) {
-      if (index % 3 === 0 && index != 0) {
+      if (index % 3 === 0 && index !== 0) {
         mainrows.push(
           React.createElement("div", { className: "w3-row" }, allCards)
         );
