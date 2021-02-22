@@ -1,4 +1,6 @@
 import React from "react";
+import Recommendation from "../Recommendation/recommendation"
+
 import "./Inputpage.css";
 import {
   inputFileFormats,
@@ -368,12 +370,14 @@ class Inputpage extends React.Component {
           </div>
         </div>
         <div className="w3-row">
-          <div className="w3-display-container w3-padding w3-margin ">
+          <div className="w3-row w3-display-container w3-padding w3-margin ">
             <div className="w3-center w3-sand w3-margin w3-padding">
               <h3>
-                <i className="fa fa-th-list w3-margin-right"></i> Recommendation
-              </h3>
+                <i className="fa fa-th-list w3-margin-right"></i> Recommendation </h3>
             </div>
+          </div>
+          <div className="w3-row w3-display-container w3-padding w3-margin">
+          <Recommendation data={"Test"} />
           </div>
         </div>
       </>
