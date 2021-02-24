@@ -31,3 +31,9 @@
   .disabledClick{
     pointer-events:none;
   }
+
+  .datadescription{
+    height: 100%;
+    max-height: 500px;
+    overflow: auto;
+  }

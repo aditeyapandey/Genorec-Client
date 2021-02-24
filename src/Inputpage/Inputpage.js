@@ -343,7 +343,7 @@ class Inputpage extends React.Component {
                   </div>
                 </div>
 
-                <div class="w3-row">
+                <div class="w3-row datadescription">
                   {/* {
                   this.dataDescriptionBoxes
                   } */}
