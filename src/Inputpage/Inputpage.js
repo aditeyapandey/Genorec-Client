@@ -1,5 +1,5 @@
 import React from "react";
-import Recommendation from "../Recommendation/recommendation"
+import Recommendation from "../Recommendation/recommendation";
 
 import "./Inputpage.css";
 import {
@@ -27,7 +27,7 @@ class Inputpage extends React.Component {
       dataCardsinRow: 4,
       inputFileFormats,
       inputConfigurationData: {},
-      showRecommendButton: false,
+      showTaskPanel: false,
       // dataDescriptionBoxes: [],
       taskList: taskList,
       orderedDataDescriptionBoxes: [[], [], [], [], []],
@@ -38,7 +38,7 @@ class Inputpage extends React.Component {
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
     this.dataFileTypesAdded = [];
     this.inputConfigurationData = {};
-    this.dataDescriptionBoxes = []
+    this.dataDescriptionBoxes = [];
   }
 
   //Utility Functions
@@ -77,10 +77,11 @@ class Inputpage extends React.Component {
         index <= updatedCount;
         index++
       ) {
-      
-        let lengthOfAddedDatasets = Object.keys(currentDataConfigurationInput).length;
-        let orderedDataIndex = Math.floor(lengthOfAddedDatasets / this.state.dataCardsinRow);
-       
+        let lengthOfAddedDatasets = Object.keys(currentDataConfigurationInput)
+          .length;
+        let orderedDataIndex = Math.floor(
+          lengthOfAddedDatasets / this.state.dataCardsinRow
+        );
 
         this.dataFileTypesAdded.push(updatedFileType);
         let fileid = "" + updatedFileType + index;
@@ -104,9 +105,9 @@ class Inputpage extends React.Component {
         let fileid = "" + updatedFileType + index;
         delete currentDataConfigurationInput[fileid];
         this.dataFileTypesAdded.splice(removeIndex, 1);
-        
-        var elem = document.querySelector('#'+fileid);
-        elem.remove()
+
+        var elem = document.querySelector("#" + fileid);
+        elem.remove();
         // this.dataDescriptionBoxes.splice(removeIndex, 1);
         this.reAlignTheIndexes();
       }
@@ -114,16 +115,19 @@ class Inputpage extends React.Component {
 
     inputFileFormats[event.target.name] = event.target.value;
 
+    let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
+
     this.setState({
       inputFileFormats: inputFileFormats,
       inputConfigurationData: currentDataConfigurationInput,
+      showTaskPanel: showTaskPanel
     });
   }
 
   reAlignTheIndexes() {
-    let tempDescriptionBoxes = []
-    this.state.orderedDataDescriptionBoxes.forEach(()=>{
-      tempDescriptionBoxes.push([])
+    let tempDescriptionBoxes = [];
+    this.state.orderedDataDescriptionBoxes.forEach(() => {
+      tempDescriptionBoxes.push([]);
     });
 
     for (let i = 0; i < this.dataDescriptionBoxes.length; i++) {
@@ -131,8 +135,8 @@ class Inputpage extends React.Component {
       tempDescriptionBoxes[rowIndex].push(this.dataDescriptionBoxes[i]);
     }
     this.setState({
-      orderedDataDescriptionBoxes: tempDescriptionBoxes
-    })
+      orderedDataDescriptionBoxes: tempDescriptionBoxes,
+    });
   }
 
   onChangeFileDataUpdate(fileid, componentid, value, addtionalInput) {
@@ -268,16 +272,17 @@ class Inputpage extends React.Component {
   }
 
   createTaskCards(val) {
-
-    let classNameVar = val["disabled"] ? "w3-opacity-max" : "selected"
+    let classNameVar = val["disabled"] ? "w3-opacity-max" : "selected";
     return (
       <>
-        <div className = {`w3-display-container w3-margin-top w3-third w3-center ${classNameVar}`}>
+        <div
+          className={`w3-display-container w3-margin-top w3-third w3-center ${classNameVar}`}
+        >
           <img
             id={val["task"]}
             className="taskimg"
             src={require("../assets/" + val["image"])}
-            alt = {val["task"]}
+            alt={val["task"]}
           />
           <h5> {val["taskLabel"]}</h5>
           <p> {val["taskInfo"]}</p>
@@ -347,43 +352,45 @@ class Inputpage extends React.Component {
                   {/* {
                   this.dataDescriptionBoxes
                   } */}
-                  {this.state.orderedDataDescriptionBoxes.map((val,index) =>{
-                      return (
-                        <div className="w3-row">
-                        {val}
-                      </div>
-                      )
+                  {this.state.orderedDataDescriptionBoxes.map((val, index) => {
+                    return <div className="w3-row">{val}</div>;
                   })}
                 </div>
 
-                <div className="w3-row w3-margin-top">
-                  <div className="w3-center w3-light-grey w3-padding">
-                    <h3>
-                      {" "}
-                      <i className="fa fa-tasks w3-margin-right"></i> Task
-                      Description{" "}
-                      <i className="fa fa-info-circle w3-margin-right"></i>
-                    </h3>
+                <div
+                  className="taskcards"
+                  style={{ display: this.state.showTaskPanel ? "" : "none" }}
+                >
+                  <div className="w3-row w3-margin-top">
+                    <div className="w3-center w3-light-grey w3-padding">
+                      <h3>
+                        {" "}
+                        <i className="fa fa-tasks w3-margin-right"></i> Task
+                        Description{" "}
+                        <i className="fa fa-info-circle w3-margin-right"></i>
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="w3-row">{taskCards}</div>
+                </div>
+          
+              </div>
+
+              <div className="w3-half">
+                <div className="w3-row">
+                  <div className="w3-row w3-display-container">
+                    <div className="w3-center w3-sand  w3-padding">
+                      <h3>
+                        <i className="fa fa-th-list w3-margin-right"></i>{" "}
+                        Recommendation{" "}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="w3-row w3-display-container w3-padding w3-margin">
+                    {/* <Recommendation data={"Test"} /> */}
                   </div>
                 </div>
-
-                <div className="w3-row">{taskCards}</div>
-
-
-              </div>
-              <div className="w3-half">
-              <div className="w3-row">
-          <div className="w3-row w3-display-container">
-            <div className="w3-center w3-sand  w3-padding">
-              <h3>
-                <i className="fa fa-th-list w3-margin-right"></i> Recommendation </h3>
-            </div>
-          </div>
-          <div className="w3-row w3-display-container w3-padding w3-margin">
-          <Recommendation data={"Test"} />
-          </div>
-        </div>
-
               </div>
             </div>
           </div>
