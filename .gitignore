@@ -6,6 +6,7 @@
 .pnp.js
 /src/encodingselection
 /src/assets/input copy.json
+/src/assets/datafiles
 
 # testing
 /coverage

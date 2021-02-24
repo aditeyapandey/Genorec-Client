@@ -3,8 +3,14 @@ import { GoslingComponent } from "gosling.js";
 
 
 class Recommendation extends React.Component {
+
+  constructor(props) {
+    super(props);
+    console.log(props)
+  }
     render() {
       return (
+        
         <GoslingComponent
           spec={{
             "tracks": [

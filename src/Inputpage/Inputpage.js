@@ -1,5 +1,6 @@
 import React from "react";
 import Recommendation from "../Recommendation/recommendation";
+import recommendationSpec from "../assets/datafiles/linechart.json"
 
 import "./Inputpage.css";
 import {
@@ -106,9 +107,18 @@ class Inputpage extends React.Component {
         delete currentDataConfigurationInput[fileid];
         this.dataFileTypesAdded.splice(removeIndex, 1);
 
+        // document.querySelector("#" + fileid).style.display = "none";
+
         var elem = document.querySelector("#" + fileid);
-        elem.remove();
+        try{        
+          elem.remove();
+        }
+        catch(error){
+          console.log(elem)
+          console.error(error)
+        }
         // this.dataDescriptionBoxes.splice(removeIndex, 1);
+
         this.reAlignTheIndexes();
       }
     }
@@ -199,7 +209,7 @@ class Inputpage extends React.Component {
       <>
         <div
           id={fileid}
-          className="w3-quarter w3-left w3-border-bottom w3-margin-bottom"
+          className="w3-left w3-border-bottom w3-margin-bottom datadescriptioncard"
         >
           {/* <div className={"w3-container w3-margin w3-center " + fileTypeColor}> */}
           <div className={"w3-container w3-margin w3-center w3-khaki"}>
@@ -267,6 +277,7 @@ class Inputpage extends React.Component {
             )}
           </div>
         </div>
+        <span></span>
       </>
     );
   }
@@ -324,7 +335,7 @@ class Inputpage extends React.Component {
       <>
         <div className="w3-row">
           <div className="w3-display-container w3-padding w3-margin">
-            <div className="w3-row w3-center w3-margin">
+            <div className="w3-row w3-center">
               <div className="w3-half">
                 <div className="w3-row">
                   <div className="w3-center w3-light-grey w3-padding">
@@ -349,12 +360,12 @@ class Inputpage extends React.Component {
                 </div>
 
                 <div class="w3-row datadescription">
-                  {/* {
+                  {
                   this.dataDescriptionBoxes
-                  } */}
-                  {this.state.orderedDataDescriptionBoxes.map((val, index) => {
+                  }
+                  {/* {this.state.orderedDataDescriptionBoxes.map((val, index) => {
                     return <div className="w3-row">{val}</div>;
-                  })}
+                  })} */}
                 </div>
 
                 <div
@@ -380,7 +391,7 @@ class Inputpage extends React.Component {
               <div className="w3-half">
                 <div className="w3-row">
                   <div className="w3-row w3-display-container">
-                    <div className="w3-center w3-sand  w3-padding">
+                    <div className="w3-center w3-sand w3-padding">
                       <h3>
                         <i className="fa fa-th-list w3-margin-right"></i>{" "}
                         Recommendation{" "}
@@ -388,7 +399,7 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div className="w3-row w3-display-container w3-padding w3-margin">
-                    {/* <Recommendation data={"Test"} /> */}
+                    <Recommendation data={recommendationSpec} />
                   </div>
                 </div>
               </div>
