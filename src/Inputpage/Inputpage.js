@@ -322,7 +322,7 @@ class Inputpage extends React.Component {
             <div className="w3-row w3-center w3-margin">
               <div className="w3-half">
                 <div className="w3-row">
-                  <div className="w3-center w3-border-right w3-light-grey w3-padding">
+                  <div className="w3-center w3-light-grey w3-padding">
                     <h3>
                       {" "}
                       <i className="fa fa-table w3-margin-right"></i> Data
@@ -355,9 +355,8 @@ class Inputpage extends React.Component {
                       )
                   })}
                 </div>
-              </div>
-              <div className="w3-half">
-                <div className="w3-row">
+
+                <div className="w3-row w3-margin-top">
                   <div className="w3-center w3-light-grey w3-padding">
                     <h3>
                       {" "}
@@ -369,11 +368,27 @@ class Inputpage extends React.Component {
                 </div>
 
                 <div className="w3-row">{taskCards}</div>
+
+
+              </div>
+              <div className="w3-half">
+              <div className="w3-row">
+          <div className="w3-row w3-display-container">
+            <div className="w3-center w3-sand  w3-padding">
+              <h3>
+                <i className="fa fa-th-list w3-margin-right"></i> Recommendation </h3>
+            </div>
+          </div>
+          <div className="w3-row w3-display-container w3-padding w3-margin">
+          <Recommendation data={"Test"} />
+          </div>
+        </div>
+
               </div>
             </div>
           </div>
         </div>
-        <div className="w3-row">
+        {/* <div className="w3-row">
           <div className="w3-row w3-display-container w3-padding w3-margin ">
             <div className="w3-center w3-sand w3-margin w3-padding">
               <h3>
@@ -383,7 +398,7 @@ class Inputpage extends React.Component {
           <div className="w3-row w3-display-container w3-padding w3-margin">
           <Recommendation data={"Test"} />
           </div>
-        </div>
+        </div> */}
       </>
     );
   }
