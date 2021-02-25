@@ -124,7 +124,7 @@ export const taskList = [
   { task: "multipleattributes", taskLabel: "Compare Multiple Attributes", image: "multipleattributes.png",taskInfo:"You will need atleast 1 assembly build and 2 attributes.",disabled:true },
   { task: "multiplefeatures", taskLabel: "Compare Multiple Features", image: "multiplefeatures.png", taskInfo: "You will need atleast 1 assembly build and 2 features.",disabled:true },
   { task: "multiplesequences", taskLabel: "Compare Multiple Sequences", image: "multiplesequences.png", taskInfo: "You will need atleast 2 assembly builds.",disabled:true },
-  { task: "overview", taskLabel: "Summarize Sequences", image: "summarize.png", taskInfo: "Default task which supports exploration of data.",disabled:false },
+  { task: "overview", taskLabel: "Explore Sequences", image: "summarize.png", taskInfo: "Default task which supports exploration of data.",disabled:false },
 ]
 ;
 

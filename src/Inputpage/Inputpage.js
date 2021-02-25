@@ -130,9 +130,7 @@ class Inputpage extends React.Component {
       showTaskPanel: showTaskPanel
     });
 
-    // createInputSpec(JSON.stringify(this.state.inputConfigurationData))
-    // console.log("TEST",this.state.inputConfigurationData)
-
+    createInputSpec(JSON.stringify(this.state.inputConfigurationData))
   }
 
   reAlignTheIndexes() {
@@ -163,7 +161,7 @@ class Inputpage extends React.Component {
     this.setState({
       inputConfigurationData: configurationData,
     });
-    // createInputSpec(JSON.stringify(this.state.inputConfigurationData))
+    createInputSpec(JSON.stringify(this.state.inputConfigurationData))
     console.log(this.state.inputConfigurationData)
 
   }
