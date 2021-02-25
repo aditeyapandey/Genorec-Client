@@ -1,6 +1,7 @@
 import React from "react";
 import Recommendation from "../Recommendation/recommendation";
 import recommendationSpec from "../assets/datafiles/linechart.json"
+import {createInputSpec} from "./inputspec"
 
 import "./Inputpage.css";
 import {
@@ -29,7 +30,6 @@ class Inputpage extends React.Component {
       inputFileFormats,
       inputConfigurationData: {},
       showTaskPanel: false,
-      // dataDescriptionBoxes: [],
       taskList: taskList,
       orderedDataDescriptionBoxes: [[], [], [], [], []],
     };
@@ -38,7 +38,6 @@ class Inputpage extends React.Component {
     this.onChangeFileDataUpdate = this.onChangeFileDataUpdate.bind(this);
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
     this.dataFileTypesAdded = [];
-    this.inputConfigurationData = {};
     this.dataDescriptionBoxes = [];
   }
 
@@ -86,10 +85,7 @@ class Inputpage extends React.Component {
 
         this.dataFileTypesAdded.push(updatedFileType);
         let fileid = "" + updatedFileType + index;
-        currentDataConfigurationInput[fileid] = Object.assign(
-          {},
-          defaultInputForFiles[updatedFileType]
-        );
+        currentDataConfigurationInput[fileid] = JSON.parse(JSON.stringify(defaultInputForFiles[updatedFileType])) 
         this.dataDescriptionBoxes.push(
           this.dataDescriptionBox(updatedFileType, fileid, index)
         );
@@ -127,11 +123,16 @@ class Inputpage extends React.Component {
 
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
 
+
     this.setState({
       inputFileFormats: inputFileFormats,
       inputConfigurationData: currentDataConfigurationInput,
       showTaskPanel: showTaskPanel
     });
+
+    // createInputSpec(JSON.stringify(this.state.inputConfigurationData))
+    // console.log("TEST",this.state.inputConfigurationData)
+
   }
 
   reAlignTheIndexes() {
@@ -157,10 +158,14 @@ class Inputpage extends React.Component {
     } else {
       configurationData[fileid][componentid] = value;
     }
+    console.log(configurationData)
+
     this.setState({
       inputConfigurationData: configurationData,
     });
-    console.log(this.state.inputConfigurationData);
+    // createInputSpec(JSON.stringify(this.state.inputConfigurationData))
+    console.log(this.state.inputConfigurationData)
+
   }
 
   createDivForFileInput(name) {
@@ -399,7 +404,7 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div className="w3-row w3-display-container w3-padding w3-margin">
-                    <Recommendation data={recommendationSpec} />
+                    {/* <Recommendation data={recommendationSpec} /> */}
                   </div>
                 </div>
               </div>
