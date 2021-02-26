@@ -110,7 +110,7 @@ export const defaultInputForFiles = {
   },
   vcf: {
     assembly1: "hg38",
-    assembly2: "hg19",
+    assembly2: "N.A.",
     interconnection: false,
     granularity: "Segment",
     availability: "Sparse",
