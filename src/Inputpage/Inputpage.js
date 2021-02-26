@@ -3,6 +3,7 @@ import Recommendation from "../Recommendation/recommendation";
 import recommendationSpec from "../assets/datafiles/linechart.json"
 import {createInputSpec} from "./inputspec"
 
+
 import "./Inputpage.css";
 import {
   inputFileFormats,
@@ -32,6 +33,7 @@ class Inputpage extends React.Component {
       showTaskPanel: false,
       taskList: taskList,
       orderedDataDescriptionBoxes: [[], [], [], [], []],
+      screenHeight: window.innerHeight
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
