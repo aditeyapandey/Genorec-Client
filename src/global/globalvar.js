@@ -94,7 +94,7 @@ export const defaultInputForFiles = {
   },
   cooler: {
     assembly1: "hg38",
-    assembly2: "hg19",
+    assembly2: "hg38",
     interconnection: true,
     granularity: "Segment",
     availability: "Continous",
