@@ -119,12 +119,12 @@ export const defaultInputForFiles = {
 };
 
 export const taskList = [
-  { task: "singleroi", taskLabel: "Identify Single ROI", image: "singleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute.", disabled:true },
-  { task: "multipleroi", taskLabel: "Compare Multiple ROI", image: "multipleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute.",disabled:true },
-  { task: "multipleattributes", taskLabel: "Compare Multiple Attributes", image: "multipleattributes.png",taskInfo:"You will need atleast 1 assembly build and 2 attributes.",disabled:true },
-  { task: "multiplefeatures", taskLabel: "Compare Multiple Features", image: "multiplefeatures.png", taskInfo: "You will need atleast 1 assembly build and 2 features.",disabled:true },
-  { task: "multiplesequences", taskLabel: "Compare Multiple Sequences", image: "multiplesequences.png", taskInfo: "You will need atleast 2 assembly builds.",disabled:true },
-  { task: "overview", taskLabel: "Explore Sequences", image: "summarize.png", taskInfo: "Default task which supports exploration of data.",disabled:false },
+  { task: "singleroi", taskLabel: "Identify Single ROI", image: "singleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute.", disabled:true, minAssembly:1, minFeature:1 ,minAttr:1 },
+  { task: "multipleroi", taskLabel: "Compare Multiple ROI", image: "multipleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute.",disabled:true, minAssembly:1,minFeature:1,minAttr:1 },
+  { task: "multipleattributes", taskLabel: "Compare Multiple Attributes", image: "multipleattributes.png",taskInfo:"You will need atleast 1 assembly build and 2 attributes.",disabled:true, minAssembly:1,minFeature:1,minAttr:2 },
+  { task: "multiplefeatures", taskLabel: "Compare Multiple Features", image: "multiplefeatures.png", taskInfo: "You will need atleast 1 assembly build and 2 features.",disabled:true,  minAssembly:1,minFeature:2,minAttr:1 },
+  { task: "multiplesequences", taskLabel: "Compare Multiple Sequences", image: "multiplesequences.png", taskInfo: "You will need atleast 2 assembly builds.",disabled:true, minAssembly:2, minFeature:1, minAttr:1 },
+  { task: "overview", taskLabel: "Explore Sequences", image: "summarize.png", taskInfo: "Default task which supports exploration of data.",disabled:false,minAssembly:1, minFeature:1, minAttr:1},
 ]
 ;
 

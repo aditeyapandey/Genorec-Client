@@ -130,7 +130,7 @@ class Inputpage extends React.Component {
       showTaskPanel: showTaskPanel
     });
 
-    createInputSpec(JSON.stringify(this.state.inputConfigurationData))
+    createInputSpec(JSON.stringify(this.state.inputConfigurationData), this.state.taskList)
   }
 
   reAlignTheIndexes() {
@@ -161,7 +161,7 @@ class Inputpage extends React.Component {
     this.setState({
       inputConfigurationData: configurationData,
     });
-    createInputSpec(JSON.stringify(this.state.inputConfigurationData))
+    createInputSpec(JSON.stringify(this.state.inputConfigurationData),this.state.taskList)
     console.log(this.state.inputConfigurationData)
 
   }
@@ -286,7 +286,7 @@ class Inputpage extends React.Component {
   }
 
   createTaskCards(val) {
-    let classNameVar = val["disabled"] ? "w3-opacity-max" : "selected";
+    let classNameVar = val["disabled"] ? "w3-opacity-max" : "";
     return (
       <>
         <div
