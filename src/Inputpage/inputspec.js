@@ -68,6 +68,7 @@ fileIds.forEach((fileId) => {
     }
 })
 
+//This is just a test
 console.log(assemblyBuilds)
 }
 
