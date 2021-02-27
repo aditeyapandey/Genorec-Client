@@ -75,6 +75,7 @@ export const defaultInputForFiles = {
     granularity: "Segment",
     availability: "Sparse",
     data: { quant: 1, cat: 0, text: 0 },
+    fileType:"bed"
   },
   bedpe: {
     assembly1: "hg38",
@@ -83,6 +84,7 @@ export const defaultInputForFiles = {
     granularity: "Segment",
     availability: "Sparse",
     data: { quant: 1, cat: 0, text: 0 },
+    fileType:"bedpe"
   },
   bigwig: {
     assembly1: "hg38",
@@ -91,6 +93,7 @@ export const defaultInputForFiles = {
     granularity: "Point",
     availability: "Continous",
     data: { quant: 1, cat: 0, text: 0 },
+    fileType:"bigwig"
   },
   cooler: {
     assembly1: "hg38",
@@ -99,6 +102,7 @@ export const defaultInputForFiles = {
     granularity: "Segment",
     availability: "Continous",
     data: { quant: 1, cat: 0, text: 0 },
+    fileType:"cooler"
   },
   seg: {
     assembly1: "hg38",
@@ -107,6 +111,7 @@ export const defaultInputForFiles = {
     granularity: "Segment",
     availability: "Sparse",
     data: { quant: 1, cat: 0, text: 0 },
+    fileType:"seg"
   },
   vcf: {
     assembly1: "hg38",
@@ -115,6 +120,7 @@ export const defaultInputForFiles = {
     granularity: "Segment",
     availability: "Sparse",
     data: { quant: 1, cat: 0, text: 0 },
+    fileType:"vcf"
   },
 };
 

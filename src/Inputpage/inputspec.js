@@ -4,12 +4,17 @@ export const createInputSpec = function (dataDescription, taskList) {
   //This code is currently for files with 1 assembly
   let fileIds = Object.keys(localDataDescription);
   let assemblyBuilds = {}; //===Sequences in our terminology
+  let interconnection = {denseInterConnection:false,sparseInterConnection:false}
+
 
   fileIds.forEach((fileId) => {
     let inputConfigData = Object.assign({}, localDataDescription[fileId]);
     let featureDescription = `${inputConfigData["granularity"]}_${inputConfigData["availability"]}`;
     let assemblyBuildCounts = inputConfigData["assembly2"] === "N.A." ? 1 : 2;
-
+    
+    if(inputConfigData["fileType"] === "cooler" || inputConfigData["fileType"] === "bedpe")
+    {interconnection = checkInterconnection(inputConfigData,featureDescription)}
+  
     for (
       let assemblyIndex = 1;
       assemblyIndex <= assemblyBuildCounts;
@@ -62,54 +67,49 @@ export const createInputSpec = function (dataDescription, taskList) {
     }
   });
 
-  console.log(assemblyBuilds);
-  console.log(specStructure(assemblyBuilds));
+  console.log(specStructure(assemblyBuilds,interconnection));
   activateTasks(taskList, assemblyBuilds);
 };
 
-function specStructure(assemblyBuilds) {
+function specStructure(assemblyBuilds,interconnection) {
 
   let sequences = []
   let intraSequenceTask = {"connectedNodes":[],"sequenceConservation":[],"edgeValues":[]}
-  let denseConnection = false
-  let sparseConnection = false
-  let sequenceInteractivity = {"fixedPan_fixedZoom":[], "fixedPan_varyingZoom":[], "varyingPan_fixedZoom":[],"varyingPan_varyingZoom":[]}
+  let denseConnection = interconnection.denseInterConnection
+  let sparseConnection = interconnection.sparseInterConnection
 
 
   Object.keys(assemblyBuilds).map((val, index) => {
     sequences.push(
-        getSequences(val, index, assemblyBuilds[val])
+        getSequences(val, index, assemblyBuilds[val],interconnection)
     );
   });
 
-return {sequences,intraSequenceTask,denseConnection,sparseConnection,sequenceInteractivity};
+return {sequences,intraSequenceTask,denseConnection,sparseConnection};
 }
 
-function getSequences(seqName, seqid, data) {
+function getSequences(seqName, seqid, data,featureConnection) {
   let sequenceId = "sequence_" + seqid;
   let sequenceName = seqName;
   let interFeatureTasks = { compare: [], correlate: [] };
-  console.log(Object.keys(data))
-  let features = Object.keys(data).map((featureName,index) => getFeatures(index,featureName,data[featureName]));
+  let features = Object.keys(data).map((featureName,index) => getFeatures(index,featureName,data[featureName],featureConnection));
   return { sequenceId, sequenceName, interFeatureTasks, features };
 }
 
-function getFeatures(fId,fName,data) {
+function getFeatures(fId,fName,data,featureConnection) {
   let featureId ="feature_"+fId;
   let featureGranularity = fName.split("_")[0].toLowerCase() ;
   let featureDensity = fName.split("_")[1].toLowerCase() ;
   let featureLabel = fName;
-  let featureInterconnection = false;
-  let denseInterconnection = false;
+  let featureInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnection:false;
+  let denseInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnectionDense:false ;
   let intraFeatureTasks = [];
-  let interactivity = false;
+  let interactivity = true;
   let attr = [] 
   let globalAttrIndex = 0
   Object.keys(data["attributes"]).map((attributeType) => {
     
     for(let i=0;i<data["attributes"][attributeType];i++){
-        console.log(globalAttrIndex)
-        console.log(attributeType)
         attr.push(getAttributes(globalAttrIndex,attributeType))
         globalAttrIndex++
     }
@@ -165,4 +165,38 @@ function activateTasks(taskList, assemblyBuilds) {
         task["disabled"] = true
     }
   });
+}
+
+function checkInterconnection (inputConfigData,featureDescription)
+{
+  let denseInterConnection = false
+  let sparseInterConnection = false
+  let featureInterconnection = false
+  let featureInterconnectionDense = false
+
+  if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
+    denseInterConnection = true
+  }
+  else if(inputConfigData["fileType"] === "cooler"){
+    featureInterconnection = true
+    featureInterconnectionDense =true
+  }
+  else{
+    featureInterconnection = false
+    featureInterconnectionDense = false
+  }
+  if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"] && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
+    sparseInterConnection = true
+  }
+  else if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"]){
+    featureInterconnection = true
+    featureInterconnectionDense =false
+  }
+  else{
+    featureInterconnection = false
+    featureInterconnectionDense = false
+  }
+  // let featureLevelInterconnection = {}
+  // featureLevelInterconnection[featureDescription] = {featureInterconnection,featureInterconnectionDense}
+  return {denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}}
 }
