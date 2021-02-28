@@ -196,7 +196,6 @@ function checkInterconnection (inputConfigData,featureDescription)
     featureInterconnection = false
     featureInterconnectionDense = false
   }
-  // let featureLevelInterconnection = {}
-  // featureLevelInterconnection[featureDescription] = {featureInterconnection,featureInterconnectionDense}
+  
   return {denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}}
 }
