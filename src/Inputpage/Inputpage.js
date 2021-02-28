@@ -7,7 +7,7 @@ import {createInputSpec} from "./inputspec"
 import "./Inputpage.css";
 import {
   inputFileFormats,
-  colorScheme,
+  // colorScheme,
   fileInputFieldsActive,
   defaultInputForFiles,
   taskList,
@@ -40,6 +40,7 @@ class Inputpage extends React.Component {
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
     this.onChangeFileDataUpdate = this.onChangeFileDataUpdate.bind(this);
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
+    this.toggleClass = this.toggleClass.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
   }
@@ -197,7 +198,7 @@ class Inputpage extends React.Component {
 
   dataDescriptionBox(fileType, fileid, id) {
     let fileTypeToCaps = fileType.toUpperCase();
-    let fileTypeColor = colorScheme[fileType];
+    // let fileTypeColor = colorScheme[fileType];
     let activeFields = fileInputFieldsActive[fileType];
     let assembly1 = false;
     let assembly2 = !activeFields["assembly2"];
@@ -291,12 +292,35 @@ class Inputpage extends React.Component {
     );
   }
 
+  toggleClass(event)
+  {
+    
+    let targetId = event.target.id
+    let taskLists = this.state.taskList
+
+    taskLists.map(val =>{
+      if(!val["disabled"]) {
+        let id = val["task"]
+        if(targetId === id){
+          val["selected"] = !val["selected"]
+        }
+      }
+    })
+
+    this.setState({
+      taskList:taskLists
+    })
+  }
+
   createTaskCards(val) {
     let classNameVar = val["disabled"] ? "w3-opacity-max" : "";
+    let selectedClass = val["selected"] ? "selected": ""
     return (
       <>
         <div
-          className={`w3-display-container w3-margin-top w3-third w3-center ${classNameVar}`}
+          className={`w3-display-container w3-margin-top w3-third w3-center ${classNameVar} ${selectedClass}`}
+          id={val["task"]}
+          onClick = {this.toggleClass}
         >
           <img
             id={val["task"]}
