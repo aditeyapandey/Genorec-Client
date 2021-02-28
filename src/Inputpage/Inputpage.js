@@ -33,7 +33,8 @@ class Inputpage extends React.Component {
       showTaskPanel: false,
       taskList: taskList,
       orderedDataDescriptionBoxes: [[], [], [], [], []],
-      screenHeight: window.innerHeight
+      screenHeight: window.innerHeight,
+      recommendationInputSpec:{}
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -124,15 +125,15 @@ class Inputpage extends React.Component {
     inputFileFormats[event.target.name] = event.target.value;
 
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
-
+    
+    let recommendationInputSpec = createInputSpec(JSON.stringify(currentDataConfigurationInput), this.state.taskList)
 
     this.setState({
       inputFileFormats: inputFileFormats,
       inputConfigurationData: currentDataConfigurationInput,
-      showTaskPanel: showTaskPanel
-    });
-
-    createInputSpec(JSON.stringify(this.state.inputConfigurationData), this.state.taskList)
+      showTaskPanel: showTaskPanel,
+      recommendationInputSpec
+    }, ()=> console.log(this.state));
   }
 
   reAlignTheIndexes() {
@@ -159,11 +160,14 @@ class Inputpage extends React.Component {
       configurationData[fileid][componentid] = value;
     }
     console.log(configurationData)
-
+    
+    let recommendationInputSpec =  createInputSpec(JSON.stringify(configurationData),this.state.taskList)
+  
     this.setState({
       inputConfigurationData: configurationData,
-    });
-    createInputSpec(JSON.stringify(this.state.inputConfigurationData),this.state.taskList)
+      recommendationInputSpec
+    }, ()=> console.log(this.state));
+    // let recommedationInputSpec =  createInputSpec(JSON.stringify(this.state.inputConfigurationData),this.state.taskList)
     console.log(this.state.inputConfigurationData)
 
   }
@@ -353,7 +357,7 @@ class Inputpage extends React.Component {
                   </div>
                 </div>
 
-                <div class="w3-row">
+                <div className="w3-row">
                   <div className="w3-display-container w3-margin">
                     <div className="w3-center w3-light-gray  w3-col">
                       <div className="w3-container  w3-light-blue">
@@ -364,7 +368,7 @@ class Inputpage extends React.Component {
                   </div>
                 </div>
 
-                <div class="w3-row datadescription">
+                <div className="w3-row datadescription">
                   {
                   this.dataDescriptionBoxes
                   }
@@ -411,17 +415,6 @@ class Inputpage extends React.Component {
             </div>
           </div>
         </div>
-        {/* <div className="w3-row">
-          <div className="w3-row w3-display-container w3-padding w3-margin ">
-            <div className="w3-center w3-sand w3-margin w3-padding">
-              <h3>
-                <i className="fa fa-th-list w3-margin-right"></i> Recommendation </h3>
-            </div>
-          </div>
-          <div className="w3-row w3-display-container w3-padding w3-margin">
-          <Recommendation data={"Test"} />
-          </div>
-        </div> */}
       </>
     );
   }

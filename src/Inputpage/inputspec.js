@@ -67,8 +67,9 @@ export const createInputSpec = function (dataDescription, taskList) {
     }
   });
 
-  console.log(specStructure(assemblyBuilds,interconnection));
+  let recommendationInputSpec = specStructure(assemblyBuilds,interconnection);
   activateTasks(taskList, assemblyBuilds);
+  return recommendationInputSpec
 };
 
 function specStructure(assemblyBuilds,interconnection) {
