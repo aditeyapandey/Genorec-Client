@@ -1,6 +1,5 @@
 import React from "react";
 import Recommendation from "../Recommendation/recommendation";
-import recommendationSpec from "../assets/datafiles/linechart.json"
 import {createInputSpec} from "./inputspec"
 import "./Inputpage.css";
 import {
@@ -134,6 +133,7 @@ class Inputpage extends React.Component {
     let recommendationInputSpec = createInputSpec(JSON.stringify(currentDataConfigurationInput), this.state.taskList)
 
     let recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
+    recommendationOutputSpec["tasks"] = ["overview"]
 
     this.setState({
       inputFileFormats: inputFileFormats,
@@ -166,11 +166,10 @@ class Inputpage extends React.Component {
       configurationData[fileid][componentid][addtionalInput] = parseInt(value);
     } else {
       configurationData[fileid][componentid] = value;
-    }
-    console.log(configurationData)
-    
+    }    
     let recommendationInputSpec =  createInputSpec(JSON.stringify(configurationData),this.state.taskList)
     let recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
+    recommendationOutputSpec["tasks"] = ["overview"]
 
     this.setState({
       inputConfigurationData: configurationData,
@@ -316,9 +315,16 @@ class Inputpage extends React.Component {
       }
     })
 
+    let selectedTaskFullSpec = taskLists.filter(val => val["selected"])
+    let activeTasks = selectedTaskFullSpec.map(val => val["task"])
+    console.log(activeTasks)
+    let recommendationOutputSpec = this.state.recommendationOutputSpec
+    recommendationOutputSpec["tasks"] = activeTasks
+
     this.setState({
-      taskList:taskLists
-    })
+      taskList:taskLists,
+      recommendationOutputSpec
+    }, ()=> console.log(this.state))
   }
 
   createTaskCards(val) {
@@ -441,7 +447,7 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div className="w3-row w3-display-container w3-padding w3-margin">
-                    {/* <Recommendation data={recommendationSpec} /> */}
+                    {/* <Recommendation data={this.state.recommendationOutputSpec} /> */}
                   </div>
                 </div>
               </div>
