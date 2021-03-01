@@ -129,18 +129,15 @@ class Inputpage extends React.Component {
     inputFileFormats[event.target.name] = event.target.value;
 
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
-    
-    let recommendationInputSpec = createInputSpec(JSON.stringify(currentDataConfigurationInput), this.state.taskList)
 
-    let recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
-    recommendationOutputSpec["tasks"] = ["overview"]
+    let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats))
 
     this.setState({
       inputFileFormats: inputFileFormats,
       inputConfigurationData: currentDataConfigurationInput,
       showTaskPanel: showTaskPanel,
-      recommendationInputSpec,
-      recommendationOutputSpec
+      recommendationInputSpec:recommendationOutput.recommendationInputSpec,
+      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
     }, ()=> console.log(this.state));
   }
 
@@ -167,18 +164,33 @@ class Inputpage extends React.Component {
     } else {
       configurationData[fileid][componentid] = value;
     }    
-    let recommendationInputSpec =  createInputSpec(JSON.stringify(configurationData),this.state.taskList)
-    let recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
-    recommendationOutputSpec["tasks"] = ["overview"]
+
+
+    let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats))
 
     this.setState({
       inputConfigurationData: configurationData,
-      recommendationInputSpec,
-      recommendationOutputSpec
+      recommendationInputSpec:recommendationOutput.recommendationInputSpec,
+      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
     }, ()=> console.log(this.state));
-    // let recommedationInputSpec =  createInputSpec(JSON.stringify(this.state.inputConfigurationData),this.state.taskList)
     console.log(this.state.inputConfigurationData)
+  }
 
+  getRecommendationOutput(input,task,fileCount)
+  {
+    let recommendationInputSpec = {}
+    let recommendationOutputSpec = {}
+        
+    //Total File Count
+    if(fileCount>0)
+    {
+      recommendationInputSpec = createInputSpec(JSON.stringify(input), task)
+
+      recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
+      recommendationOutputSpec["tasks"] = ["overview"]
+     }
+
+     return {recommendationInputSpec,recommendationOutputSpec}
   }
 
   createDivForFileInput(name) {
