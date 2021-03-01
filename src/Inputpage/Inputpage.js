@@ -2,8 +2,6 @@ import React from "react";
 import Recommendation from "../Recommendation/recommendation";
 import recommendationSpec from "../assets/datafiles/linechart.json"
 import {createInputSpec} from "./inputspec"
-
-
 import "./Inputpage.css";
 import {
   inputFileFormats,
@@ -20,9 +18,14 @@ import {
   createDataTypeInput,
 } from "./createdomcomponents";
 
+var genorecEngine = require("genorec-engine")
+
+
 class Inputpage extends React.Component {
   constructor(props) {
     super(props);
+    // let recommendation = genorecEngine.getRecommendation(recommendationSpec)
+    // console.log(recommendation)
     this.state = {
       minFiles: 0,
       maxFiles: 20,
@@ -34,7 +37,8 @@ class Inputpage extends React.Component {
       taskList: taskList,
       orderedDataDescriptionBoxes: [[], [], [], [], []],
       screenHeight: window.innerHeight,
-      recommendationInputSpec:{}
+      recommendationInputSpec:{},
+      recommendationOutputSpec:{}
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -129,11 +133,14 @@ class Inputpage extends React.Component {
     
     let recommendationInputSpec = createInputSpec(JSON.stringify(currentDataConfigurationInput), this.state.taskList)
 
+    let recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
+
     this.setState({
       inputFileFormats: inputFileFormats,
       inputConfigurationData: currentDataConfigurationInput,
       showTaskPanel: showTaskPanel,
-      recommendationInputSpec
+      recommendationInputSpec,
+      recommendationOutputSpec
     }, ()=> console.log(this.state));
   }
 
@@ -163,10 +170,12 @@ class Inputpage extends React.Component {
     console.log(configurationData)
     
     let recommendationInputSpec =  createInputSpec(JSON.stringify(configurationData),this.state.taskList)
-  
+    let recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
+
     this.setState({
       inputConfigurationData: configurationData,
-      recommendationInputSpec
+      recommendationInputSpec,
+      recommendationOutputSpec
     }, ()=> console.log(this.state));
     // let recommedationInputSpec =  createInputSpec(JSON.stringify(this.state.inputConfigurationData),this.state.taskList)
     console.log(this.state.inputConfigurationData)

@@ -3,7 +3,7 @@ import ReactJson from "react-json-view"
 import Recommendation from "../recommendation/container"
 import testInputData from "../assets/input.json"
 
-var genorecEngine = require("genorec-engine")
+// var genorecEngine = require("genorec-engine")
 
 class Dataspec extends React.Component{
 
@@ -21,8 +21,8 @@ class Dataspec extends React.Component{
         let input
         try{
             input = JSON.parse(content)
-            let recommendation = genorecEngine.getRecommendation(input)
-            this.setState({ data:input, buttonDisplay:"true", recommendation }); 
+            // let recommendation = genorecEngine.getRecommendation(input)
+            // this.setState({ data:input, buttonDisplay:"true", recommendation }); 
         }
         catch{
             this.setState({ data:input, buttonDisplay:"" }); 
