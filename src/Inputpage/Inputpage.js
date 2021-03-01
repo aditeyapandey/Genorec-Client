@@ -101,7 +101,8 @@ class Inputpage extends React.Component {
           this.dataDescriptionBox(updatedFileType, fileid, index)
         );
       }
-    } else {
+    } 
+    else {
       for (let index = currentCount; index > updatedCount; index--) {
         let removeIndex = Math.max(
           ...this.getAllIndexes(this.dataFileTypesAdded, updatedFileType)
@@ -166,7 +167,7 @@ class Inputpage extends React.Component {
     }    
 
 
-    let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats))
+  let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats))
 
     this.setState({
       inputConfigurationData: configurationData,
