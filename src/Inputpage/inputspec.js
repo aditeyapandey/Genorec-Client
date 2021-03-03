@@ -127,7 +127,9 @@ function getAttributes(id,type)
     let dataTypeMapping = {"quant":"quantitative","cat":"categorical","text":"text"}
     let attrId = "attribute_"+id;
     let dataType = dataTypeMapping[type];
-    let intraAttrTask = ["identify","compare"]
+    let intraAttrTask = []
+    if(dataType==="quantitative") intraAttrTask.push("identify","compare")
+    else intraAttrTask.push("identify")
 
     return {attrId,dataType,intraAttrTask}
 }
