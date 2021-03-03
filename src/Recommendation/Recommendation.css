@@ -1,0 +1,4 @@
+.gosling-recommendation-output {
+    /* This is important to properly show visualization if parents use center align */
+    text-align: left !important;
+}
