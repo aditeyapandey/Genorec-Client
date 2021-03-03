@@ -176,28 +176,35 @@ function checkInterconnection (inputConfigData,featureDescription)
   let featureInterconnection = false
   let featureInterconnectionDense = false
 
-  if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
-    denseInterConnection = true
+  // console.log(inputConfigData)
+
+  if(inputConfigData["fileType"] === "cooler")
+  {
+      if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
+        denseInterConnection = true
+      }
+      else
+      {
+        featureInterconnection = true
+        featureInterconnectionDense =true
+      }
   }
-  else if(inputConfigData["fileType"] === "cooler"){
-    featureInterconnection = true
-    featureInterconnectionDense =true
-  }
-  else{
-    featureInterconnection = false
-    featureInterconnectionDense = false
-  }
-  if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"] && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
-    sparseInterConnection = true
-  }
-  else if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"]){
-    featureInterconnection = true
-    featureInterconnectionDense =false
-  }
-  else{
-    featureInterconnection = false
-    featureInterconnectionDense = false
+
+  if(inputConfigData["fileType"] === "bedpe")
+  {
+      if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"] && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
+        sparseInterConnection = true
+      }
+      else if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"]){
+        featureInterconnection = true
+        featureInterconnectionDense =false
+      }
+      else{
+        featureInterconnection = false
+        featureInterconnectionDense = false
+      }
   }
   
+  // console.log({denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}})
   return {denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}}
 }
