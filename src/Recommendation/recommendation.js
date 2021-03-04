@@ -1,36 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { GoslingComponent } from "gosling.js";
 import { convert } from "./convert";
+import { v1 } from 'uuid';
 import "./Recommendation.css";
 
-function Recommendation(props)  {
-  const { data: output, width } = props;
-
-  // console.log('props', props);
-  
-  const [goslingSpecs, setGoslingSpecs] = useState(convert(JSON.parse(JSON.stringify(output)), width));
-
-  // Just received a new GenoRect output
-  useEffect(() => {
-    setGoslingSpecs(convert(JSON.parse(JSON.stringify(output)), width));
-  }, [output]);
-
-  console.log("goslingSpecs", goslingSpecs);
-  // tasks
-  // recommendationOutputSpec.tasks
-
-  // console.log(JSON.stringify(props.recommendationOutputSpec));
-  
+const Recommendation = (props) => {
+  const { 
+    data: output, 
+    width 
+  } = props;
 
   return (
     <div className="gosling-recommendation-output">
-      {goslingSpecs.map(spec => 
-        <GoslingComponent
-          key={JSON.stringify(spec)}
-          spec={spec}
-          compiled={(spec, vConf) => { /* Callback function when compiled */ }}
-        />
-      )}
+      {
+        convert(JSON.parse(JSON.stringify(output)), width).map(spec => {
+          return <GoslingComponent key={v1()} spec={spec}/>
+        })
+      }
     </div>
   );
 }
