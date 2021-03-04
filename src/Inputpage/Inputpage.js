@@ -384,6 +384,14 @@ class Inputpage extends React.Component {
     return mainrows;
   }
 
+  toggleModalOpen()
+  {
+    document.getElementById('dataDescriptionModal').style.display="block"
+  }
+  toggleModalClose()
+  {
+    document.getElementById('dataDescriptionModal').style.display="none"
+  }
   render() {
     const fileFormatDivs = [];
 
@@ -467,6 +475,16 @@ class Inputpage extends React.Component {
             </div>
           </div>
         </div>
+        {/* <div id="dataDescriptionModal" className="w3-modal">
+            <div className="w3-modal-content w3-card-4 w3-animate-top">
+            <header className="w3-container w3-theme-l1"> 
+              <span onClick={this.toggleModalClose}
+              className="w3-button w3-display-topright">×</span>
+              <h4>Oh snap! We just showed you a modal..</h4>
+            </header>
+          </div>                  
+        </div> */}
+
       </>
     );
   }

@@ -215,7 +215,7 @@ export const createDataTypeInput = (dataTypeInput,fileid,componentid,onChangeAss
   let handleChangeEvent = function(event) {
     onChangeAssemblyBuild(fileid,componentid,event.target.value,event.target.name)
   }
-  let quantVals=[1,2,3,4,5]
+  let quantVals=[1,0,2,3,4,5]
   let textorcatVals=[0,1,2,3,4,5]
 
   return (
