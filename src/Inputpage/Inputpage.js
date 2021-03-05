@@ -412,7 +412,7 @@ class Inputpage extends React.Component {
                       {" "}
                       <i className="fa fa-table w3-margin-right"></i> Data
                       Description{" "}
-                      <i className="fa fa-info-circle w3-margin-right"></i>
+                      {/* <i className="fa fa-info-circle w3-margin-right"></i> */}
                     </h3>
                   </div>
                 </div>
@@ -447,7 +447,7 @@ class Inputpage extends React.Component {
                         {" "}
                         <i className="fa fa-tasks w3-margin-right"></i> Task
                         Description{" "}
-                        <i className="fa fa-info-circle w3-margin-right"></i>
+                        {/* <i className="fa fa-info-circle w3-margin-right"></i> */}
                       </h3>
                     </div>
                   </div>
@@ -468,7 +468,7 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div className="w3-row w3-center w3-display-container w3-padding w3-margin">
-                    {/* <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={900}/> */}
+                    <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/>
                   </div>
                 </div>
               </div>
