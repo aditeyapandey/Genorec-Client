@@ -25,7 +25,7 @@ export const getMultivecData = (i, granularity, availability) => {
             column: 'position',
             value: 'peak',
             categories: (Array.from(Array(i + 1).keys()).map(d => '' + d)),
-            binSize: granularity === 'segment' ? 8 : 1
+            binSize: granularity === 'segment' ? 8 : 2
         },
         dataTransform: { filter: 
             (
@@ -54,9 +54,7 @@ export function encodingToGoslingTrack(
     granularity = 'point'
 ) {
     const base = {
-        // title,
-        // style: { outline: 'black', outlineWidth: 0.5 },
-        style: { outlineWidth: 1},
+        style: { outlineWidth: 1}, // outline: 'black', outlineWidth: 0.5
         width,
         height
     };
@@ -72,6 +70,7 @@ export function encodingToGoslingTrack(
                 y: { field: 'peak', type: 'quantitative' },
                 color: { value: getSampleColor(i) }
             }
+        case 'barchart':
         case 'intervalBarchart':
             return {
                 ...base,
@@ -84,6 +83,7 @@ export function encodingToGoslingTrack(
                 stroke: { value: 'white' },
                 strokeWidth: { value: 0.5 },
             }
+        case 'heatmap':
         case 'intervalHeatmap':
             return {
                 ...base,
@@ -93,6 +93,8 @@ export function encodingToGoslingTrack(
                 xe: { field: 'end', type: 'genomic' },
                 color: { field: 'peak', type: 'quantitative', range: 'warm'},
             }
+        case 'heatmap.barchart':
+        case 'barchart.heatmap':
         case 'intervalHeatmap.intervalBarchart':
         case 'intervalBarchart.intervalHeatmap':
             return {
@@ -106,18 +108,7 @@ export function encodingToGoslingTrack(
                 stroke: { value: 'white' },
                 strokeWidth: { value: 0.5 },
             }
-        case 'intervalBarchart.intervalBarchartCN':
-            return {
-                ...base,
-                ...getMultivecData(i, granularity, availability),
-                mark: 'bar',
-                x: { field: 'start', type: 'genomic' },
-                xe: { field: 'end', type: 'genomic' },
-                y: { field: 'peak', type: 'quantitative' },
-                color: { field: 'start', type: 'nominal' },
-                stroke: { value: 'white' },
-                strokeWidth: { value: 0.5 },
-            }
+        case 'barchartCN':
         case 'intervalBarchartCN':
             return {
                 ...base,
@@ -129,19 +120,39 @@ export function encodingToGoslingTrack(
                 stroke: { value: 'white' },
                 strokeWidth: { value: 0.5 },
             }
+        case 'intervalBarchart.intervalBarchartCN':
+        case 'intervalBarchartCN.intervalBarchart':
+        case 'barchartCN.barchart':
+        case 'barchart.barchartCN':
+            return {
+                ...base,
+                ...getMultivecData(i, granularity, availability),
+                mark: 'bar',
+                x: { field: 'position', type: 'genomic' },
+                y: { field: 'peak', type: 'quantitative' },
+                opacity: { value: 0.8 },
+                stroke: { value: 'white' },
+                strokeWidth: { value: 0.3 },
+                color: { field: 'start', type: 'nominal' },
+            }
+        case 'heatmap.dotplot':
+        case 'dotplot.heatmap':
+            return {
+                ...base,
+                ...getMultivecData(i, granularity, availability),
+                mark: 'point',
+                x: { field: 'position', type: 'genomic' },
+                y: { field: 'peak', type: 'quantitative' },
+                size: { value: 4 },
+                opacity: { value: 0.8 },
+                stroke: { value: 'white' },
+                strokeWidth: { value: 0.3 },
+                color: { field: 'peak', type: 'quantitative' },
+            }
         case 'dotplot':
             return {
                 ...base,
-                data: {
-                    url: EXAMPLE_DATASETS.multivec,
-                    type: 'multivec',
-                    row: 'sample',
-                    column: 'position',
-                    value: 'peak',
-                    categories: (Array.from(Array(i + 1).keys()).map(d => '' + d)),
-                    binSize: 8
-                },
-                dataTransform: { filter: [ { field: 'sample', oneOf: [i + ''], not: false } ] },
+                ...getMultivecData(i, granularity, availability),
                 mark: 'point',
                 x: { field: 'position', type: 'genomic' },
                 y: { field: 'peak', type: 'quantitative' },
@@ -151,19 +162,7 @@ export function encodingToGoslingTrack(
                 strokeWidth: { value: 0.3 },
                 color: { value: getSampleColor(i) }
             }
-        case 'barchartCN.barchart':
-        case 'barchart.barchartCN':
-            return {
-                ...base,
-                ...getMultivecData(i, granularity, availability),
-                mark: 'point',
-                x: { field: 'position', type: 'genomic' },
-                size: { value: 4 },
-                opacity: { value: 0.8 },
-                stroke: { value: 'white' },
-                strokeWidth: { value: 0.3 },
-                color: { field: 'start', type: 'nominal' },
-            }
+        case 'dotplot.barchartCN':
         case 'barchartCN.dotplot':
             return {
                 ...base,
@@ -176,37 +175,7 @@ export function encodingToGoslingTrack(
                 strokeWidth: { value: 0.3 },
                 color: { field: 'start', type: 'nominal' },
             }
-        case 'linearLink':
-            return {
-                ...base,
-                data: {
-                  url: "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/circos-segdup-edited.txt",
-                  type: "csv",
-                  chromosomeField: "c2",
-                  genomicFields: ["s1", "e1", "s2", "e2"]
-                },
-                overlay: [
-                  {
-                    mark: "link",
-                    x: {
-                      field: "s1",
-                      type: "genomic",
-                    //   domain,
-                    //   axis,
-                    //   linkingID
-                    },
-                    xe: { field: "e2", type: "genomic"},
-                    // xe: { field: "e1", type: "genomic"},
-                    // x1: { field: "s2", type: "genomic"},
-                    // x1e: {field: "e2", type: "genomic"}
-                  }
-                ],
-                color: { value: "none"},
-                stroke: { value: "black"},
-                opacity: { value: 0.5},
-                style: { circularLink: false}
-            }
-        case 'circularLink':
+        case 'link':
             return {
                 ...base,
                 data: {
@@ -215,257 +184,15 @@ export function encodingToGoslingTrack(
                     chromosomeField: "c2",
                     genomicFields: ["s1", "e1", "s2", "e2"]
                   },
-                  overlay: [
-                    {
-                      mark: "link",
-                      x: {
-                        field: "s1",
-                        type: "genomic",
-                        // domain,
-                        // axis,
-                        // linkingID
-                      },
-                      xe: { field: "e1", type: "genomic"},
-                      x1: { field: "s2", type: "genomic"},
-                      x1e: {field: "e2", type: "genomic"}
-                    }
-                  ],
+                     mark: "link",
+                    x: { field: "s1", type: "genomic" },
+                    xe: { field: "e1", type: "genomic" },
+                    x1: { field: "s2", type: "genomic" },
+                    x1e: { field: "e2", type: "genomic" },
                   color: { value: "none"},
                   stroke: { value: "gray"},
                   opacity: { value: 0.3}
               }
-        // case 'intervalBarchart.intervalBarchartCN':
-        //     return {
-        //         ...base,
-        //         "data": {
-        //             "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=clinvar-beddb",
-        //             "type": "beddb",
-        //             "genomicFields": [
-        //               {"index": 1, "name": "start"},
-        //               {"index": 2, "name": "end"}
-        //             ],
-        //             "valueFields": [
-        //               {"index": 7, "name": "significance", "type": "nominal"}
-        //             ]
-        //           },
-        //             "mark": "bar",
-        //             "y": {
-        //                 "field": "significance",
-        //                 "type": "nominal",
-        //                 "domain": [
-        //                     "Pathogenic",
-        //                     "Pathogenic/Likely_pathogenic",
-        //                     "Likely_pathogenic",
-        //                     "Uncertain_significance",
-        //                     "Likely_benign",
-        //                     "Benign/Likely_benign",
-        //                     "Benign"
-        //                 ],
-        //                 // // "baseline": "Uncertain_significance",
-        //                 // "range": [150, 20]
-        //             },
-        //             "stroke": {"value": "black"},
-        //             "strokeWidth": {"value": 0.3},
-                
-        //           "color": {
-        //             "field": "significance",
-        //             "type": "nominal",
-        //             "domain": [
-        //               "Pathogenic",
-        //               "Pathogenic/Likely_pathogenic",
-        //               "Likely_pathogenic",
-        //               "Uncertain_significance",
-        //               "Likely_benign",
-        //               "Benign/Likely_benign",
-        //               "Benign"
-        //             ],
-        //             // "range": [
-        //             //   "#CB3B8C",
-        //             //   "#CB71A3",
-        //             //   "#CB96B3",
-        //             //   "gray",
-        //             //   "#029F73",
-        //             //   "#5A9F8C",
-        //             //   "#5A9F8C"
-        //             // ]
-        //           },
-        //           "x": {"field": "start", "type": "genomic"},
-        //           "xe": {"field": "end", "type": "genomic"},
-        //           "size": {"value": 4},
-        //         // //   "opacity": {"value": 0.8},
-        //         //   "width": 600,
-        //         //   "height": 150
-        //         }
-        //     // return {
-        //     //     ...base,
-        //     //     data: {
-        //     //         url: EXAMPLE_DATASETS.multivec,
-        //     //         type: 'multivec',
-        //     //         row: 'sample',
-        //     //         column: 'position',
-        //     //         value: 'peak',
-        //     //         categories: (Array.from(Array(i + 1).keys()).map(d => '' + d)),
-        //     //         binSize: 8
-        //     //     },
-        //     //     dataTransform: { filter: [ { field: 'sample', oneOf: [i + ''], not: false } ] },
-        //     //     mark: 'bar',
-        //     //     x: {
-        //     //         field: 'start',
-        //     //         type: 'genomic',
-        //     //         domain,
-        //     //         // axis,
-        //     //         linkingID
-        //     //     },
-        //     //     xe: { field: 'end', type: 'genomic' },
-        //     //     y: { field: 'peak', type: 'quantitative' },
-        //     //     stroke: { value: 'white' },
-        //     //     strokeWidth: { value: 0.3 },
-        //     //     // the only difference between 'barchart'
-        //     //     color: { field: 'peak', type: 'nominal' }
-        //     // }
-        case 'heatmap':
-            return {
-                ...base,
-                data: {
-                    url: EXAMPLE_DATASETS.multivec,
-                    type: 'multivec',
-                    row: 'sample',
-                    column: 'position',
-                    value: 'peak',
-                    categories: (Array.from(Array(i + 1).keys()).map(d => '' + d)),
-                    binSize: 8
-                },
-                dataTransform: { filter: [ { field: 'sample', oneOf: [i + ''], not: false } ] },
-                mark: 'rect',
-                x: {
-                    field: 'start',
-                    type: 'genomic',
-                    // domain,
-                    // axis,
-                    // linkingID
-                },
-                xe: { field: 'end', type: 'genomic' },
-                color: { field: 'peak', type: 'quantitative', range: 'spectral' }
-            }
-        
-        case 'barchart':
-            return {
-                ...base,
-                data: {
-                    url: EXAMPLE_DATASETS.multivec,
-                    type: 'multivec',
-                    row: 'sample',
-                    column: 'position',
-                    value: 'peak',
-                    categories: (Array.from(Array(i + 1).keys()).map(d => '' + d)),
-                    binSize: 8
-                },
-                dataTransform: { filter: [ { field: 'sample', oneOf: [i + ''], not: false } ] },
-                mark: 'bar',
-                x: {
-                    field: 'start',
-                    type: 'genomic',
-                    // domain,
-                    // axis,
-                    // linkingID
-                },
-                xe: { field: 'end', type: 'genomic' },
-                y: { field: 'peak', type: 'quantitative' },
-                stroke: { value: 'white' },
-                strokeWidth: { value: 0.3 },
-                color: { value: getSampleColor(i) }
-            }
-        // case 'intervalBarchartCN':
-        //     return {
-        //         ...base,
-        //         "data": {
-        //           "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
-        //           "type": "beddb",
-        //           "genomicFields": [
-        //             {"index": 1, "name": "start"},
-        //             {"index": 2, "name": "end"}
-        //           ],
-        //           "valueFields": [
-        //             {"index": 5, "name": "strand", "type": "nominal"},
-        //             {"index": 3, "name": "name", "type": "nominal"}
-        //           ],
-        //           "exonIntervalFields": [
-        //             {"index": 12, "name": "start"},
-        //             {"index": 13, "name": "end"}
-        //           ]
-        //         },
-        //            "dataTransform": {
-        //               "filter": [
-        //                 {"field": "type", "oneOf": ["gene"]},
-        //                 // {"field": "strand", "oneOf": ["+"]}
-        //               ]
-        //             },
-        //             "overlay": [
-        //             {
-        //                 "mark": "rect", 
-        //                 "xe": {"field": "end", "type": "genomic"}
-        //             },
-        //             {
-        //                 "mark": "rect",
-        //                 stroke: { value: "#7585FF"},
-        //                 strokeWidth: { value: 3},
-        //             }
-        //             ],
-        //             "x": {"field": "start", "type": "genomic"},
-        //             // "size": {"value": 30},
-        //             "xe": {"field": "end", "type": "genomic"},
-        //         "color": {
-        //             field: 'strand', type: 'nominal', domain: ['+', '-']
-        //         //   "value": "#7585FF"
-        //         },
-        //         "opacity": {"value": 0.8}
-        //       }
-        case 'barchartCN':
-            return {
-                ...base,
-                data: {
-                  url: "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv",
-                  type: "csv",
-                  chromosomeField: "Chromosome",
-                  genomicFields: ["chromStart", "chromEnd"]
-                },
-                mark: "rect",
-                color: {
-                  field: "Stain",
-                  type: "nominal",
-                  domain: [
-                    "gneg",
-                    "gpos25",
-                    "gpos50",
-                    "gpos75",
-                    "gpos100",
-                    "gvar",
-                    "acen"
-                  ],
-                  range: [
-                    "white",
-                    "#D9D9D9",
-                    "#979797",
-                    "#636363",
-                    "black",
-                    "#F0F0F0",
-                    "#8D8D8D"
-                  ]
-                },
-                x: {
-                    field: "chromStart", 
-                    type: "genomic",
-                    // domain,
-                    // axis,
-                    // linkingID
-                },
-                xe: {field: "chromEnd", type: "genomic"},
-                stroke: {value: "lightgray"},
-                strokeWidth: {value: 0.5},
-                // outerRadius: 264,
-                // innerRadius: 244,
-                // superposeOnPreviousTrack: true
-            }
         case 'annotation':
             return {
                 ...base,
@@ -494,10 +221,8 @@ export function encodingToGoslingTrack(
                     "mark": "text",
                     text: {field: 'name', 'type': 'nominal'},
                     "x": {"field": "start", "type": "genomic"},
-                    // "size": {"value": 30},
                     "xe": {"field": "end", "type": "genomic"},
                 "color": {
-                    // field: 'name', type: 'nominal'
                   "value": "gray"
                 },
                 "opacity": {"value": 0.8}
@@ -506,6 +231,8 @@ export function encodingToGoslingTrack(
             console.error('Unexpected encoding:', encoding);
             return {
                 ...base,
+                title: encoding,
+                height: width,
                 data: {
                     url: EXAMPLE_DATASETS.multivec,
                     type: 'multivec',
@@ -516,7 +243,7 @@ export function encodingToGoslingTrack(
                     binSize: 18
                 },
                 mark: 'bar',
-                style: { background: 'lightgray' }
+                style: { background: 'lightgray', outline: 0.5 }
             }
     }
 }

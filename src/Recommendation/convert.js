@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import { encodingToGoslingTrack } from './encoding';
+import { getIdeogram } from './ideogram';
 
 // !!! Use the name of internal variables same as the actual object key, if possible.
 // Generate a key to directly access to certain props.
@@ -37,16 +38,17 @@ export function convert(...props){
 
     const hasSingleRoi = tasks && tasks.includes('singleroi');
     const compareMultipleRoi = tasks && tasks.includes('multipleroi');
+    const compareMultipleAttr = tasks && (tasks.includes('multipleattributes') || tasks.includes('multiplefeatures'));
     
     let xDomain = undefined, xDomain2 = undefined;
     if(hasSingleRoi || compareMultipleRoi) {
         // This means we have at least one local ROI to show.
-        xDomain = { chromosome: '8', interval: [127736068, 127741434]};
+        xDomain = { chromosome: '8' }; //, interval: [127636068, 127741434]};
     }
 
     if(compareMultipleRoi) {
         // This means we will compare multiple, here two, regions.
-        xDomain2 = { chromosome: '12', interval: [6445000, 6485000]};
+        xDomain2 = { chromosome: '12'}; //, interval: [6445000, 6585000]};
     }
     
     // For the convenience, remove tasks and have only `recommendation_*`
@@ -57,6 +59,7 @@ export function convert(...props){
     //
 
     const goslings = [];
+    let globalLayout = 'linear'; // if anything is circular, then circular.
 
     /**
      * This is the list of recommendations
@@ -66,7 +69,9 @@ export function convert(...props){
         const recommendationObj = genoRec[recommendation_n];
         const { arrangement } = recommendationObj;
 
+        let notSupportedArrangement = false;
         if(arrangement !== 'linearStacked' && arrangement !== 'circularStacked' ) {
+            notSupportedArrangement = true;
             console.error('Unexpected arrangement', arrangement);
         }
 
@@ -77,10 +82,6 @@ export function convert(...props){
             ...getGosViewTemplate(),
             xDomain
         };
-
-        const TRACK_HEIGHT_WITH_AXIS = 80;
-        const TRACK_HEIGHT_WITHOUT_AXIS = 50;
-        const TRACK_HEIGHT_CIRCULAR = 401;
 
         /* Collection of Sequence_ */
         const sequencesKey = GET_SEQUENCES_KEY(recommendation_n);
@@ -97,7 +98,7 @@ export function convert(...props){
             /**
              * Group of tracks, i.e., view
              */
-            const tracks = [];
+            let tracks = [];
             let viewLayout = null;
 
             /* Collection of TrackGroup_ */
@@ -112,6 +113,9 @@ export function convert(...props){
                     granularity  // ['point', 'segment']
                 } = trackGroup;
 
+                if(layout === 'circular') {
+                    globalLayout = 'circular';
+                }
 
                 // If circular, we use half width to prevent making the circular layout too large.
                 // If comparing across multiple ROIs, use half width.
@@ -138,25 +142,6 @@ export function convert(...props){
                         if(groupingTechnique === 'combined' && Attribute_i !== 0) {
                             // We only add a single track when multiple attributes are encoded together, so let's get out of this scrope.
                             return;
-                        }
-
-                        if(interconnection && layout === 'linear' && Track_i === 0) {
-                            // Let's add a link on the top
-                            tracks.push({
-                                ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
-                                    'linearLink', 
-                                    width,
-                                    numOfTracks++,
-                                    false,
-                                    // show title only on the first track
-                                    undefined,
-                                    Sequence_n,
-                                    availability,
-                                    granularity
-                                ))),
-                                layout: 'linear'
-                            });
-                            // gosling.arrangement.rowSizes.push(TRACK_HEIGHT_WITHOUT_AXIS);
                         }
 
                         const attribute = attributesObj[Attribute_n];
@@ -200,51 +185,17 @@ export function convert(...props){
                         // Title of track
                         const title = `${trackGroup_n}.${Track_n}.${Attribute_n}`;
 
-                        // Height of circular ring
-                        const ringSize = (isAxisShown ? TRACK_HEIGHT_WITH_AXIS : TRACK_HEIGHT_WITHOUT_AXIS) / 2.0;
-
-                        // Add a single Gosling track
-                        tracks.push({
-                            ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
-                                encoding, 
-                                width,
-                                numOfTracks++,
-                                isAxisShown,
-                                // show title only on the first track
-                                title,
-                                Sequence_n,
-                                availability,
-                                granularity
-                            ))),
-                            overlayOnPreviousTrack
-                        });
-
-                        // Update titles when multiple tracks are superposed
-                        if(overlayOnPreviousTrack && tracks.length - 2 >= 0) {
-                            // When superposed, we need to have only one title, so concat them in the last track.
-                            // tracks[tracks.length - 1].title = (
-                            //     tracks[tracks.length - 2].title + ' + ' + tracks[tracks.length - 1].title
-                            // );
-                            // tracks[tracks.length - 2].title = undefined;
-                        }
-
-                        // gosling.arrangement.rowSizes.push(layout === 'circular' ? TRACK_HEIGHT_CIRCULAR : isAxisShown ? TRACK_HEIGHT_WITH_AXIS : TRACK_HEIGHT_WITHOUT_AXIS);
-
-                        // if(layout === 'circular') {
-                        //     outerRadius -= (ringSize + 4 /* small gap */);
-                        // }
-
-                        if(interconnection && layout === 'circular' && Track_i === Object.keys(tracksObj).length - 1) {
-                            console.error('ever here?');
-                            // Let's add a link on the center
+                        // Matrix view is not supported at all.
+                        if(!notSupportedArrangement) {
+                            // Add a single Gosling track
                             tracks.push({
                                 ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
-                                    'circularLink', 
+                                    encoding, 
                                     width,
                                     numOfTracks++,
-                                    false,
+                                    isAxisShown,
                                     // show title only on the first track
-                                    undefined,
+                                    title,
                                     Sequence_n,
                                     availability,
                                     granularity
@@ -253,29 +204,91 @@ export function convert(...props){
                             });
                         }
                     });
+
+                    // At the end, add a connection track if needed.
+                    const isLastTrack = Track_i === Object.keys(tracksObj).length - 1;
+                    if(isLastTrack && interconnection) {
+                        tracks.push({
+                            ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
+                                'link', 
+                                width,
+                                numOfTracks++,
+                                false,
+                                // show title only on the first track
+                                undefined,
+                                Sequence_n,
+                                availability,
+                                granularity
+                            )))
+                        });
+                    }
                 });
             });
             // console.log(GOS_VIEW, tracks);
+
             GOS_VIEW.views.push({
                 layout: viewLayout,
                 spacing: 1,
                 tracks
             });
         });
+
         // console.log('gosling', GOS_VIEW);
 
-        // Finish creating a view by adding an adjacent view for comparison
-        if(compareMultipleRoi) {
-            GOS_VIEW = {
-                ...getGosViewTemplate(),
-                arrangement: 'horizontal',
-                views: [
-                    {...JSON.parse(JSON.stringify(GOS_VIEW)), xDomain},
-                    {...JSON.parse(JSON.stringify(GOS_VIEW)), xDomain: xDomain2}
-                ]
+        GOS_VIEW.views.forEach(v => {
+            if(v.tracks.find(d => d.mark === 'link')) {
+                // Put links at the end
+                v.tracks = [
+                    ...v.tracks.filter(d => d.mark !== 'link'), 
+                    v.tracks.find(d => d.mark === 'link')
+                ] 
             }
-        } else {
-            GOS_VIEW = {...GOS_VIEW }
+        });
+
+        // Finish creating a view by adding an adjacent view for comparison
+        if(notSupportedArrangement) {
+            // If this is a not support track, show a message
+            GOS_VIEW.views = [{
+                tracks: [{
+                    ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
+                        arrangement === 'circularAdjacent' ? 
+                        'Line connection between two views' :
+                        'Matrix view' , 
+                        baseWidth / 2.0,
+                    )))
+                }]
+            }];
+        }
+        else {
+            // if(compareMultipleAttr) {
+            //     if(globalLayout === 'circular') {
+            //         GOS_VIEW = {
+            //             ...GOS_VIEW,
+            //             arrangement: 'vertical',
+
+            //         }    
+            //     }
+            // }
+
+            if(compareMultipleRoi) {
+                GOS_VIEW = {
+                    ...getGosViewTemplate(),
+                    arrangement: 'vertical',
+                    views: [
+                        {...JSON.parse(JSON.stringify(getIdeogram('A', 'B', baseWidth + 30)))},
+                        {
+                            arrangement: 'horizontal',
+                            spacing: 30,
+                            views: [
+                                {...JSON.parse(JSON.stringify(GOS_VIEW)), xDomain, xLinkingId: 'A'},
+                                {...JSON.parse(JSON.stringify(GOS_VIEW)), xDomain: xDomain2, xLinkingId: 'B'}
+                            ]
+                        }
+                    ]
+                }
+            } else {
+                GOS_VIEW = {...GOS_VIEW }
+            }
         }
 
         goslings.push(GOS_VIEW);
