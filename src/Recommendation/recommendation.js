@@ -13,8 +13,8 @@ const Recommendation = (props) => {
   return (
     <div className="gosling-recommendation-output">
       {
-        convert(JSON.parse(JSON.stringify(output)), width).map(spec => {
-          return <GoslingComponent key={v1()} spec={spec}/>
+        convert(JSON.parse(JSON.stringify(output)), width).map((spec, i) => {
+          return i < 10 ? <GoslingComponent key={v1()} spec={spec}/> : null
         })
       }
     </div>
