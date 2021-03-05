@@ -31,7 +31,8 @@ const getVisLabel = (spec) =>
   })
   let uniqueAttr = [...new Set(attributes)];
   var visName = uniqueAttr.length === 1 ? uniqueAttr[0] :  uniqueAttr.slice(0, uniqueAttr.length - 1).join(', ') + " and " + uniqueAttr.slice(-1);
-  return `Visual Encodings Used: ${visName}`
+  
+  return `This visualization below consists of ${visName}.`
 }
 
 
