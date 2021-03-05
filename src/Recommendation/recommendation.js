@@ -45,16 +45,16 @@ const Recommendation = (props) => {
   return (
     <div className="gosling-recommendation-output">
       {
-        convert(JSON.parse(JSON.stringify(output)), width).map((spec,index) => {
-          return (<>
-                <div className="w3-center  w3-light-grey w3-padding">
-                      <h5>
-                        {" "}
-                         {getVisLabel(output["recommendation_"+index])}
-                         {" "}
-                      </h5>
-                </div>
-          <GoslingComponent key={v1()} spec={spec}/></>)
+        convert(JSON.parse(JSON.stringify(output)), width).map((spec, index) => {
+          return index < 5 ? (<>
+            <div className="w3-center  w3-light-grey w3-padding">
+              <h5>
+                {" "}
+                  {getVisLabel(output["recommendation_" + index])}
+                {" "}
+              </h5>
+            </div>
+          <GoslingComponent key={v1()} spec={spec}/></>) : null
         })
       }
     </div>
