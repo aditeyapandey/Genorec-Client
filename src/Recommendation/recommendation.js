@@ -7,28 +7,42 @@ import "./Recommendation.css";
 
 const getVisLabel = (spec) =>
 {
-  console.log(spec)
   var sequences = Object.keys(spec["visDetails"])
-  console.log(sequences)
   var attributes = []
-  var trackGroup = sequences.map(val => Object.keys(spec["visDetails"][val]["visDetails"]))
-  
-  var tracks = sequences.map(seq => {
-    return trackGroup.map(tG => 
-      {
-        return tG.map(tGVal =>  
-          { 
-          var tracks = Object.keys(spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"])
-              tracks.map(track => {
-                let attributesObjKeys = Object.keys(spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"][track]["visDetails"])
-                attributesObjKeys.map( attribute=>{
-                  let attributeVal = spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"][track]["visDetails"][attribute]
-                  attributes.push(attributeVal["encoding"])
+  sequences.map(seq => 
+    {
+      var trackGroup = Object.keys(spec["visDetails"][seq]["visDetails"])
+      console.log(trackGroup)
+      return trackGroup.map(tG => 
+        {
+                var tracks = Object.keys(spec["visDetails"][seq]["visDetails"][tG]["visDetails"])
+                tracks.map(track => {
+                  let attributesObjKeys = Object.keys(spec["visDetails"][seq]["visDetails"][tG]["visDetails"][track]["visDetails"])
+                  attributesObjKeys.map( attribute=>{
+                    let attributeVal = spec["visDetails"][seq]["visDetails"][tG]["visDetails"][track]["visDetails"][attribute]
+                    attributes.push(attributeVal["encoding"])
+                  })
                 })
-              })
-          })
-      })
+            
+    })
   })
+  
+  // var tracks = sequences.map(seq => {
+  //   return trackGroup.map(tG => 
+  //     {
+  //       return tG.map(tGVal =>  
+  //         { 
+  //             var tracks = Object.keys(spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"])
+  //             tracks.map(track => {
+  //               let attributesObjKeys = Object.keys(spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"][track]["visDetails"])
+  //               attributesObjKeys.map( attribute=>{
+  //                 let attributeVal = spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"][track]["visDetails"][attribute]
+  //                 attributes.push(attributeVal["encoding"])
+  //               })
+  //             })
+  //         })
+  //     })
+  // })
   let uniqueAttr = [...new Set(attributes)];
   var visName = uniqueAttr.length === 1 ? uniqueAttr[0] :  uniqueAttr.slice(0, uniqueAttr.length - 1).join(', ') + " and " + uniqueAttr.slice(-1);
   
