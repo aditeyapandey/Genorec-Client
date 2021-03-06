@@ -26,23 +26,6 @@ const getVisLabel = (spec) =>
             
     })
   })
-  
-  // var tracks = sequences.map(seq => {
-  //   return trackGroup.map(tG => 
-  //     {
-  //       return tG.map(tGVal =>  
-  //         { 
-  //             var tracks = Object.keys(spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"])
-  //             tracks.map(track => {
-  //               let attributesObjKeys = Object.keys(spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"][track]["visDetails"])
-  //               attributesObjKeys.map( attribute=>{
-  //                 let attributeVal = spec["visDetails"][seq]["visDetails"][tGVal]["visDetails"][track]["visDetails"][attribute]
-  //                 attributes.push(attributeVal["encoding"])
-  //               })
-  //             })
-  //         })
-  //     })
-  // })
   let uniqueAttr = [...new Set(attributes)];
   var visName = uniqueAttr.length === 1 ? uniqueAttr[0] :  uniqueAttr.slice(0, uniqueAttr.length - 1).join(', ') + " and " + uniqueAttr.slice(-1);
   

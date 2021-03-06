@@ -43,7 +43,8 @@ class Inputpage extends React.Component {
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
     this.onChangeFileDataUpdate = this.onChangeFileDataUpdate.bind(this);
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
-    this.toggleClass = this.toggleClass.bind(this);
+    this.toggleTaskCardSelection = this.toggleTaskCardSelection.bind(this);
+    this.getRecommendationOutput = this.getRecommendationOutput.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
   }
@@ -131,6 +132,8 @@ class Inputpage extends React.Component {
 
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
 
+    console.log("TASKLIST ON FILE CHANGE",this.state.taskList)
+
     let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats))
 
     this.setState({
@@ -181,14 +184,16 @@ class Inputpage extends React.Component {
   {
     let recommendationInputSpec = {}
     let recommendationOutputSpec = {}
+    let currentRecommendationOutput = this.state.recommendationOutputSpec
+    console.log(currentRecommendationOutput)
         
     //Total File Count
     if(fileCount>0)
     {
       recommendationInputSpec = createInputSpec(JSON.stringify(input), task)
-
       recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
-      recommendationOutputSpec["tasks"] = ["overview"]
+      if(currentRecommendationOutput["tasks"] === undefined) recommendationOutputSpec["tasks"] = ["overview"]
+      else recommendationOutputSpec["tasks"] = currentRecommendationOutput["tasks"].length === 0 ? ["overview"] : currentRecommendationOutput["tasks"]
      }
 
      return {recommendationInputSpec,recommendationOutputSpec}
@@ -250,7 +255,7 @@ class Inputpage extends React.Component {
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div class="w3-col s12 w3-center">
+            <div className="w3-col s12 w3-center">
               {createDropDownList(
                 assembly1,
                 fileid,
@@ -262,7 +267,7 @@ class Inputpage extends React.Component {
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div class="w3-col s12  w3-center">
+            <div className="w3-col s12  w3-center">
               {createDropDownList(
                 assembly2,
                 fileid,
@@ -313,7 +318,7 @@ class Inputpage extends React.Component {
     );
   }
 
-  toggleClass(event)
+  toggleTaskCardSelection(event)
   {
     
     let targetId = event.target.id
@@ -332,7 +337,8 @@ class Inputpage extends React.Component {
     let activeTasks = selectedTaskFullSpec.map(val => val["task"])
     console.log(activeTasks)
     let recommendationOutputSpec = this.state.recommendationOutputSpec
-    recommendationOutputSpec["tasks"] = activeTasks
+    if(activeTasks.length>0) recommendationOutputSpec["tasks"] = activeTasks
+    else recommendationOutputSpec["tasks"] = ["overview"]
 
     this.setState({
       taskList:taskLists,
@@ -348,7 +354,7 @@ class Inputpage extends React.Component {
         <div
           className={`w3-display-container w3-margin-top w3-third w3-center ${classNameVar} ${selectedClass}`}
           id={val["task"]}
-          onClick = {this.toggleClass}
+          onClick = {this.toggleTaskCardSelection}
         >
           <img
             id={val["task"]}
@@ -384,14 +390,6 @@ class Inputpage extends React.Component {
     return mainrows;
   }
 
-  toggleModalOpen()
-  {
-    document.getElementById('dataDescriptionModal').style.display="block"
-  }
-  toggleModalClose()
-  {
-    document.getElementById('dataDescriptionModal').style.display="none"
-  }
   render() {
     const fileFormatDivs = [];
 
@@ -468,7 +466,7 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div className="w3-row w3-center w3-display-container w3-padding w3-margin">
-                    <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/>
+                    {/* <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/> */}
                   </div>
                 </div>
               </div>
