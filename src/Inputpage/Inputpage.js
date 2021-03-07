@@ -46,7 +46,6 @@ class Inputpage extends React.Component {
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
     this.toggleTaskCardSelection = this.toggleTaskCardSelection.bind(this);
     this.getRecommendationOutput = this.getRecommendationOutput.bind(this);
-    this.onValueChange = this.onValueChange.bind(this)
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
   }
@@ -288,15 +287,6 @@ class Inputpage extends React.Component {
               this.onChangeFileDataUpdate
             )}
           </div>
-          {/* Interconnection Radio Input */}
-          <div className={"w3-margin w3-row " + interconnection}>
-            {createNetworkInput(
-              defaultValues["interconnection"],
-              fileid,
-              "interconnection",
-              this.onChangeFileDataUpdate
-            )}
-          </div>
           {/* Feature Input */}
           <div className={"w3-margin w3-row " + granularity}>
             {createGranularityInput(
@@ -311,6 +301,15 @@ class Inputpage extends React.Component {
               defaultValues["availability"],
               fileid,
               "availability",
+              this.onChangeFileDataUpdate
+            )}
+          </div>
+          {/* Interconnection Radio Input */}
+          <div className={"w3-margin w3-row " + interconnection}>
+            {createNetworkInput(
+              defaultValues["interconnection"],
+              fileid,
+              "interconnection",
               this.onChangeFileDataUpdate
             )}
           </div>
@@ -363,12 +362,6 @@ class Inputpage extends React.Component {
     }, ()=> console.log(this.state))
   }
 
-  onValueChange(event) {
-    this.setState({
-      selectedTaskOption: event.target.value
-    });
-  }
-
   createTaskCards(val) {
     let classNameVar = val["disabled"] ? "w3-opacity-max" : "";
     let selectedClass = val["selected"] ? "selected": ""
@@ -408,28 +401,6 @@ class Inputpage extends React.Component {
       </>
     );
   }
-
-  //This is the layout for grid based representation of the task cards
-  // createHTMLLayoutTasks(input) {
-  //   let mainrows = [];
-  //   let allCards = [];
-
-  //   for (let index = 0; index < input.length; index++) {
-  //     if (index % 3 === 0 && index !== 0) {
-  //       mainrows.push(
-  //         React.createElement("div", { className: "w3-row" }, allCards)
-  //       );
-  //       allCards = [];
-  //     }
-  //     allCards.push(this.createTaskCards(input[index]));
-  //   }
-  //   if (allCards.length !== 0) {
-  //     mainrows.push(
-  //       React.createElement("div", { className: "w3-row" }, allCards)
-  //     );
-  //   }
-  //   return mainrows;
-  // }
 
   createHTMLLayoutTasks(input)
   {
@@ -524,16 +495,6 @@ class Inputpage extends React.Component {
             </div>
           </div>
         </div>
-        {/* <div id="dataDescriptionModal" className="w3-modal">
-            <div className="w3-modal-content w3-card-4 w3-animate-top">
-            <header className="w3-container w3-theme-l1"> 
-              <span onClick={this.toggleModalClose}
-              className="w3-button w3-display-topright">×</span>
-              <h4>Oh snap! We just showed you a modal..</h4>
-            </header>
-          </div>                  
-        </div> */}
-
       </>
     );
   }
