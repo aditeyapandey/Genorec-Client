@@ -54,6 +54,7 @@ export function encodingToGoslingTrack(
     granularity = 'point'
 ) {
     const base = {
+        title,
         style: { outlineWidth: 1}, // outline: 'black', outlineWidth: 0.5
         width,
         height
@@ -205,7 +206,14 @@ export function encodingToGoslingTrack(
                   ],
                   "valueFields": [
                     {"index": 5, "name": "strand", "type": "nominal"},
-                    {"index": 3, "name": "name", "type": "nominal"}
+                    {"index": 3, "name": "name", "type": "nominal"},
+                    {"index": 4, "name": "4", "type": "nominal"},
+                    {"index": 6, "name": "6", "type": "nominal"},
+                    {"index": 7, "name": "7", "type": "nominal"},
+                    {"index": 8, "name": "8", "type": "nominal"},
+                    {"index": 9, "name": "9", "type": "nominal"},
+                    {"index": 10, "name": "10", "type": "nominal"},
+                    {"index": 11, "name": "11", "type": "nominal"},
                   ],
                   "exonIntervalFields": [
                     {"index": 12, "name": "start"},
@@ -219,13 +227,41 @@ export function encodingToGoslingTrack(
                       ]
                     },
                     "mark": "text",
-                    text: {field: 'name', 'type': 'nominal'},
+                    text: {field: ['name', 'strand', '4', '6', '7', '8', '9', '10', '11'][i % 4], 'type': 'nominal'},
                     "x": {"field": "start", "type": "genomic"},
                     "xe": {"field": "end", "type": "genomic"},
                 "color": {
                   "value": "gray"
                 },
                 "opacity": {"value": 0.8}
+              }
+        case 'matrix':
+            return {
+                ...base,
+                title: 'matrix',
+                style: { outline: "black", outlineWidth: 2 },
+                static: true,
+                "data": {
+                  "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=cistrome-multivec",
+                  "type": "multivec",
+                  "row": "sample",
+                  "column": "position",
+                  "value": "peak",
+                  "categories": [
+                    "1", "2", "3", "4", "5",
+                    "11", "12", "13", "14", "15",
+                    "21", "22", "23", "24", "25",
+                    "31", "32", "33", "34", "35",
+                    "41", "42", "43", "44", "45"
+                  ],
+                  "binSize": 16
+                },
+                "mark": "rect",
+                "x": {"field": "start", "type": "genomic", "axis": "none"},
+                "xe": {"field": "end", "type": "genomic"},
+                "row": {"field": "sample", "type": "nominal"},
+                "color": {"field": "peak", "type": "quantitative", range: 'warm'},
+                height: width
               }
         default:
             console.error('Unexpected encoding:', encoding);

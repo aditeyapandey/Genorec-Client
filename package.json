@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "babel-preset-react-app": "9.1.2",
     "generate-react-cli": "5.2.3",
-    "gosling.js": "^0.7.0",
+    "gosling.js": "0.7.1",
     "pixi.js": "^5.3.8",
     "react": "16.13.1",
     "react-dom": "16.14.0",
