@@ -516,7 +516,7 @@ class Inputpage extends React.Component {
                       </h3>
                     </div>
                   </div>
-                  <div className="w3-row w3-center w3-display-container w3-margin">
+                  <div className="w3-row w3-center w3-display-container w3-padding w3-margin">
                     <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/>
                   </div>
                 </div>
