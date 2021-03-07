@@ -70,8 +70,12 @@ export function convert(...props){
         const { arrangement } = recommendationObj;
 
         let notSupportedArrangement = false;
+        let isCircularAdjacent = false;
+        let isLinearOrthogoal = false;
         if(arrangement !== 'linearStacked' && arrangement !== 'circularStacked' ) {
             notSupportedArrangement = true;
+            isCircularAdjacent = (arrangement === 'circularAdjacent');
+            isLinearOrthogoal = arrangement === 'linearOrthogonal';
             console.error('Unexpected arrangement', arrangement);
         }
 
@@ -93,7 +97,7 @@ export function convert(...props){
         let numOfTracks = 0;
         Object.keys(sequencesObj).forEach(Sequence_n => {
             const sequenceObj = sequencesObj[Sequence_n];
-            const { trackAlignment } = sequenceObj;
+            const { trackAlignment, sequenceName } = sequenceObj;
             
             /**
              * Group of tracks, i.e., view
@@ -119,7 +123,10 @@ export function convert(...props){
 
                 // If circular, we use half width to prevent making the circular layout too large.
                 // If comparing across multiple ROIs, use half width.
-                const width = (compareMultipleRoi || layout === 'circular') ? baseWidth / 2.0 : baseWidth;
+                let width = (compareMultipleRoi || layout === 'circular') ? baseWidth / 2.0 : baseWidth;
+                if(arrangement === 'circularAdjacent') {
+                    width /= 2.0;
+                }
 
                 if(!viewLayout) {
                     viewLayout = layout;
@@ -186,7 +193,7 @@ export function convert(...props){
                         const title = `${trackGroup_n}.${Track_n}.${Attribute_n}`;
 
                         // Matrix view is not supported at all.
-                        if(!notSupportedArrangement) {
+                        if(!notSupportedArrangement || true) {
                             // Add a single Gosling track
                             tracks.push({
                                 ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
@@ -195,7 +202,7 @@ export function convert(...props){
                                     numOfTracks++,
                                     isAxisShown,
                                     // show title only on the first track
-                                    title,
+                                    sequenceName,
                                     Sequence_n,
                                     availability,
                                     granularity
@@ -233,8 +240,24 @@ export function convert(...props){
             });
         });
 
+        if(arrangement === 'linearOrthogonal') {
+            GOS_VIEW.views.push({
+                layout: 'linear',
+                spacing: 1,
+                tracks: [{
+                    ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
+                        'matrix', 
+                        baseWidth / 2.0,
+                        0,
+                        false
+                    )))
+                }]
+            });
+        }
+
         // console.log('gosling', GOS_VIEW);
 
+        // Put a link at the end
         GOS_VIEW.views.forEach(v => {
             if(v.tracks.find(d => d.mark === 'link')) {
                 // Put links at the end
@@ -246,29 +269,54 @@ export function convert(...props){
         });
 
         // Finish creating a view by adding an adjacent view for comparison
-        if(notSupportedArrangement) {
+        if(notSupportedArrangement && false) {
             // If this is a not support track, show a message
-            GOS_VIEW.views = [{
-                tracks: [{
-                    ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
-                        arrangement === 'circularAdjacent' ? 
-                        'Line connection between two views' :
-                        'Matrix view' , 
-                        baseWidth / 2.0,
-                    )))
-                }]
-            }];
+            // GOS_VIEW.views = [{
+            //     tracks: [{
+            //         ...JSON.parse(JSON.stringify(encodingToGoslingTrack(
+            //             arrangement === 'circularAdjacent' ? 
+            //             'Line connection between two views' :
+            //             'Matrix view' , 
+            //             baseWidth / 2.0,
+            //         )))
+            //     }]
+            // }];
         }
         else {
-            // if(compareMultipleAttr) {
-            //     if(globalLayout === 'circular') {
-            //         GOS_VIEW = {
-            //             ...GOS_VIEW,
-            //             arrangement: 'vertical',
+            if(!compareMultipleAttr && !compareMultipleRoi) {
+                GOS_VIEW = {
+                    ...getGosViewTemplate(),
+                    ...JSON.parse(JSON.stringify(GOS_VIEW)),
+                    arrangement: 'vertical',
+                    spacing: 90,
+                    views: GOS_VIEW.views.map(view => {
+                        return {
+                            ...view,
+                            arrangement: 'parallel',
+                            spacing: 1,
+                            tracks: undefined,
+                            views: view.tracks.map((track, i) => {
+                                return {
+                                    spacing: 1,
+                                    tracks: [{
+                                        ...track,
+                                        // x: { ...track.x, axis: (i === 0 || globalLayout === 'circular') ? 'top' : 'none'}
+                                    }]
+                                }
+                            })
+                        }
+                    })
+                }
+            }
 
-            //         }    
-            //     }
-            // }
+            if(arrangement === 'circularAdjacent') {
+                GOS_VIEW = {
+                    ...GOS_VIEW,
+                    spacing: 1,
+                    arrangement: 'serial',
+
+                }
+            }
 
             if(compareMultipleRoi) {
                 GOS_VIEW = {
@@ -286,8 +334,6 @@ export function convert(...props){
                         }
                     ]
                 }
-            } else {
-                GOS_VIEW = {...GOS_VIEW }
             }
         }
 
