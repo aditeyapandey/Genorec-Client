@@ -34,6 +34,7 @@ class Inputpage extends React.Component {
       inputConfigurationData: {},
       showTaskPanel: false,
       taskList: taskList,
+      selectedTaskOption:"",
       orderedDataDescriptionBoxes: [[], [], [], [], []],
       screenHeight: window.innerHeight,
       recommendationInputSpec:{},
@@ -45,6 +46,7 @@ class Inputpage extends React.Component {
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
     this.toggleTaskCardSelection = this.toggleTaskCardSelection.bind(this);
     this.getRecommendationOutput = this.getRecommendationOutput.bind(this);
+    this.onValueChange = this.onValueChange.bind(this)
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
   }
@@ -323,15 +325,29 @@ class Inputpage extends React.Component {
     
     let targetId = event.target.id
     let taskLists = this.state.taskList
+    let stateTaskVal = this.state.selectedTaskOption
+    let inputTaskVal = event.target.value
+
+    if(inputTaskVal === stateTaskVal) stateTaskVal = ""
+    else stateTaskVal = inputTaskVal
+
+    // taskLists.map(val =>{
+    //   if(!val["disabled"]) {
+    //     let id = val["task"]
+    //     if(targetId === id){
+    //       val["selected"] = !val["selected"]
+    //     }
+    //   }
+    // })
 
     taskLists.map(val =>{
-      if(!val["disabled"]) {
-        let id = val["task"]
-        if(targetId === id){
-          val["selected"] = !val["selected"]
+      if(stateTaskVal === val["task"]){
+          val["selected"] = true
         }
-      }
+      else val["selected"] = false
     })
+
+    
 
     let selectedTaskFullSpec = taskLists.filter(val => val["selected"])
     let activeTasks = selectedTaskFullSpec.map(val => val["task"])
@@ -342,8 +358,15 @@ class Inputpage extends React.Component {
 
     this.setState({
       taskList:taskLists,
+      selectedTaskOption: stateTaskVal,
       recommendationOutputSpec
     }, ()=> console.log(this.state))
+  }
+
+  onValueChange(event) {
+    this.setState({
+      selectedTaskOption: event.target.value
+    });
   }
 
   createTaskCards(val) {
@@ -352,42 +375,70 @@ class Inputpage extends React.Component {
     return (
       <>
         <div
-          className={`w3-display-container w3-margin-top w3-third w3-center ${classNameVar} ${selectedClass}`}
-          id={val["task"]}
-          onClick = {this.toggleTaskCardSelection}
+          className={`w3-display-container w3-margin-top w3-light-grey w3-row w3-center ${classNameVar} ${selectedClass}`}
+          // id={val["task"]}
+          // onClick = {this.toggleTaskCardSelection}
         >
+          <div className="w3-quarter">  
+          <label>
+            <input
+              type="checkbox"
+              value= {val["task"]}
+              id={val["task"]}
+              className="w3-check"
+              checked={this.state.selectedTaskOption === val["task"]}
+              onChange={this.toggleTaskCardSelection}
+            />
+          </label>    
+          <h5> {val["taskLabel"]}</h5>     
+        </div>
+          <div className="w3-quarter w3-margin-top w3-margin-bottom ">
           <img
             id={val["task"]}
             className="taskimg"
             src={require("../assets/" + val["image"])}
             alt={val["task"]}
-          />
-          <h5> {val["taskLabel"]}</h5>
-          <p> {val["taskInfo"]}</p>
+          /> 
+             </div>
+          <div className="w3-half w3-margin-top">  <p> {val["taskInfo"]}</p> </div>
+
+          
+         
         </div>
       </>
     );
   }
 
-  createHTMLLayoutTasks(input) {
-    let mainrows = [];
-    let allCards = [];
+  //This is the layout for grid based representation of the task cards
+  // createHTMLLayoutTasks(input) {
+  //   let mainrows = [];
+  //   let allCards = [];
 
-    for (let index = 0; index < input.length; index++) {
-      if (index % 3 === 0 && index !== 0) {
-        mainrows.push(
-          React.createElement("div", { className: "w3-row" }, allCards)
-        );
-        allCards = [];
-      }
-      allCards.push(this.createTaskCards(input[index]));
-    }
-    if (allCards.length !== 0) {
-      mainrows.push(
-        React.createElement("div", { className: "w3-row" }, allCards)
-      );
-    }
-    return mainrows;
+  //   for (let index = 0; index < input.length; index++) {
+  //     if (index % 3 === 0 && index !== 0) {
+  //       mainrows.push(
+  //         React.createElement("div", { className: "w3-row" }, allCards)
+  //       );
+  //       allCards = [];
+  //     }
+  //     allCards.push(this.createTaskCards(input[index]));
+  //   }
+  //   if (allCards.length !== 0) {
+  //     mainrows.push(
+  //       React.createElement("div", { className: "w3-row" }, allCards)
+  //     );
+  //   }
+  //   return mainrows;
+  // }
+
+  createHTMLLayoutTasks(input)
+  {
+    let allCards = []
+
+    input.forEach(val =>{
+      allCards.push(this.createTaskCards(val))
+    })
+    return allCards
   }
 
   render() {
@@ -405,7 +456,7 @@ class Inputpage extends React.Component {
             <div className="w3-row w3-center">
               <div className="w3-half">
                 <div className="w3-row">
-                  <div className="w3-center w3-light-grey w3-padding">
+                  <div className="w3-center w3-padding">
                     <h3>
                       {" "}
                       <i className="fa fa-table w3-margin-right"></i> Data
@@ -440,7 +491,7 @@ class Inputpage extends React.Component {
                   style={{ display: this.state.showTaskPanel ? "" : "none" }}
                 >
                   <div className="w3-row w3-margin-top">
-                    <div className="w3-center w3-light-grey w3-padding">
+                    <div className="w3-center  w3-padding">
                       <h3>
                         {" "}
                         <i className="fa fa-tasks w3-margin-right"></i> Task
@@ -458,15 +509,15 @@ class Inputpage extends React.Component {
               <div className="w3-half">
                 <div className="w3-row">
                   <div className="w3-row w3-display-container">
-                    <div className="w3-center w3-sand w3-padding">
+                    <div className="w3-center w3-padding">
                       <h3>
                         <i className="fa fa-th-list w3-margin-right"></i>{" "}
                         Recommendation{" "}
                       </h3>
                     </div>
                   </div>
-                  <div className="w3-row w3-center w3-display-container w3-padding w3-margin">
-                    {/* <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/> */}
+                  <div className="w3-row w3-center w3-display-container w3-margin">
+                    <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/>
                   </div>
                 </div>
               </div>
