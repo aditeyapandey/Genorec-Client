@@ -7,7 +7,7 @@ import { getIdeogram } from './ideogram';
 const GET_SEQUENCES_KEY = (recommendation_n) => `${recommendation_n}.visDetails`;
 const GET_TRACK_GROUPS_KEY = (recommendation_n, Sequence_n) => `${recommendation_n}.visDetails.${Sequence_n}.visDetails`;
 const GET_TRACKS_KEY = (recommendation_n, Sequence_n, TrackGroup_n) => `${recommendation_n}.visDetails.${Sequence_n}.visDetails.${TrackGroup_n}.visDetails`;
-const GET_ATTRIBUTES_KSY = (recommendation_n, Sequence_n, TrackGroup_n, Track_n) => `${recommendation_n}.visDetails.${Sequence_n}.visDetails.${TrackGroup_n}.visDetails.${Track_n}.visDetails`;
+const GET_ATTRIBUTES_KEY = (recommendation_n, Sequence_n, TrackGroup_n, Track_n) => `${recommendation_n}.visDetails.${Sequence_n}.visDetails.${TrackGroup_n}.visDetails.${Track_n}.visDetails`;
 
 const getGosViewTemplate = () => {
     return {
@@ -142,7 +142,7 @@ export function convert(...props){
                     const { groupingTechnique } = track; // typeof 'superposed' | 'combined' | 'none'
 
                     /* Collection of Attribute_ */
-                    const attributesKey = GET_ATTRIBUTES_KSY(recommendation_n, Sequence_n, trackGroup_n, Track_n);
+                    const attributesKey = GET_ATTRIBUTES_KEY(recommendation_n, Sequence_n, trackGroup_n, Track_n);
                     const attributesObj = get(genoRec, attributesKey);
                     
                     Object.keys(attributesObj).forEach((Attribute_n, Attribute_i) => {
@@ -292,7 +292,7 @@ export function convert(...props){
                     views: GOS_VIEW.views.map(view => {
                         return {
                             ...view,
-                            arrangement: 'parallel',
+                            arrangement: 'vertical',
                             spacing: 1,
                             tracks: undefined,
                             views: view.tracks.map((track, i) => {
@@ -318,10 +318,12 @@ export function convert(...props){
                 }
             }
 
-            if(compareMultipleRoi) {
+            if(hasSingleRoi) {
+                
+            } else if(compareMultipleRoi) {
                 GOS_VIEW = {
                     ...getGosViewTemplate(),
-                    arrangement: 'vertical',
+                    arrangement: 'parallel',
                     views: [
                         {...JSON.parse(JSON.stringify(getIdeogram('A', 'B', baseWidth + 30)))},
                         {

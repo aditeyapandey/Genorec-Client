@@ -92,7 +92,7 @@ export function encodingToGoslingTrack(
                 mark: 'rect',
                 x: { field: 'start', type: 'genomic' },
                 xe: { field: 'end', type: 'genomic' },
-                color: { field: 'peak', type: 'quantitative', range: 'warm'},
+                color: { field: 'peak', type: 'quantitative'},
             }
         case 'heatmap.barchart':
         case 'barchart.heatmap':
@@ -105,7 +105,7 @@ export function encodingToGoslingTrack(
                 x: { field: 'start', type: 'genomic' },
                 xe: { field: 'end', type: 'genomic' },
                 y: { field: 'peak', type: 'quantitative' },
-                color: { field: 'peak', type: 'quantitative', range: 'warm'},
+                color: { field: 'peak', type: 'quantitative'},
                 stroke: { value: 'white' },
                 strokeWidth: { value: 0.5 },
             }
@@ -260,7 +260,7 @@ export function encodingToGoslingTrack(
                 "x": {"field": "start", "type": "genomic", "axis": "none"},
                 "xe": {"field": "end", "type": "genomic"},
                 "row": {"field": "sample", "type": "nominal"},
-                "color": {"field": "peak", "type": "quantitative", range: 'warm'},
+                "color": {"field": "peak", "type": "quantitative"},
                 height: width
               }
         default:
