@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Genorec-Client/static/css/main.b3a44951.chunk.css",
-    "main.js": "/Genorec-Client/static/js/main.ef360e5c.chunk.js",
-    "main.js.map": "/Genorec-Client/static/js/main.ef360e5c.chunk.js.map",
+    "main.js": "/Genorec-Client/static/js/main.c4dcd4a9.chunk.js",
+    "main.js.map": "/Genorec-Client/static/js/main.c4dcd4a9.chunk.js.map",
     "runtime-main.js": "/Genorec-Client/static/js/runtime-main.541d731e.js",
     "runtime-main.js.map": "/Genorec-Client/static/js/runtime-main.541d731e.js.map",
-    "static/js/2.cb78488f.chunk.js": "/Genorec-Client/static/js/2.cb78488f.chunk.js",
-    "static/js/2.cb78488f.chunk.js.map": "/Genorec-Client/static/js/2.cb78488f.chunk.js.map",
+    "static/js/2.f5df183f.chunk.js": "/Genorec-Client/static/js/2.f5df183f.chunk.js",
+    "static/js/2.f5df183f.chunk.js.map": "/Genorec-Client/static/js/2.f5df183f.chunk.js.map",
     "index.html": "/Genorec-Client/index.html",
-    "precache-manifest.10acdf396d9633b46803ff585976dd66.js": "/Genorec-Client/precache-manifest.10acdf396d9633b46803ff585976dd66.js",
+    "precache-manifest.4601f4d855df3066ce7b22e0bababfa1.js": "/Genorec-Client/precache-manifest.4601f4d855df3066ce7b22e0bababfa1.js",
     "service-worker.js": "/Genorec-Client/service-worker.js",
     "static/css/main.b3a44951.chunk.css.map": "/Genorec-Client/static/css/main.b3a44951.chunk.css.map",
-    "static/js/2.cb78488f.chunk.js.LICENSE.txt": "/Genorec-Client/static/js/2.cb78488f.chunk.js.LICENSE.txt",
+    "static/js/2.f5df183f.chunk.js.LICENSE.txt": "/Genorec-Client/static/js/2.f5df183f.chunk.js.LICENSE.txt",
     "static/media/annotation.jpg": "/Genorec-Client/static/media/annotation.8eb3cd2d.jpg",
     "static/media/areachart.pdf": "/Genorec-Client/static/media/areachart.efb732d7.pdf",
     "static/media/areahue.jpg": "/Genorec-Client/static/media/areahue.7f895b0a.jpg",
@@ -43,8 +43,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.541d731e.js",
-    "static/js/2.cb78488f.chunk.js",
+    "static/js/2.f5df183f.chunk.js",
     "static/css/main.b3a44951.chunk.css",
-    "static/js/main.ef360e5c.chunk.js"
+    "static/js/main.c4dcd4a9.chunk.js"
   ]
 }
