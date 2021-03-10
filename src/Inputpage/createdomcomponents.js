@@ -60,7 +60,7 @@ export const createNetworkInput = (defaultValue,fileid,componentid,onChangeFileD
   }
   return (
     <>
-    <div className={"w3-center w3-hover-opacity w3-third"}>
+    <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
         <p> Connection </p>
       </div>
       <div className={"w3-center w3-hover-opacity w3-third"}>
@@ -120,7 +120,7 @@ export const createGranularityInput = (granularity,fileid,componentid,onChangeFi
 
   return (
     <>
-     <div className={"w3-center w3-hover-opacity w3-third"}>
+     <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
         <p> Feature Type 1 </p>
         {/* <p> Granularity </p> */}
       </div>
@@ -181,7 +181,7 @@ export const createAvailablityInput = (availability,fileid,componentid,onChangeF
   }  
   return (
     <>
-         <div className={"w3-center w3-hover-opacity w3-third"}>
+         <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
         <p> Feature Type 2 </p>
       </div>
       <div  className="w3-center w3-hover-opacity w3-third">
