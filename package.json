@@ -1,6 +1,7 @@
 {
   "name": "genorec",
   "version": "0.1.0",
+  "homepage": "https://aditeyapandey.github.io/Genorec-Client",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
