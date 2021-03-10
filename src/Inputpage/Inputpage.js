@@ -256,7 +256,7 @@ class Inputpage extends React.Component {
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div className="w3-col s12 w3-center">
+            <div className="w3-col s11 w3-center">
               {createDropDownList(
                 assembly1,
                 fileid,
@@ -265,10 +265,13 @@ class Inputpage extends React.Component {
                 this.onChangeFileDataUpdate
               )}
             </div>
+            <div className="w3-col s1 w3-margin-top w3-margin-bottom w3-center">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </div>
           </div>
           {/* Assembly Build Dropdown 1 */}
           <div className="w3-margin w3-row">
-            <div className="w3-col s12  w3-center">
+            <div className="w3-col s11  w3-center">
               {createDropDownList(
                 assembly2,
                 fileid,
@@ -276,6 +279,9 @@ class Inputpage extends React.Component {
                 "assembly2",
                 this.onChangeFileDataUpdate
               )}
+            </div>
+            <div className="w3-col s1 w3-margin-top w3-margin-bottom w3-center">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
             </div>
           </div>
           {/* Define the attributes */}
