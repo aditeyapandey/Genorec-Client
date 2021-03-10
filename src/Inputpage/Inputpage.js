@@ -372,7 +372,7 @@ class Inputpage extends React.Component {
           // id={val["task"]}
           // onClick = {this.toggleTaskCardSelection}
         >
-          <div className="w3-quarter">  
+          <div className="w3-quarter w3-margin-top w3-margin-bottom">  
           <label>
             <input
               type="checkbox"
@@ -385,7 +385,7 @@ class Inputpage extends React.Component {
           </label>    
           <h5> {val["taskLabel"]}</h5>     
         </div>
-          <div className="w3-quarter w3-margin-top w3-margin-bottom ">
+          <div className="w3-quarter w3-margin-top">
           <img
             id={val["task"]}
             className="taskimg"
@@ -393,7 +393,7 @@ class Inputpage extends React.Component {
             alt={val["task"]}
           /> 
              </div>
-          <div className="w3-half w3-margin-top">  <p> {val["taskInfo"]}</p> </div>
+          <div className="w3-half w3-margin-top w3-margin-bottom">  <p> {val["taskInfo"]}</p> </div>
 
           
          
