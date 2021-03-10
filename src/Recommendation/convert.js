@@ -283,7 +283,7 @@ export function convert(...props){
             // }];
         }
         else {
-            if(!compareMultipleAttr && !compareMultipleRoi) {
+            if(!compareMultipleAttr && !compareMultipleRoi && !hasSingleRoi) {
                 GOS_VIEW = {
                     ...getGosViewTemplate(),
                     ...JSON.parse(JSON.stringify(GOS_VIEW)),
@@ -319,7 +319,20 @@ export function convert(...props){
             }
 
             if(hasSingleRoi) {
-                
+                GOS_VIEW = {
+                    ...getGosViewTemplate(),
+                    arrangement: 'parallel',
+                    views: [
+                        {...JSON.parse(JSON.stringify(getIdeogram('A', 'B', baseWidth)))},
+                        {
+                            arrangement: 'horizontal',
+                            spacing: 30,
+                            views: [
+                                {...JSON.parse(JSON.stringify(GOS_VIEW)), xDomain, xLinkingId: 'A'},
+                            ]
+                        }
+                    ]
+                }
             } else if(compareMultipleRoi) {
                 GOS_VIEW = {
                     ...getGosViewTemplate(),
