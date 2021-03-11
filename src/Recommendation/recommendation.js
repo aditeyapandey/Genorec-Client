@@ -33,7 +33,7 @@ const getVisLabel = (spec) =>
 }
 
 
-const Recommendation = (props) => {
+const Recommendation = React.memo((props) => {
   const { 
     data: output, 
     width 
@@ -58,7 +58,7 @@ const Recommendation = (props) => {
       }
     </div>
   );
-}
+})
 
 export const testGosSpec = {
   "tracks": [

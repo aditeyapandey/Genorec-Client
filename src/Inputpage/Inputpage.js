@@ -33,6 +33,9 @@ class Inputpage extends React.Component {
       inputFileFormats,
       inputConfigurationData: {},
       showTaskPanel: false,
+      showRecommendation: false,
+      recommendationButtonString:"Show Recommendation",
+      recommendationNotPossible:true,
       taskList: taskList,
       selectedTaskOption:"",
       orderedDataDescriptionBoxes: [[], [], [], [], []],
@@ -46,8 +49,10 @@ class Inputpage extends React.Component {
     this.reAlignTheIndexes = this.reAlignTheIndexes.bind(this);
     this.toggleTaskCardSelection = this.toggleTaskCardSelection.bind(this);
     this.getRecommendationOutput = this.getRecommendationOutput.bind(this);
+    this.handleRecommendationClick = this.handleRecommendationClick.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
+    this.finalRecommendationOutputSpec = {}
   }
 
   //Utility Functions
@@ -132,8 +137,7 @@ class Inputpage extends React.Component {
     inputFileFormats[event.target.name] = event.target.value;
 
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
-
-    console.log("TASKLIST ON FILE CHANGE",this.state.taskList)
+    let recommendationNotPossible = this.dataFileTypesAdded.length > 0 ? false:true
 
     let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats))
 
@@ -141,6 +145,7 @@ class Inputpage extends React.Component {
       inputFileFormats: inputFileFormats,
       inputConfigurationData: currentDataConfigurationInput,
       showTaskPanel: showTaskPanel,
+      recommendationNotPossible,
       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
     }, ()=> console.log(this.state));
@@ -173,11 +178,12 @@ class Inputpage extends React.Component {
 
   let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats))
 
+
     this.setState({
       inputConfigurationData: configurationData,
       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
-    }, ()=> console.log(this.state));
+        }, ()=> console.log(this.state));
     console.log(this.state.inputConfigurationData)
   }
 
@@ -400,9 +406,6 @@ class Inputpage extends React.Component {
           /> 
              </div>
           <div className="w3-half w3-margin-top w3-margin-bottom">  <p> {val["taskInfo"]}</p> </div>
-
-          
-         
         </div>
       </>
     );
@@ -416,6 +419,15 @@ class Inputpage extends React.Component {
       allCards.push(this.createTaskCards(val))
     })
     return allCards
+  }
+
+  handleRecommendationClick()
+  {
+    // let showRecommendation = this.state.showRecommendation ? true: true
+    this.finalRecommendationOutputSpec =  JSON.parse(JSON.stringify(this.state.recommendationOutputSpec))
+    this.setState({
+      showRecommendation:true
+    }, ()=> console.log(this.state))
   }
 
   render() {
@@ -491,10 +503,13 @@ class Inputpage extends React.Component {
                         <i className="fa fa-th-list w3-margin-right"></i>{" "}
                         Recommendation{" "}
                       </h3>
+                      <button onClick={this.handleRecommendationClick} className="w3-button w3-indigo" disabled={this.state.recommendationNotPossible}>
+                          {this.state.recommendationButtonString}
+                      </button>
                     </div>
                   </div>
                   <div className="w3-row w3-center w3-display-container w3-margin">
-                    <Recommendation className="w3-center" data={this.state.recommendationOutputSpec} width={800}/>
+                    <Recommendation className="w3-center" data={this.finalRecommendationOutputSpec} width={800}/>
                   </div>
                 </div>
               </div>
