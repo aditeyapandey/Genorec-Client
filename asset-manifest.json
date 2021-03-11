@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Genorec-Client/static/css/main.b3a44951.chunk.css",
-    "main.js": "/Genorec-Client/static/js/main.c4dcd4a9.chunk.js",
-    "main.js.map": "/Genorec-Client/static/js/main.c4dcd4a9.chunk.js.map",
+    "main.js": "/Genorec-Client/static/js/main.5cbc9cd8.chunk.js",
+    "main.js.map": "/Genorec-Client/static/js/main.5cbc9cd8.chunk.js.map",
     "runtime-main.js": "/Genorec-Client/static/js/runtime-main.541d731e.js",
     "runtime-main.js.map": "/Genorec-Client/static/js/runtime-main.541d731e.js.map",
     "static/js/2.f5df183f.chunk.js": "/Genorec-Client/static/js/2.f5df183f.chunk.js",
     "static/js/2.f5df183f.chunk.js.map": "/Genorec-Client/static/js/2.f5df183f.chunk.js.map",
     "index.html": "/Genorec-Client/index.html",
-    "precache-manifest.4601f4d855df3066ce7b22e0bababfa1.js": "/Genorec-Client/precache-manifest.4601f4d855df3066ce7b22e0bababfa1.js",
+    "precache-manifest.2694292293b720b7a43b60b4384aa759.js": "/Genorec-Client/precache-manifest.2694292293b720b7a43b60b4384aa759.js",
     "service-worker.js": "/Genorec-Client/service-worker.js",
     "static/css/main.b3a44951.chunk.css.map": "/Genorec-Client/static/css/main.b3a44951.chunk.css.map",
     "static/js/2.f5df183f.chunk.js.LICENSE.txt": "/Genorec-Client/static/js/2.f5df183f.chunk.js.LICENSE.txt",
@@ -45,6 +45,6 @@
     "static/js/runtime-main.541d731e.js",
     "static/js/2.f5df183f.chunk.js",
     "static/css/main.b3a44951.chunk.css",
-    "static/js/main.c4dcd4a9.chunk.js"
+    "static/js/main.5cbc9cd8.chunk.js"
   ]
 }
