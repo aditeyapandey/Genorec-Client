@@ -147,7 +147,7 @@ class Inputpage extends React.Component {
       showTaskPanel: showTaskPanel,
       recommendationNotPossible,
       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
-      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
+      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec,
     }, ()=> console.log(this.state));
   }
 
@@ -182,7 +182,8 @@ class Inputpage extends React.Component {
     this.setState({
       inputConfigurationData: configurationData,
       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
-      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
+      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec,
+      recommendationNotPossible:false
         }, ()=> console.log(this.state));
     console.log(this.state.inputConfigurationData)
   }
@@ -370,7 +371,8 @@ class Inputpage extends React.Component {
     this.setState({
       taskList:taskLists,
       selectedTaskOption: stateTaskVal,
-      recommendationOutputSpec
+      recommendationOutputSpec,
+      recommendationNotPossible:false
     }, ()=> console.log(this.state))
   }
 
@@ -426,7 +428,8 @@ class Inputpage extends React.Component {
     // let showRecommendation = this.state.showRecommendation ? true: true
     this.finalRecommendationOutputSpec =  JSON.parse(JSON.stringify(this.state.recommendationOutputSpec))
     this.setState({
-      showRecommendation:true
+      showRecommendation:true,
+      recommendationNotPossible:true
     }, ()=> console.log(this.state))
   }
 
@@ -503,8 +506,8 @@ class Inputpage extends React.Component {
                         <i className="fa fa-th-list w3-margin-right"></i>{" "}
                         Recommendation{" "}
                       </h3>
-                      <button onClick={this.handleRecommendationClick} className="w3-button w3-indigo" disabled={this.state.recommendationNotPossible}>
-                          {this.state.recommendationButtonString}
+                      <button className="notification" onClick={this.handleRecommendationClick} className="w3-button w3-indigo" disabled={this.state.recommendationNotPossible}>
+                          {this.state.recommendationButtonString} {" "}
                       </button>
                     </div>
                   </div>
