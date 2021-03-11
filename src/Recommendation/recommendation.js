@@ -47,7 +47,9 @@ const Recommendation = (props) => {
             <div className="w3-center  w3-light-grey w3-padding">
               <h5>
                 {" "}
-                  {getVisLabel(output["recommendation_" + index])}
+                  {/* {getVisLabel(output["recommendation_" + index])} */}
+                  {"Option " + parseInt(index+1)}
+
                 {" "}
               </h5>
             </div>
