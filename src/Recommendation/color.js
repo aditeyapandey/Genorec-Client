@@ -1,9 +1,10 @@
 export const getSampleColor = (i) => {
-    return COLOR_MAP_EXTENDED[i % COLOR_MAP_EXTENDED.length];
+    return SINGLE_COLOR[i % SINGLE_COLOR.length];
 }
 
+const SINGLE_COLOR = ['gray'];
 // Taken from https://mode.com/blog/custom-color-palettes/
-const COLOR_MAP = [
+const COLOR_MAP = [ 
     '#38B067',
     '#6297BB',
     '#ECB40E',

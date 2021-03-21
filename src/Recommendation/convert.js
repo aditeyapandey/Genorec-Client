@@ -13,7 +13,7 @@ const getGosViewTemplate = () => {
     return {
         assembly: 'hg38',
         arrangement: 'vertical',
-        centerRadius: 0.3,
+        centerRadius: 0.5,
         views: []
     }
 }
@@ -239,6 +239,9 @@ export function convert(...props){
                 tracks
             });
         });
+
+        // fine-tune the center radius
+        // GOS_VIEW.centerRadius = Math.max(0.2, 0.6 - GOS_VIEW.views.length * 0.1);
 
         if(arrangement === 'linearOrthogonal') {
             GOS_VIEW.views.push({

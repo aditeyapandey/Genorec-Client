@@ -1,4 +1,78 @@
-export const getIdeogram = (A, B, width) => {
+export const getIdeogram = (A, B, width, block = true) => {
+  if(block) {
+    return {
+      static: true,
+      "tracks": [{
+      "data": {
+        "url": "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv",
+        "type": "csv",
+        "chromosomeField": "Chromosome",
+        "genomicFields": ["chromStart", "chromEnd"]
+      },
+      "overlay": [
+        {
+          "mark": "rect",
+          "color": {
+            "field": "Chromosome",
+            "type": "nominal",
+            "domain": [
+              "chr1",
+              "chr2",
+              "chr3",
+              "chr4",
+              "chr5",
+              "chr6",
+              "chr7",
+              "chr8",
+              "chr9",
+              "chr10",
+              "chr11",
+              "chr12",
+              "chr13",
+              "chr14",
+              "chr15",
+              "chr16",
+              "chr17",
+              "chr18",
+              "chr19",
+              "chr20",
+              "chr21",
+              "chr22",
+              "chrX",
+              "chrY"
+            ],
+            "range": ["#F6F6F6", "gray"]
+          },
+          "x": {"field": "chromStart", "type": "genomic", "aggregate": "min"},
+          "xe": {"field": "chromEnd", "aggregate": "max", "type": "genomic"},
+          "strokeWidth": {"value": 2},
+          "stroke": {"value": "gray"},
+          "visibility": [
+            {
+              "operation": "greater-than",
+              "measure": "zoomLevel",
+              "threshold": 100000000,
+              "target": "mark",
+              "transitionPadding": 100000000
+            }
+          ]
+        },
+        {
+          mark: 'brush',
+          x: { linkingId: A }
+      },
+      {
+        mark: 'brush',
+        x: { linkingId: B }
+    }
+      ],
+      "stroke": {"value": "gray"},
+      "strokeWidth": {"value": 0.5},
+      "style": {"outline": "black"},
+      width,
+      "height": 35
+    }]}
+  }
     return {
         static: true,
         "tracks": [

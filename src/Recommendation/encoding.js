@@ -25,13 +25,13 @@ export const getMultivecData = (i, granularity, availability) => {
             column: 'position',
             value: 'peak',
             categories: (Array.from(Array(i + 1).keys()).map(d => '' + d)),
-            binSize: granularity === 'segment' ? 8 : 2
+            binSize: granularity === 'segment' ? 4 : 2
         },
         dataTransform: { filter: 
             (
                 availability === 'sparse' ? [
                     { field: 'sample', oneOf: [i + ''], not: false },
-                    { field: 'peak', inRange: [0.0001, 0.0007] }
+                    { field: 'peak', inRange: [0.0001, 0.0008] }
                 ] : [
                     { field: 'sample', oneOf: [i + ''], not: false }
                 ]
