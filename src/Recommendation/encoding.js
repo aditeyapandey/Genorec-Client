@@ -51,7 +51,8 @@ export function encodingToGoslingTrack(
     title = undefined,
     linkingID = undefined,
     availability = 'sparse',
-    granularity = 'point'
+    granularity = 'point',
+    cI = 0
 ) {
     const base = {
         title,
@@ -69,7 +70,7 @@ export function encodingToGoslingTrack(
                 mark: 'line',
                 x: { field: 'position', type: 'genomic' },
                 y: { field: 'peak', type: 'quantitative' },
-                color: { value: getSampleColor(i) }
+                color: { value: getSampleColor(cI) }
             }
         case 'barchart':
         case 'intervalBarchart':
@@ -80,7 +81,7 @@ export function encodingToGoslingTrack(
                 x: { field: 'start', type: 'genomic' },
                 xe: { field: 'end', type: 'genomic' },
                 y: { field: 'peak', type: 'quantitative' },
-                color: { value: getSampleColor(i) },
+                color: { value: getSampleColor(cI) },
                 stroke: { value: 'white' },
                 strokeWidth: { value: 0.5 },
             }
@@ -161,7 +162,7 @@ export function encodingToGoslingTrack(
                 opacity: { value: 0.8 },
                 stroke: { value: 'white' },
                 strokeWidth: { value: 0.3 },
-                color: { value: getSampleColor(i) }
+                color: { value: getSampleColor(cI) }
             }
         case 'dotplot.barchartCN':
         case 'barchartCN.dotplot':

@@ -205,7 +205,8 @@ export function convert(...props){
                                     sequenceName,
                                     Sequence_n,
                                     availability,
-                                    granularity
+                                    granularity,
+                                    overlayOnPreviousTrack ? numOfTracks++ : 0,
                                 ))),
                                 overlayOnPreviousTrack
                             });
