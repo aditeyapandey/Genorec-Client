@@ -1,7 +1,9 @@
 //BEDPE Complex Case
-//If BEDPE has network, then it will be a single track with intraconnection
-//If BEDPE has no network then it will be a two different tracks with the same coordinates
+//DONE.......If BEDPE has network, then it will be a single track with intraconnection. 
+//If BEDPE Multiple tracks then the network should only be first track
+//Done....If BEDPE has no network then it will be a two different tracks with the same coordinates
 //BEDPE should have not have different assemblies
+
 
 export const createInputSpec = function (dataDescription, taskList) {
   let localDataDescription = JSON.parse(dataDescription);
@@ -13,11 +15,11 @@ export const createInputSpec = function (dataDescription, taskList) {
 
   fileIds.forEach((fileId) => {
     const inputConfigData = Object.assign({}, localDataDescription[fileId]);
-    console.log(inputConfigData);
     const inputConfigDataCopyForFileAttr = JSON.parse(JSON.stringify(localDataDescription[fileId]));
     let featureDescription = `${inputConfigData["granularity"]}_${inputConfigData["availability"]}`;
     let assemblyBuildCounts = inputConfigData["assembly2"] === "N.A." ? 1 : 2;
-    
+  
+
     if(inputConfigData["fileType"] === "cooler" || inputConfigData["fileType"] === "bedpe")
     {interconnection = checkInterconnection(inputConfigData,featureDescription)}
   
@@ -60,12 +62,19 @@ export const createInputSpec = function (dataDescription, taskList) {
           //add filewise attributes
           //This may fail, try out!
           assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= {}
+         
+          //Special Case for BEDPE Files with no network connection
+          if(inputConfigData["interconnection"])
           assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigDataCopyForFileAttr["data"];
+          else
+          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigData["data"];
+
         }
       }
     }
   });
 
+  console.log("Assembly Builds",assemblyBuilds);
 
   let recommendationInputSpec = specStructure(assemblyBuilds,interconnection);
   activateTasks(taskList, assemblyBuilds);
@@ -83,7 +92,7 @@ function specStructure(assemblyBuilds,interconnection) {
   //Need to populate these variables
   let tasks = [];
   let geneAnnotation = true;
-  let ideogramDisplayed = true
+  let ideogramDisplayed = true;
 
   Object.keys(assemblyBuilds).map((val, index) => {
     sequences.push(
@@ -131,7 +140,14 @@ function getFeatures(fId,fName,data,featureConnection) {
   copyVarofDataWithAttrKeys.forEach(keyVal =>{
     Object.keys(copyVarofDataWithAttr[keyVal]).forEach((attributeType)=>{
       for(let i=0;i<copyVarofDataWithAttr[keyVal][attributeType];i++){
-        attr.push(getAttributes(globalAttrIndex,attributeType,featureConnection,fName,keyVal,attributeType+i))
+        let localFeatureInterconnection = false;
+        let localDenseInterconnection = false;
+        if(featureInterconnection && i===0)
+        {
+          localFeatureInterconnection = featureInterconnection;
+          localDenseInterconnection = denseInterconnection;
+        }
+        attr.push(getAttributes(globalAttrIndex,attributeType,localFeatureInterconnection,localDenseInterconnection,fName,keyVal,attributeType+i))
         globalAttrIndex++
     }
     })
@@ -140,14 +156,14 @@ function getFeatures(fId,fName,data,featureConnection) {
   return {featureId,featureGranularity,featureDensity,featureLabel,featureInterconnection,denseInterconnection,intraFeatureTasks,interactivity,attr}
 }
 
-function getAttributes(id,type,featureConnection,fName,fileNameInput,encodingNameInput)
+function getAttributes(id,type,featureInterconnectionIp,denseInterconnectionIp,fName,fileNameInput,encodingNameInput)
 {
     let dataTypeMapping = {"quant":"quantitative","cat":"categorical","text":"text"}
     let attrId = "attribute_"+id;
     let dataType = dataTypeMapping[type];
     let intraAttrTask = [];
-    let featureInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnection:false;
-    let denseInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnectionDense:false ;
+    let featureInterconnection = featureInterconnectionIp;
+    let denseInterconnection = denseInterconnectionIp;
     let fileName = fileNameInput;
     let encodingName = encodingNameInput;
 
