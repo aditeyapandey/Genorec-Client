@@ -1,85 +1,89 @@
+//BEDPE Complex Case
+//If BEDPE has network, then it will be a single track with intraconnection
+//If BEDPE has no network then it will be a two different tracks with the same coordinates
+//BEDPE should have not have different assemblies
+
 export const createInputSpec = function (dataDescription, taskList) {
   let localDataDescription = JSON.parse(dataDescription);
 
   //This code is currently for files with 1 assembly
   let fileIds = Object.keys(localDataDescription);
   let assemblyBuilds = {}; //===Sequences in our terminology
-  let interconnection = {denseInterConnection:false,sparseInterConnection:false}
-
+  let interconnection = {denseInterConnection:false,sparseInterConnection:false, connectionType:"none"};
 
   fileIds.forEach((fileId) => {
-    let inputConfigData = Object.assign({}, localDataDescription[fileId]);
+    const inputConfigData = Object.assign({}, localDataDescription[fileId]);
+    console.log(inputConfigData);
+    const inputConfigDataCopyForFileAttr = JSON.parse(JSON.stringify(localDataDescription[fileId]));
     let featureDescription = `${inputConfigData["granularity"]}_${inputConfigData["availability"]}`;
     let assemblyBuildCounts = inputConfigData["assembly2"] === "N.A." ? 1 : 2;
     
     if(inputConfigData["fileType"] === "cooler" || inputConfigData["fileType"] === "bedpe")
     {interconnection = checkInterconnection(inputConfigData,featureDescription)}
   
-    for (
-      let assemblyIndex = 1;
-      assemblyIndex <= assemblyBuildCounts;
-      assemblyIndex++
-    ) {
-      if (
-        typeof assemblyBuilds[inputConfigData["assembly" + assemblyIndex]] ===
-        "undefined"
-      ) {
+    for ( let assemblyIndex = 1; assemblyIndex <= assemblyBuildCounts; assemblyIndex++) 
+    {
+      if ( typeof assemblyBuilds[inputConfigData["assembly" + assemblyIndex]] === "undefined") 
+      {
         assemblyBuilds[inputConfigData["assembly" + assemblyIndex]] = {};
         //add features
-        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
-          featureDescription
-        ] = {};
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription] = {};
         //add attributes
-        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
-          featureDescription
-        ]["attributes"] = {};
-        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
-          featureDescription
-        ]["attributes"] = inputConfigData["data"];
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription]["attributes"] = {};
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription]["attributes"] = inputConfigData["data"];
+        //add filewise attributes
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= {}
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigDataCopyForFileAttr["data"];
       } else {
         //check features
         if (
-          typeof assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
-            featureDescription
-          ] === "undefined"
+          typeof assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription] === "undefined"
         ) {
-          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
-            featureDescription
-          ] = {};
+          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription] = {};
           assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
             featureDescription
           ]["attributes"] = {};
           assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
             featureDescription
           ]["attributes"] = inputConfigData["data"];
-        } else {
+          //add filewise attributes
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= {}
+        assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigDataCopyForFileAttr["data"];
+        } 
+        else {
+          //Summing up the variables
           let inputAttrCounts = inputConfigData["data"];
-          let attrs =
-            assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][
-              featureDescription
-            ]["attributes"];
-
+          let attrs = assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription]["attributes"];
           Object.keys(attrs).map((key) => {
             return (attrs[key] += inputAttrCounts[key]);
           });
+          //add filewise attributes
+          //This may fail, try out!
+          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= {}
+          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigDataCopyForFileAttr["data"];
         }
       }
     }
   });
 
+
   let recommendationInputSpec = specStructure(assemblyBuilds,interconnection);
   activateTasks(taskList, assemblyBuilds);
-  console.log(recommendationInputSpec)
-  return recommendationInputSpec
+  console.log("InputSpec",recommendationInputSpec);
+  return recommendationInputSpec;
 };
 
 function specStructure(assemblyBuilds,interconnection) {
 
-  let sequences = []
-  let intraSequenceTask = {"connectedNodes":[],"sequenceConservation":[],"edgeValues":[]}
-  let denseConnection = interconnection.denseInterConnection
-  let sparseConnection = interconnection.sparseInterConnection
-
+  let sequences = [];
+  let intraSequenceTask = {"connectedNodes":[],"sequenceConservation":[],"edgeValues":[]};
+  let denseConnection = interconnection.denseInterConnection;
+  let sparseConnection = interconnection.sparseInterConnection;
+  let connectionType = interconnection.connectionType;
+  //Need to populate these variables
+  let tasks = [];
+  let geneAnnotation = true;
+  let ideogramDisplayed = true
 
   Object.keys(assemblyBuilds).map((val, index) => {
     sequences.push(
@@ -87,7 +91,7 @@ function specStructure(assemblyBuilds,interconnection) {
     );
   });
 
-return {sequences,intraSequenceTask,denseConnection,sparseConnection};
+return {sequences,intraSequenceTask,denseConnection,sparseConnection,connectionType,tasks,geneAnnotation,ideogramDisplayed};
 }
 
 function getSequences(seqName, seqid, data,featureConnection) {
@@ -107,31 +111,50 @@ function getFeatures(fId,fName,data,featureConnection) {
   let denseInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnectionDense:false ;
   let intraFeatureTasks = [];
   let interactivity = true;
-  let attr = [] 
-  let globalAttrIndex = 0
-  Object.keys(data["attributes"]).map((attributeType) => {
-    
-    for(let i=0;i<data["attributes"][attributeType];i++){
-        attr.push(getAttributes(globalAttrIndex,attributeType))
+  let attr = [];
+  let globalAttrIndex = 0;
+
+  console.log("Current data we are focussing",data);
+
+  // Object.keys(data["attributes"]).map((attributeType) => {
+  //   for(let i=0;i<data["attributes"][attributeType];i++){
+  //       attr.push(getAttributes(globalAttrIndex,attributeType,featureConnection,fName))
+  //       globalAttrIndex++
+  //   }
+  //})
+
+  const copyVarofDataWithAttr = JSON.parse(JSON.stringify(data));
+  delete copyVarofDataWithAttr.attributes;
+  console.log("Print all keys except attributes", copyVarofDataWithAttr);
+  const copyVarofDataWithAttrKeys = Object.keys(copyVarofDataWithAttr);
+
+  copyVarofDataWithAttrKeys.forEach(keyVal =>{
+    Object.keys(copyVarofDataWithAttr[keyVal]).forEach((attributeType)=>{
+      for(let i=0;i<copyVarofDataWithAttr[keyVal][attributeType];i++){
+        attr.push(getAttributes(globalAttrIndex,attributeType,featureConnection,fName,keyVal,attributeType+i))
         globalAttrIndex++
     }
-    //getAttributes(attributeType)
-
+    })
   })
-  
+
   return {featureId,featureGranularity,featureDensity,featureLabel,featureInterconnection,denseInterconnection,intraFeatureTasks,interactivity,attr}
 }
 
-function getAttributes(id,type)
+function getAttributes(id,type,featureConnection,fName,fileNameInput,encodingNameInput)
 {
     let dataTypeMapping = {"quant":"quantitative","cat":"categorical","text":"text"}
     let attrId = "attribute_"+id;
     let dataType = dataTypeMapping[type];
-    let intraAttrTask = []
-    if(dataType==="quantitative") intraAttrTask.push("identify")
-    else intraAttrTask.push("identify")
+    let intraAttrTask = [];
+    let featureInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnection:false;
+    let denseInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnectionDense:false ;
+    let fileName = fileNameInput;
+    let encodingName = encodingNameInput;
 
-    return {attrId,dataType,intraAttrTask}
+    if(dataType==="quantitative") intraAttrTask.push("identify");
+    else intraAttrTask.push("identify");
+
+    return {attrId,dataType,intraAttrTask,featureInterconnection,denseInterconnection,fileName,encodingName}
 }
 
 function activateTasks(taskList, assemblyBuilds) {
@@ -177,13 +200,13 @@ function checkInterconnection (inputConfigData,featureDescription)
   let sparseInterConnection = false
   let featureInterconnection = false
   let featureInterconnectionDense = false
-
-  // console.log(inputConfigData)
+  let connectionType = "none";
 
   if(inputConfigData["fileType"] === "cooler")
   {
       if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
         denseInterConnection = true
+        connectionType = "dense"
       }
       else
       {
@@ -196,6 +219,7 @@ function checkInterconnection (inputConfigData,featureDescription)
   {
       if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"] && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
         sparseInterConnection = true
+        connectionType = "sparse"
       }
       else if(inputConfigData["fileType"] === "bedpe" && inputConfigData["interconnection"]){
         featureInterconnection = true
@@ -208,5 +232,5 @@ function checkInterconnection (inputConfigData,featureDescription)
   }
   
   // console.log({denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}})
-  return {denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}}
+  return {denseInterConnection,sparseInterConnection,[featureDescription]:{featureInterconnection,featureInterconnectionDense}, connectionType}
 }

@@ -128,7 +128,7 @@ export const taskList = [
   { task: "singleroi", taskLabel: "Identify Single ROI", image: "singleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute.", disabled:true, minAssembly:1, minFeature:1 ,minAttr:1, selected: false },
   { task: "multipleroi", taskLabel: "Compare Multiple ROI", image: "multipleroi.png", taskInfo:"You will need atleast 1 assembly build and 1 attribute.",disabled:true, minAssembly:1,minFeature:1,minAttr:1,selected: false },
   { task: "multipleattributes", taskLabel: "Compare Multiple Attributes", image: "multipleattributes.png",taskInfo:"You will need atleast 1 assembly build and 2 attributes.",disabled:true, minAssembly:1,minFeature:1,minAttr:2,selected: false },
-  { task: "multiplefeatures", taskLabel: "Compare Multiple Features", image: "multifeatures.png", taskInfo: "You will need atleast 1 assembly build and 2 features.",disabled:true,  minAssembly:1,minFeature:2,minAttr:1,selected: false },
+  { task: "multiplefeatures", taskLabel: " Compare data properties across datasets.", image: "multifeatures.png", taskInfo: "You will need atleast 1 assembly build and 2 features.",disabled:true,  minAssembly:1,minFeature:2,minAttr:1,selected: false },
   { task: "multiplesequences", taskLabel: "Compare Multiple Sequences", image: "multisequences.png", taskInfo: "You will need atleast 2 assembly builds.",disabled:true, minAssembly:2, minFeature:1, minAttr:1,selected: false }
   // { task: "overview", taskLabel: "Explore Sequences", image: "summarize.png", taskInfo: "Default task which supports exploration of data.",disabled:false,minAssembly:1, minFeature:1, minAttr:1,selected: false},
 ]

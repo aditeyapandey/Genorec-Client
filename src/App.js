@@ -9,21 +9,21 @@ class App extends React.Component{
     super(props);
     this.state = {currentState:0,"displayComponent":"Dataspec"};
     
-    this.nextState = this.nextState.bind(this)
+    // this.nextState = this.nextState.bind(this)
   }
 
-  nextState(){
+  // nextState(){
 
-    this.setState({"currentState":this.state.currentState+1})
+  //   this.setState({"currentState":this.state.currentState+1})
 
-    if(this.state.currentState === 0){
-      this.setState({"displayComponent":"Dataspec"})
-    }
+  //   if(this.state.currentState === 0){
+  //     this.setState({"displayComponent":"Dataspec"})
+  //   }
 
-    if(this.state.currentState === 1){
-      this.setState({"displayComponent":"Encoding"})
-    }
-  }
+  //   if(this.state.currentState === 1){
+  //     this.setState({"displayComponent":"Encoding"})
+  //   }
+  // }
   
 
  render(){
@@ -41,7 +41,7 @@ function Header(){
   return(
     <>
      <div className="w3-bar w3-white w3-border-bottom w3-xlarge">
-     <a  className="w3-bar-item w3-button w3-text-red w3-hover-red"><b><i className={"fa fa-th-list w3-margin-right"}></i>GenoRec</b></a>
+     <a href="#"  className="w3-bar-item w3-button w3-text-red w3-hover-red"><b><i className={"fa fa-th-list w3-margin-right"}></i>GenoRec</b></a>
     </div>
     </>
   )

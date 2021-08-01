@@ -121,7 +121,7 @@ export const createGranularityInput = (granularity,fileid,componentid,onChangeFi
   return (
     <>
      <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
-        <p> Feature Type 1 </p>
+        <p> Feature Extent </p>
         {/* <p> Granularity </p> */}
       </div>
       <div  className="w3-center w3-hover-opacity w3-third">
@@ -182,7 +182,7 @@ export const createAvailablityInput = (availability,fileid,componentid,onChangeF
   return (
     <>
          <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
-        <p> Feature Type 2 </p>
+        <p> Feature Density</p>
       </div>
       <div  className="w3-center w3-hover-opacity w3-third">
         <img
