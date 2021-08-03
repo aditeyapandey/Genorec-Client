@@ -43,7 +43,7 @@ export const fileInputFieldsActive = {
   },
   cooler: {
     assembly1: true,
-    assembly2: true,
+    assembly2: false,
     interconnection: false,
     granularity: true,
     availability: false,
@@ -97,11 +97,11 @@ export const defaultInputForFiles = {
   },
   cooler: {
     assembly1: "hg38",
-    assembly2: "hg38",
+    assembly2: "N.A.",
     interconnection: true,
-    granularity: "Segment",
+    granularity: "Point",
     availability: "Continous",
-    data: { quant: 1, cat: 0, text: 0 },
+    data: { quant: 0, cat: 0, text: 0 },
     fileType:"cooler"
   },
   seg: {

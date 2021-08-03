@@ -4,6 +4,10 @@
 //Done....If BEDPE has no network then it will be a two different tracks with the same coordinates
 //BEDPE should have not have different assemblies
 
+//COOLER Complex Case
+//It should not have any variables that will be represented as tracks associated with it.
+
+
 
 export const createInputSpec = function (dataDescription, taskList) {
   let localDataDescription = JSON.parse(dataDescription);
@@ -61,13 +65,22 @@ export const createInputSpec = function (dataDescription, taskList) {
           });
           //add filewise attributes
           //This may fail, try out!
-          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= {}
-         
-          //Special Case for BEDPE Files with no network connection
-          if(inputConfigData["interconnection"])
+          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= {};
           assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigDataCopyForFileAttr["data"];
-          else
-          assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]= inputConfigData["data"];
+
+                   
+          //Special Case for BEDPE, if there is no network then the attributes are duplicated as seperate tracks
+          if(!inputConfigData["interconnection"] && inputConfigData["fileType"]==="bedpe")
+          {
+            // assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId] = inputConfigDataCopyForFileAttr["data"];
+            let tempAttr = assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId]
+            let localKeys = Object.keys(tempAttr);
+            let updatedTempAttr = {}
+            localKeys.forEach(key=>{
+              updatedTempAttr[key] = tempAttr[key]*2
+            })
+            assemblyBuilds[inputConfigData["assembly" + assemblyIndex]][featureDescription][fileId] = updatedTempAttr
+          }
 
         }
       }
@@ -107,13 +120,19 @@ function getSequences(seqName, seqid, data,featureConnection) {
   let sequenceId = "sequence_" + seqid;
   let sequenceName = seqName;
   let interFeatureTasks = { compare: [], correlate: [] };
-  let features = Object.keys(data).map((featureName,index) => getFeatures(index,featureName,data[featureName],featureConnection));
+  let features = []
+  Object.keys(data).forEach((featureName,index) => {
+    let returnedFeature = getFeatures(index,featureName,data[featureName],featureConnection);
+    if(returnedFeature!=="undefined")
+    {features.push(returnedFeature)}
+  });
+  // let f = features === "undefined" ? []: features
   return { sequenceId, sequenceName, interFeatureTasks, features };
 }
 
 function getFeatures(fId,fName,data,featureConnection) {
   let featureId ="feature_"+fId;
-  let featureGranularity = fName.split("_")[0].toLowerCase() ;
+  let featureGranularity = fName.split("_")[0].toLowerCase();
   let featureDensity = fName.split("_")[1].toLowerCase() ;
   let featureLabel = fName;
   let featureInterconnection = featureConnection[fName] !== undefined ? featureConnection[fName].featureInterconnection:false;
@@ -123,8 +142,6 @@ function getFeatures(fId,fName,data,featureConnection) {
   let attr = [];
   let globalAttrIndex = 0;
 
-  console.log("Current data we are focussing",data);
-
   // Object.keys(data["attributes"]).map((attributeType) => {
   //   for(let i=0;i<data["attributes"][attributeType];i++){
   //       attr.push(getAttributes(globalAttrIndex,attributeType,featureConnection,fName))
@@ -132,9 +149,18 @@ function getFeatures(fId,fName,data,featureConnection) {
   //   }
   //})
 
+  //Populating Attributes to include file names
+  console.log("Checking if something is selected",data);
+
+  //Checking if a data attribute has been added
+  if(data["attributes"]["quant"]===0 && data["attributes"]["cat"]===0 && data["attributes"]["text"]===0 )
+  {
+     return "undefined"
+  }
+  else
+  {
   const copyVarofDataWithAttr = JSON.parse(JSON.stringify(data));
   delete copyVarofDataWithAttr.attributes;
-  console.log("Print all keys except attributes", copyVarofDataWithAttr);
   const copyVarofDataWithAttrKeys = Object.keys(copyVarofDataWithAttr);
 
   copyVarofDataWithAttrKeys.forEach(keyVal =>{
@@ -154,6 +180,9 @@ function getFeatures(fId,fName,data,featureConnection) {
   })
 
   return {featureId,featureGranularity,featureDensity,featureLabel,featureInterconnection,denseInterconnection,intraFeatureTasks,interactivity,attr}
+  }
+
+
 }
 
 function getAttributes(id,type,featureInterconnectionIp,denseInterconnectionIp,fName,fileNameInput,encodingNameInput)
@@ -218,17 +247,23 @@ function checkInterconnection (inputConfigData,featureDescription)
   let featureInterconnectionDense = false
   let connectionType = "none";
 
+  //Cooler file format should have interconnection
   if(inputConfigData["fileType"] === "cooler")
   {
-      if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
+           
         denseInterConnection = true
         connectionType = "dense"
-      }
-      else
-      {
-        featureInterconnection = true
-        featureInterconnectionDense =true
-      }
+
+      // Original Code for assigning network information to cooler files
+      // if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {
+      //   denseInterConnection = true
+      //   connectionType = "dense"
+      // }
+      // else
+      // {
+      //   featureInterconnection = true
+      //   featureInterconnectionDense =true
+      // }
   }
 
   if(inputConfigData["fileType"] === "bedpe")

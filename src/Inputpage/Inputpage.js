@@ -193,7 +193,6 @@ class Inputpage extends React.Component {
     let recommendationInputSpec = {}
     let recommendationOutputSpec = {}
     let currentRecommendationOutput = this.state.recommendationOutputSpec
-    console.log(currentRecommendationOutput)
         
     //Total File Count
     if(fileCount>0)
