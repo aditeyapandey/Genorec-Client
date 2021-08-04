@@ -251,8 +251,8 @@ function checkInterconnection (inputConfigData,featureDescription)
   if(inputConfigData["fileType"] === "cooler")
   {
            
-        denseInterConnection = true
-        connectionType = "dense"
+        denseInterConnection = true;
+        connectionType = "dense";
 
       // Original Code for assigning network information to cooler files
       // if(inputConfigData["fileType"] === "cooler"  && (inputConfigData["assembly1"]!==inputConfigData["assembly2"])) {

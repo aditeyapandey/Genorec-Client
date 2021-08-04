@@ -41,7 +41,8 @@ class Inputpage extends React.Component {
       orderedDataDescriptionBoxes: [[], [], [], [], []],
       screenHeight: window.innerHeight,
       recommendationInputSpec:{},
-      recommendationOutputSpec:{}
+      recommendationOutputSpec:{},
+      recommendationPanelWidth:800
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -426,9 +427,26 @@ class Inputpage extends React.Component {
     }, ()=> console.log(this.state))
   }
 
+  // getClientWidthOfRecommendationPanel(id)
+  // {
+  //   console.log(id);
+  //   console.log(document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth);
+  // }
+
+  componentDidMount() {
+    // If we have a snapshot value, we've just added new items.
+    // Adjust scroll so these new items don't push the old ones out of view.
+    // (snapshot here is the value returned from getSnapshotBeforeUpdate)
+    console.log('test')
+    console.log(document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth);
+    this.setState({
+      recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth
+    }, ()=> console.log(this.state) )
+  }
+
   render() {
     const fileFormatDivs = [];
-
+    
     const taskCards = this.createHTMLLayoutTasks(this.state.taskList);
 
     for (let value of Object.keys(this.state.inputFileFormats)) {
@@ -504,8 +522,8 @@ class Inputpage extends React.Component {
                       </button>
                     </div>
                   </div>
-                  <div className="w3-row w3-center w3-display-container w3-margin">
-                    <Recommendation className="w3-center" data={this.finalRecommendationOutputSpec} width={800}/>
+                  <div id="recommendationOutputPanel" className="w3-row w3-center w3-display-container w3-margin recommendationOutputPanel">
+                    <Recommendation className="w3-center" data={this.finalRecommendationOutputSpec} width={this.state.recommendationPanelWidth}/>
                   </div>
                 </div>
               </div>
