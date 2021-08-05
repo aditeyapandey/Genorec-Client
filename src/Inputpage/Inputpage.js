@@ -1,5 +1,5 @@
 import React from "react";
-import Recommendation from "../Recommendation/recommendation";
+import RecommendationPanel from "../Recommendation/recommendation-panel";
 import {createInputSpec} from "./inputspec"
 import "./Inputpage.css";
 import {
@@ -523,7 +523,7 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div id="recommendationOutputPanel" className="w3-row w3-center w3-display-container w3-margin recommendationOutputPanel">
-                    <Recommendation className="w3-center" data={this.finalRecommendationOutputSpec} width={this.state.recommendationPanelWidth}/>
+                    <RecommendationPanel className="w3-center" data={this.finalRecommendationOutputSpec} width={this.state.recommendationPanelWidth}/>
                   </div>
                 </div>
               </div>
