@@ -12,7 +12,7 @@ const RecommendationPanel = React.memo((props) => {
 
   return (
     <div className="gosling-recommendation-output">
-      {genorecToGosling(JSON.parse(JSON.stringify(genorec)), width).map((spec, i) => {
+      {genorecToGosling(JSON.parse(JSON.stringify(genorec)), width - 40 /* padding */).map((spec, i) => {
         return i < 10 ?
           <>
             <div className="w3-center w3-light-grey w3-padding">
@@ -20,8 +20,12 @@ const RecommendationPanel = React.memo((props) => {
             </div>
             <GoslingComponent
               key={v1()}
+              className={'gosling-component'}
               spec={spec}
-              padding={0} />
+              padding={20}
+              outline={'1px solid gray'}
+              theme={'light'}
+            />
           </> : null
       })}
     </div>

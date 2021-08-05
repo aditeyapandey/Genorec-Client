@@ -30,13 +30,16 @@ export function genorecToGosling(...props) {
 
     // DEBUG
     // console.log('genorec', genorec);
-    
+
     if(Object.keys(genorec).length === 0) {
         // We did not receive a recommendation
         return [];
     }
 
-    return [SIMPLE_GOSLING_SPEC(width)];
+    return [
+        SIMPLE_GOSLING_SPEC(width, 'linear'), 
+        SIMPLE_GOSLING_SPEC(width, 'circular')
+    ];
 
     /* Below codes are deprecated */
     if (!genorec) {

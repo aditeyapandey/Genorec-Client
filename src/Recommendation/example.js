@@ -1,21 +1,29 @@
 
-export const SIMPLE_GOSLING_SPEC = (width) => {
+export const SIMPLE_GOSLING_SPEC = (width, layout) => {
     return {
+        style: { enableSmoothPath: true, background: '#FAFAFA' },
+        static: false,
+        layout,
         "tracks": [
             {
+                alignment: 'overlay',
                 "data": {
                     "url": "https://resgen.io/api/v1/tileset_info/?d=UvVPeLHuRDiYA3qwFlm7xQ",
                     "type": "multivec",
                     "row": "sample",
                     "column": "position",
                     "value": "peak",
-                    "categories": ["sample 1", "sample 2", "sample 3", "sample 4"]
+                    "categories": ["sample 1"],
+                    binSize: 2
                 },
-                mark: "point",
+                tracks: [
+                    { mark: "line" },
+                    { mark: "point", size: { value: 2 } },
+                ],
                 x: { field: 'position', type: 'genomic' },
                 y: { field: 'peak', type: 'quantitative', grid: true },
-                color: { value: 'gray' },
-                opacity: { value: 0.5 },
+                color: { value: 'steelblue' },
+                opacity: { value: 1 },
                 width,
                 height: 100
             }

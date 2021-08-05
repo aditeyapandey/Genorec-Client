@@ -2,3 +2,14 @@
     /* This is important to properly show visualization if parents use center align */
     text-align: left !important;
 }
+
+.gosling-component {
+    outline: 1px solid #F1F1F1;
+    margin-bottom: 40px !important;
+}
+
+#recommendation-button {
+    position: fixed;
+    right: 50px;
+    top: 100px;
+}
