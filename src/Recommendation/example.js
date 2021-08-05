@@ -1,9 +1,10 @@
 
 export const SIMPLE_GOSLING_SPEC = (width, layout) => {
     return {
-        style: { enableSmoothPath: true, background: '#FAFAFA' },
+        style: { enableSmoothPath: true, background: '#FAFAFA', outline: 'black', outlineWidth: 1 },
         static: false,
         layout,
+        centerRadius: 0.7,
         "tracks": [
             {
                 alignment: 'overlay',

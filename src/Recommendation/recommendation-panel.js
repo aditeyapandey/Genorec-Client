@@ -6,16 +6,18 @@ import "./recommendation-panel.css";
 
 const RecommendationPanel = React.memo((props) => {
   const {
-    data: genorec,
+    data: genorec, // final specs
+    _data: _genorecForDev, // specs for development which allows not to click on a button everytime
     width
   } = props;
 
   return (
     <div className="gosling-recommendation-output">
-      {genorecToGosling(JSON.parse(JSON.stringify(genorec)), width - 40 /* padding */).map((spec, i) => {
+      {/* TODO: Use `genorec` instead for the deployment */}
+      {genorecToGosling(JSON.parse(JSON.stringify(_genorecForDev)), width - 40 /* padding */ + 1).map((spec, i) => {
         return i < 10 ?
           <>
-            <div className="w3-center w3-light-grey w3-padding">
+            <div className="w3-center w3-light-grey w3-padding recommendation-header">
               <h5>{`Option ${parseInt(i + 1)}`}</h5>
             </div>
             <GoslingComponent

@@ -523,7 +523,12 @@ class Inputpage extends React.Component {
                     </div>
                   </div>
                   <div id="recommendationOutputPanel" className="w3-row w3-center w3-display-container w3-margin recommendationOutputPanel">
-                    <RecommendationPanel className="w3-center" data={this.finalRecommendationOutputSpec} width={this.state.recommendationPanelWidth}/>
+                    <RecommendationPanel 
+                      className="w3-center" 
+                      data={this.finalRecommendationOutputSpec} 
+                      width={this.state.recommendationPanelWidth} 
+                      _data={this.state.recommendationOutputSpec}
+                    />
                   </div>
                 </div>
               </div>

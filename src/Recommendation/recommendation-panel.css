@@ -8,6 +8,10 @@
     margin-bottom: 40px !important;
 }
 
+.recommendation-header {
+    outline: 1px solid #F1F1F1;
+}
+
 #recommendation-button {
     position: fixed;
     right: 50px;
