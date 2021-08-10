@@ -22,7 +22,7 @@ export const SIMPLE_GOSLING_SPEC = (width, layout) => {
 					{ mark: "point", size: { value: 2 } },
 				],
 				x: { field: "position", type: "genomic" },
-				y: { field: "peak", type: "quantitative", grid: true, axis: 'right' },
+				y: { field: "peak", type: "quantitative", grid: true, axis: "right" },
 				color: { value: "steelblue" },
 				opacity: { value: 1 },
 				width,

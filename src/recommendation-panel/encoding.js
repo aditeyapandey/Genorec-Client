@@ -30,16 +30,16 @@ export const getMultivecData = (i = 0, granularity, availability) => {
 			binSize: 4 // granularity === "segment" ? 4 : 2
 		},
 		dataTransform: [
-			{ type: 'filter', field: "sample", oneOf: [`${index}`], not: false }
+			{ type: "filter", field: "sample", oneOf: [`${index}`], not: false }
 		]
-				// (
-					// availability === "sparse" ? [
-					// 	{ field: "sample", oneOf: [i + ""], not: false },
-					// 	{ field: "peak", inRange: [0.0001, 0.0008] }
-					// ] : [
+		// (
+		// availability === "sparse" ? [
+		// 	{ field: "sample", oneOf: [i + ""], not: false },
+		// 	{ field: "peak", inRange: [0.0001, 0.0008] }
+		// ] : [
 						
-					// ]
-				// )
+		// ]
+		// )
 	};
 };
 
@@ -58,46 +58,46 @@ export function encodingToTrack(encoding, config) {
 	};
 
 	switch(encoding) {
-		case 'lineChart':
-			return {
-				...JSON.parse(JSON.stringify(trackBase)),
-				...JSON.parse(JSON.stringify(getMultivecData(index))),
-				alignment: "overlay",
-				tracks: [
-					{ mark: "line" },
-					{ mark: "point", size: { value: 2 } },
-				],
-				x: { field: "position", type: "genomic" },
-				y: { field: "peak", type: "quantitative", axis: 'right', grid: true },
-				color: { value: getSampleColor(index) },
-				size: { value: 1 },
-				opacity: { value: 0.8 }
-			}
-		case "barChart":
-		case "intervalBarChart":
-			return {
-				...JSON.parse(JSON.stringify(trackBase)),
-				...JSON.parse(JSON.stringify(getMultivecData(index))),
-				mark: "bar",
-				x: { field: "start", type: "genomic" },
-				xe: { field: "end", type: "genomic" },
-				y: { field: "peak", type: "quantitative", axis: 'right', grid: true },
-				color: { value: getSampleColor(index) },
-				strokeWidth: { value: 0.5 },
-				opacity: { value: 0.8 }
-			}
-		case "heatmap":
-		case "intervalHeatmap":
-		default:
-			return {
-				...JSON.parse(JSON.stringify(trackBase)),
-				...JSON.parse(JSON.stringify(getMultivecData(index))),
-				mark: "rect",
-				x: { field: "start", type: "genomic" },
-				xe: { field: "end", type: "genomic" },
-				color: { field: "peak", type: "quantitative", range: 'grey', legend: true },
-				opacity: { value: 0.8 }
-			}
+	case "lineChart":
+		return {
+			...JSON.parse(JSON.stringify(trackBase)),
+			...JSON.parse(JSON.stringify(getMultivecData(index))),
+			alignment: "overlay",
+			tracks: [
+				{ mark: "line" },
+				{ mark: "point", size: { value: 2 } },
+			],
+			x: { field: "position", type: "genomic" },
+			y: { field: "peak", type: "quantitative", axis: "right", grid: true },
+			color: { value: getSampleColor(index) },
+			size: { value: 1 },
+			opacity: { value: 0.8 }
+		};
+	case "barChart":
+	case "intervalBarChart":
+		return {
+			...JSON.parse(JSON.stringify(trackBase)),
+			...JSON.parse(JSON.stringify(getMultivecData(index))),
+			mark: "bar",
+			x: { field: "start", type: "genomic" },
+			xe: { field: "end", type: "genomic" },
+			y: { field: "peak", type: "quantitative", axis: "right", grid: true },
+			color: { value: getSampleColor(index) },
+			strokeWidth: { value: 0.5 },
+			opacity: { value: 0.8 }
+		};
+	case "heatmap":
+	case "intervalHeatmap":
+	default:
+		return {
+			...JSON.parse(JSON.stringify(trackBase)),
+			...JSON.parse(JSON.stringify(getMultivecData(index))),
+			mark: "rect",
+			x: { field: "start", type: "genomic" },
+			xe: { field: "end", type: "genomic" },
+			color: { field: "peak", type: "quantitative", range: "grey", legend: true },
+			opacity: { value: 0.8 }
+		};
 	}
 }
 

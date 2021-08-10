@@ -12,19 +12,19 @@ const IS_DEBUG = true;
  * @returns {Array} An array of gosling specs.
  */
 export function genorecToGosling(geno = [], width = 100) {
-	if(IS_DEBUG) console.log('%cGenoREC Output Spec', "color: green; font-size: 18px", geno);
+	if(IS_DEBUG) console.log("%cGenoREC Output Spec", "color: green; font-size: 18px", geno);
 
-    const gos = [];
+	const gos = [];
 	geno.forEach(genoOption => {
-        const { 
-            viewPartition: partition, 
-            viewArrangement: arrangement,
-            viewConnectionType: connection,
-            geneAnnotation,
-            ideogramDisplayed: ideogram,
-            views,
-            tasks,
-        } = genoOption;
+		const { 
+			viewPartition: partition, 
+			viewArrangement: arrangement,
+			viewConnectionType: connection,
+			geneAnnotation,
+			ideogramDisplayed: ideogram,
+			views,
+			tasks,
+		} = genoOption;
 
 		const gosViews = [];
 		views.forEach(view => {
@@ -36,7 +36,7 @@ export function genorecToGosling(geno = [], width = 100) {
 
 			const gosTracks = [];
 			let index = 0;
-			let layout = 'linear';
+			let layout = "linear";
 			tracks.forEach(track => {
 				const {
 					layout: trackLayout,
@@ -56,7 +56,7 @@ export function genorecToGosling(geno = [], width = 100) {
 					const title = `${fileName} - ${featureName}`;
 
 					const gosTrack = encodingToTrack(encodingName, { title, width, index: index++ });
-					if(partition === 'segregated') {
+					if(partition === "segregated") {
 						// In this case, we want to add multiple views each of which represent different chromosomes.
 						for(let i = 0; i <= 5; i++) {
 							gosViews.push({
@@ -75,7 +75,7 @@ export function genorecToGosling(geno = [], width = 100) {
 				});
 			});
 
-			if(partition === 'segregated') {
+			if(partition === "segregated") {
 				// !! We already added views for this case.
 			} else {
 				gosViews.push({
@@ -94,8 +94,8 @@ export function genorecToGosling(geno = [], width = 100) {
 			centerRadius: 0.6,
 			views: gosViews
 		});
-    });
+	});
 
-	if(IS_DEBUG) console.log('%cConverted Gosling Spec', "color: blue; font-size: 18px", gos);
-    return gos;
+	if(IS_DEBUG) console.log("%cConverted Gosling Spec", "color: blue; font-size: 18px", gos);
+	return gos;
 }
