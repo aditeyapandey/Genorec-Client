@@ -1,6 +1,6 @@
+import { SIMPLE_GOSLING_SPEC } from "./example";
 // import get from "lodash/get";
 // import { encodingToGoslingTrack } from "./encoding";
-import { SIMPLE_GOSLING_SPEC } from "./example";
 // import { getIdeogram } from "./ideogram";
 
 // !!! Use the name of internal variables same as the actual object key, if possible.
@@ -21,18 +21,20 @@ import { SIMPLE_GOSLING_SPEC } from "./example";
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
- * @param {Object} genoRec The Genorec spec.
- * @param {number} width The width of recommended visualizations.
+ * 
+ * @param {Object} geno The GenoREC spec that contains multiple visualizations that are suggested by GenoREC Engine.
+ * @param {number} width The size of recommended visualizations along a horizontal axis.
  * @returns {Array} An array of gosling specs.
  */
-export function genorecToGosling(...props) {
-	const [genorec, width] = props;
-
+export function genorecToGosling(
+	geno, 
+	width
+) {
 	// DEBUG
-	// console.log('genorec', genorec);
+	console.log(`%cGenoREC: ${geno}`, "color: red");
 
-	if(Object.keys(genorec).length === 0) {
-		// We did not receive a recommendation
+	if(Object.keys(geno).length === 0) {
+		// We did not receive any recommendation, so no point to convert.
 		return [];
 	}
 

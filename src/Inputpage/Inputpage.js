@@ -1,5 +1,5 @@
 import React from "react";
-import RecommendationPanel from "../Recommendation/recommendation-panel";
+import RecommendationPanel from "../recommendation-panel";
 import {createInputSpec} from "./inputspec"
 import "./Inputpage.css";
 import {
