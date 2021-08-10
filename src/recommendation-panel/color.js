@@ -3,6 +3,7 @@ export const getSampleColor = (i) => {
 };
 
 export const SINGLE_COLOR = ["gray"];
+
 // Taken from https://mode.com/blog/custom-color-palettes/
 const COLOR_MAP = [ 
 	"gray",

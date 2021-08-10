@@ -1,0 +1,68 @@
+[
+    {
+        "viewPartition": "contiguous",
+        "partitionPredictionScore": 0.3779644730092272,
+        "views": [
+            {
+                "trackAlignment": "stack",
+                "trackAlignmentPrediction": 0.7071067811865475,
+                "tracks": [
+                    {
+                        "layout": "linear",
+                        "layoutPredictionScore": 0.4999999999999999,
+                        "fileName": "bigwig1",
+                        "encodings": [
+                            {
+                                "encoding": "lineChart",
+                                "encodingPredictionScore": 0.6123724356957945,
+                                "columnName": "quant0",
+                                "encodingName": "quant0"
+                            }
+                        ],
+                        "interconnectionType": "none"
+                    }
+                ],
+                "sequenceName": "hg38"
+            }
+        ],
+        "viewArrangement": "stack",
+        "viewArrangementPredictionScore": 0.5773502691896257,
+        "viewConnectionType": "none",
+        "geneAnnotation": true,
+        "ideogramDisplayed": true,
+        "tasks": []
+    },
+    {
+        "viewPartition": "segregated",
+        "partitionPredictionScore": 0.3779644730092272,
+        "views": [
+            {
+                "trackAlignment": "stack",
+                "trackAlignmentPrediction": 0.7071067811865475,
+                "tracks": [
+                    {
+                        "layout": "linear",
+                        "layoutPredictionScore": 0.4999999999999999,
+                        "fileName": "bigwig1",
+                        "encodings": [
+                            {
+                                "encoding": "lineChart",
+                                "encodingPredictionScore": 0.6123724356957945,
+                                "columnName": "quant0",
+                                "encodingName": "quant0"
+                            }
+                        ],
+                        "interconnectionType": "none"
+                    }
+                ],
+                "sequenceName": "hg38"
+            }
+        ],
+        "viewArrangement": "stack",
+        "viewArrangementPredictionScore": 0.5773502691896257,
+        "viewConnectionType": "none",
+        "geneAnnotation": true,
+        "ideogramDisplayed": true,
+        "tasks": []
+    }
+]
