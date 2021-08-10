@@ -21,7 +21,7 @@ const RecommendationPanel = React.memo((props) => {
               <div className="w3-row">
               <div className="w3-col s9 w3-center"><h5>{`Option ${parseInt(i + 1)}`}</h5></div>
               <div className="w3-col s3 w3-center">
-                <a href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify({'YOURJSON':7}))}`} download="filename.json" className="w3-button w3-dark-gray w3-theme" >Export Gosling Spec <i className="fa fa-external-link"></i></a>
+                <a href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(spec))}`} download="filename.json" className="w3-button w3-dark-gray w3-theme" >Export Gosling.js Spec <i className="fa fa-external-link"></i></a>
               </div>
                </div>
             </div>
