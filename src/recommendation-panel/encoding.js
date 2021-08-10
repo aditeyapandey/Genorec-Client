@@ -12,11 +12,13 @@ export const EXAMPLE_DATASETS = {
 
 /**
  * This generates good looking data based on granularity and availability.
+ * 
  * @param {*} i 
  * @param {*} granularity 
  * @param {*} availability 
  */
-export const getMultivecData = (i, granularity, availability) => {
+export const getMultivecData = (i = 0, granularity, availability) => {
+	const index = Number.parseInt(Math.random() * 100); // !! TODO: Use consistent index?
 	return {
 		data: {
 			url: EXAMPLE_DATASETS.multivec,
@@ -24,27 +26,83 @@ export const getMultivecData = (i, granularity, availability) => {
 			row: "sample",
 			column: "position",
 			value: "peak",
-			categories: (Array.from(Array(i + 1).keys()).map(d => "" + d)),
-			binSize: granularity === "segment" ? 4 : 2
+			categories: (Array.from(Array(index + 1).keys()).map(d => `${d}`)),
+			binSize: 4 // granularity === "segment" ? 4 : 2
 		},
-		dataTransform: {
-			filter:
-				(
-					availability === "sparse" ? [
-						{ field: "sample", oneOf: [i + ""], not: false },
-						{ field: "peak", inRange: [0.0001, 0.0008] }
-					] : [
-						{ field: "sample", oneOf: [i + ""], not: false }
-					]
-				)
-		}
+		dataTransform: [
+			{ type: "filter", field: "sample", oneOf: [`${index}`], not: false }
+		]
+		// (
+		// availability === "sparse" ? [
+		// 	{ field: "sample", oneOf: [i + ""], not: false },
+		// 	{ field: "peak", inRange: [0.0001, 0.0008] }
+		// ] : [
+						
+		// ]
+		// )
 	};
 };
 
-// Default height of tracks
-const height = 60;
+export function encodingToTrack(encoding, config) {
+	const { 
+		title, 
+		width, 
+		index
+	} = config;
 
-export function encodingToGoslingTrack(
+	const trackBase = {
+		title,
+		style: { outlineWidth: 1 },
+		width,
+		height: 100
+	};
+
+	switch(encoding) {
+	case "lineChart":
+		return {
+			...JSON.parse(JSON.stringify(trackBase)),
+			...JSON.parse(JSON.stringify(getMultivecData(index))),
+			alignment: "overlay",
+			tracks: [
+				{ mark: "line" },
+				{ mark: "point", size: { value: 2 } },
+			],
+			x: { field: "position", type: "genomic" },
+			y: { field: "peak", type: "quantitative", axis: "right", grid: true },
+			color: { value: getSampleColor(index) },
+			size: { value: 1 },
+			opacity: { value: 0.8 }
+		};
+	case "barChart":
+	case "intervalBarChart":
+		return {
+			...JSON.parse(JSON.stringify(trackBase)),
+			...JSON.parse(JSON.stringify(getMultivecData(index))),
+			mark: "bar",
+			x: { field: "start", type: "genomic" },
+			xe: { field: "end", type: "genomic" },
+			y: { field: "peak", type: "quantitative", axis: "right", grid: true },
+			color: { value: getSampleColor(index) },
+			strokeWidth: { value: 0.5 },
+			opacity: { value: 0.8 }
+		};
+	case "heatmap":
+	case "intervalHeatmap":
+	default:
+		return {
+			...JSON.parse(JSON.stringify(trackBase)),
+			...JSON.parse(JSON.stringify(getMultivecData(index))),
+			mark: "rect",
+			x: { field: "start", type: "genomic" },
+			xe: { field: "end", type: "genomic" },
+			color: { field: "peak", type: "quantitative", range: "grey", legend: true },
+			opacity: { value: 0.8 }
+		};
+	}
+}
+
+const height = 40;
+export function _encodingToTrack(
 	encoding,
 	width,
 	i = 0,

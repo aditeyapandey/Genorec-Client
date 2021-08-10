@@ -1,7 +1,7 @@
 import React from "react";
 import { GoslingComponent } from "gosling.js";
 import { genorecToGosling } from "./convert";
-import { v1 } from "uuid";
+import exampleSpecs from "./examples";
 import "./index.css";
 
 function RecommendationPanel(props) {
@@ -14,9 +14,9 @@ function RecommendationPanel(props) {
 	return (
 		<div className="gosling-recommendation-output">
 			{/* TODO: Use `genorec` instead for the deployment */}
-			{genorecToGosling(JSON.parse(JSON.stringify(_genorecForDev)), width - 40 /* padding */ + 1).map((spec, i) => {
+			{genorecToGosling(JSON.parse(JSON.stringify(_genorecForDev)), width - 40).map((spec, i) => {
 				return i < 10 ?
-					<>
+					<div key={JSON.stringify(spec)}>
 						<div className="w3-center w3-light-grey w3-padding recommendation-header">
 							<div className="w3-row">
 								<div className="w3-col s9 w3-center"><h5>{`Option ${parseInt(i + 1)}`}</h5></div>
@@ -26,14 +26,13 @@ function RecommendationPanel(props) {
 							</div>
 						</div>
 						<GoslingComponent
-							key={v1()}
 							className={"gosling-component"}
 							spec={spec}
 							padding={20}
 							outline={"1px solid gray"}
 							theme={"light"}
 						/>
-					</> : null;
+					</div> : null;
 			})}
 		</div>
 	);

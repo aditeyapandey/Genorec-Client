@@ -42,7 +42,7 @@ class Inputpage extends React.Component {
       orderedDataDescriptionBoxes: [[], [], [], [], []],
       screenHeight: window.innerHeight,
       recommendationInputSpec:{},
-      recommendationOutputSpec:{},
+      recommendationOutputSpec:[],
       recommendationPanelWidth:800
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
@@ -54,7 +54,7 @@ class Inputpage extends React.Component {
     this.handleRecommendationClick = this.handleRecommendationClick.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
-    this.finalRecommendationOutputSpec = {}
+    this.finalRecommendationOutputSpec = []
 
     // !! TODO: set default input data and task descriptions
     // this.onChangeFileQuantity({ target: { name: 'bigwig', value: '1' } });
@@ -196,7 +196,7 @@ class Inputpage extends React.Component {
   getRecommendationOutput(input,task,fileCount)
   {
     let recommendationInputSpec = {}
-    let recommendationOutputSpec = {}
+    let recommendationOutputSpec = []
     let currentRecommendationOutput = this.state.recommendationOutputSpec
         
     //Total File Count
