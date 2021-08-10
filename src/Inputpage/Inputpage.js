@@ -25,6 +25,7 @@ class Inputpage extends React.Component {
     super(props);
     // let recommendation = genorecEngine.getRecommendation(recommendationSpec)
     // console.log(recommendation)
+    
     this.state = {
       minFiles: 0,
       maxFiles: 20,
@@ -54,6 +55,9 @@ class Inputpage extends React.Component {
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
     this.finalRecommendationOutputSpec = {}
+
+    // !! TODO: set default input data and task descriptions
+    // this.onChangeFileQuantity({ target: { name: 'bigwig', value: '1' } });
   }
 
   //Utility Functions
