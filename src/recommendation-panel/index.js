@@ -2,7 +2,7 @@ import React from "react";
 import { GoslingComponent } from "gosling.js";
 import { genorecToGosling } from "./convert";
 import { v1 } from "uuid";
-import "./recommendation-panel.css";
+import "./index.css";
 
 function RecommendationPanel(props) {
 	const {

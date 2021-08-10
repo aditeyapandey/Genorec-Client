@@ -31,7 +31,7 @@ export function genorecToGosling(
 	width
 ) {
 	// DEBUG
-	console.log(`%cGenoREC: ${geno}`, "color: red");
+	console.log(`%cGenoREC: ${geno}`, "color: green");
 
 	if(Object.keys(geno).length === 0) {
 		// We did not receive any recommendation, so no point to convert.
