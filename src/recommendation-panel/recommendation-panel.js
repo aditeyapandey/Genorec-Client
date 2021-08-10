@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React from "react";
 import { GoslingComponent } from "gosling.js";
 import { genorecToGosling } from "./convert";
 import { v1 } from "uuid";
 import "./recommendation-panel.css";
 
-const RecommendationPanel = React.memo((props) => {
+function RecommendationPanel(props) {
 	const {
-		data: genorec, // final specs
+		// data: genorec, // final specs
 		_data: _genorecForDev, // specs for development which allows not to click on a button everytime
 		width
 	} = props;
@@ -37,6 +37,6 @@ const RecommendationPanel = React.memo((props) => {
 			})}
 		</div>
 	);
-});
+}
 
 export default RecommendationPanel;

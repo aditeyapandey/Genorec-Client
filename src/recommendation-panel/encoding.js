@@ -48,9 +48,9 @@ export function encodingToGoslingTrack(
 	encoding,
 	width,
 	i = 0,
-	showAxis = false,
+	// showAxis = false,
 	title = undefined,
-	linkingID = undefined,
+	// linkingID = undefined,
 	availability = "sparse",
 	granularity = "point",
 	cI = 0
@@ -61,8 +61,8 @@ export function encodingToGoslingTrack(
 		width,
 		height
 	};
-	const axis = showAxis ? "bottom" : undefined;
-	const domain = [undefined, { chromosome: "1" }][1];
+	// const axis = showAxis ? "bottom" : undefined;
+	// const domain = [undefined, { chromosome: "1" }][1];
 	switch (encoding) {
 	case "linechart":
 		return {
