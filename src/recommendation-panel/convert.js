@@ -1,9 +1,10 @@
 import { encodingToTrack } from "./encoding";
 import { getGeneAnnotation } from "./gene-annotation";
+import { getIdeogram, getOverview } from "./ideogram";
 // import { getIdeogram } from "./ideogram";
 
 // A flag variable to print log messages while debugging
-const IS_DEBUG = false;
+export const IS_DEBUG = true;
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
@@ -19,34 +20,84 @@ export function genorecToGosling(geno = [], width = 100) {
 	geno.forEach(genoOption => {
 		const { 
 			viewPartition: partition, 
-			/*  viewArrangement: arrangement, */
-			/* viewConnectionType: connection, */
+			viewArrangement: arrangement,
+			viewConnectionType: connection,
 			geneAnnotation,
-			/* ideogramDisplayed: ideogram, */
+			// ideogramDisplayed: ideogram,
 			views,
-			/* tasks, */
+			tasks: task, // One of 'singleROI', 'compareMultipleROI', and 'overview'
 		} = genoOption;
 
+		if(arrangement !== "stack" && arrangement !== "orthogonal") {
+			if(IS_DEBUG) console.log(`%c Unsupported arrangement: ${arrangement}`, "color: orange; font-size: 24px");
+		}
+		if(connection === "dense") {
+			//
+		} else if(connection === "none") {
+			// We do nothing for this.
+		} else {
+			if(IS_DEBUG) console.log(`%c Unsupported view connection: ${connection}`, "color: orange; font-size: 24px");
+		}
+
 		const gosViews = [];
+
+		if(connection === "dense" && arrangement === "orthogonal") {
+			// we want to add a matrix
+			gosViews.push({
+				// assembly, // we do not have this information, lets use a default one
+				// xOffset: width / 2.0,
+				tracks: [
+					encodingToTrack("matrix", { 
+						title: "matrix", 
+						width
+					})
+				]
+			});
+		}
+
 		views.forEach(view => {
 			const {
-				/* trackAlignment: alignment, */
+				trackAlignment: alignment,
 				sequenceName: assembly,
 				tracks
 			} = view;
 
+			if(alignment !== "stack") {
+				if(IS_DEBUG) console.log(`%c Unsupported alignment: ${alignment}`, "color: orange; font-size: 24px");
+			}
+
 			const gosTracks = [];
-			let index = 0;
-			let layout = "linear";
+			let trackCount = 0;
+			let layout = "linear"; // don't know why this is specified in the tracks, but have another version here in the view level.
+			let isSparseInterconnectionCircularLayout = false;
 			tracks.forEach(track => {
 				const {
 					layout: trackLayout,
 					fileName,
-					/* interconnectionType, */
+					interconnectionType: interconnection, // One of "sparse" and ?
 					encodings: subTracks
 				} = track;
-
+				
 				layout = trackLayout;
+
+				if(interconnection === "sparse") {
+					// We need to add a arc track for interconnection
+					if(layout === "linear") {
+						gosTracks.push(
+							encodingToTrack("link", { 
+								title: "arc", 
+								width
+							})
+						);
+					} else {
+						// for circular, we add the track later
+						isSparseInterconnectionCircularLayout = true;
+					}
+				} else if (interconnection === "none"){
+					// We do nothing for this.
+				} else {
+					if(IS_DEBUG) console.log(`%c Unsupported interconnection: ${interconnection}`, "color: orange; font-size: 24px");
+				}
 
 				subTracks.forEach(subTrack => {
 					const {
@@ -56,7 +107,18 @@ export function genorecToGosling(geno = [], width = 100) {
 
 					const title = `${fileName} - ${featureName}`;
 
-					const gosTrack = encodingToTrack(encodingName, { title, width, index: index++ });
+					// Create a gosling track specification
+					const gosTrack = encodingToTrack(
+						encodingName, 
+						{ 
+							title, 
+							width, 
+							index: trackCount++ 
+						}
+					);
+					
+					let gosArcTrack;
+
 					if(partition === "segregated") {
 						// In this case, we want to add multiple views each of which represent different chromosomes.
 						for(let i = 0; i <= 5; i++) {
@@ -76,23 +138,102 @@ export function genorecToGosling(geno = [], width = 100) {
 						}
 					} else {
 						// Add a gosling track
+						if(gosArcTrack) {
+							// Add arc first
+						}
 						gosTracks.push(gosTrack);
 					}
 				});
 			});
 
+			if(isSparseInterconnectionCircularLayout) {
+				// We need to add a arc track for interconnection
+				gosTracks.push(
+					encodingToTrack("link", { 
+						title: "arc", 
+						width
+					})
+				);
+			}
+			
 			if(partition === "segregated") {
 				// !! We already added views for this case.
 			} else {
-				gosViews.push({
-					layout,
-					assembly,
-					tracks: (
-						geneAnnotation ? 
-							[getGeneAnnotation(width, 100), ...gosTracks] :
-							gosTracks
-					)
-				});
+				if(task?.toLowerCase() === "singleroi" || task?.toLowerCase() === "comparemultipleroi") {
+					// Add an ideogram overview
+					gosViews.push({
+						layout: "linear",
+						assembly,
+						tracks: [getOverview(width, 20)]
+					});
+					
+					if(task?.toLowerCase() === "singleroi") {
+						// Zoom to show local regions
+						gosViews.push({
+							layout,
+							assembly,
+							xDomain: { chromosome: "3" },
+							linkingId: "A",
+							tracks: (
+								geneAnnotation ? 
+									[getGeneAnnotation(width, 100), ...gosTracks] :
+									gosTracks
+							)
+						});						
+					} else if(task?.toLowerCase() === "comparemultipleroi") {
+						// Zoom to show local regions with two views
+						// In this case, we need to add two views juxtaposed.
+						const spacing = 20;
+						const viewWidth = width / 2.0 - spacing / 2.0;
+						gosViews.push({
+							arrangement: "horizontal",
+							spacing,
+							views: [
+								{
+									layout,
+									assembly,
+									xDomain: { chromosome: "3" },
+									linkingId: "A",
+									tracks: (
+										geneAnnotation ? 
+											[
+												getIdeogram(viewWidth, 20),
+												getGeneAnnotation(viewWidth, 100), 
+												...gosTracks.map(d => { return {...d, width: viewWidth };} )
+											] :
+											gosTracks.map(d => { return {...d, width: viewWidth };} )
+									)
+								},
+								{
+									layout,
+									assembly,
+									xDomain: { chromosome: "6" },
+									linkingId: "B",
+									tracks: (
+										geneAnnotation ? 
+											[
+												getIdeogram(viewWidth, 20),
+												getGeneAnnotation(viewWidth, 100), 
+												...gosTracks.map(d => { return {...d, width: viewWidth };} )
+											] :
+											gosTracks.map(d => { return {...d, width: viewWidth };} )
+									)
+								}
+							]
+						});						
+					}
+				} else {
+					// This means an overview task is selected.
+					gosViews.push({
+						layout,
+						assembly,
+						tracks: (
+							geneAnnotation ? 
+								[getGeneAnnotation(width, 100), ...gosTracks] :
+								gosTracks
+						)
+					});
+				}
 			}
 		});
 
