@@ -4,7 +4,7 @@ import { getIdeogram, getOverview } from "./ideogram";
 // import { getIdeogram } from "./ideogram";
 
 // A flag variable to print log messages while debugging
-export const IS_DEBUG = true;
+export const IS_DEBUG = false;
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
