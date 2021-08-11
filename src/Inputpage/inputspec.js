@@ -9,7 +9,7 @@
 
 
 
-export const createInputSpec = function (dataDescription, taskList) {
+export const createInputSpec = function (dataDescription, taskList, selectedTask) {
   let localDataDescription = JSON.parse(dataDescription);
 
   //This code is currently for files with 1 assembly
@@ -89,13 +89,13 @@ export const createInputSpec = function (dataDescription, taskList) {
 
   console.log("Assembly Builds",assemblyBuilds);
 
-  let recommendationInputSpec = specStructure(assemblyBuilds,interconnection);
+  let recommendationInputSpec = specStructure(assemblyBuilds,interconnection,selectedTask);
   activateTasks(taskList, assemblyBuilds);
   console.log("InputSpec",recommendationInputSpec);
   return recommendationInputSpec;
 };
 
-function specStructure(assemblyBuilds,interconnection) {
+function specStructure(assemblyBuilds,interconnection,selectedTask) {
 
   let sequences = [];
   let intraSequenceTask = {"connectedNodes":[],"sequenceConservation":[],"edgeValues":[]};
@@ -103,7 +103,7 @@ function specStructure(assemblyBuilds,interconnection) {
   let sparseConnection = interconnection.sparseInterConnection;
   let connectionType = interconnection.connectionType;
   //Need to populate these variables
-  let tasks = [];
+  let tasks = [selectedTask];
   let geneAnnotation = true;
   let ideogramDisplayed = true;
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { GoslingComponent } from "gosling.js";
 import { genorecToGosling } from "./convert";
-import exampleSpecs from "./examples";
+// import exampleSpecs from "./examples";
 import "./index.css";
 
 function RecommendationPanel(props) {

@@ -109,7 +109,7 @@ class Inputpage extends React.Component {
           this.dataDescriptionBox(updatedFileType, fileid, index)
         );
 
-        this.state.orderedDataDescriptionBoxes[orderedDataIndex].push(
+				this.state.orderedDataDescriptionBoxes[orderedDataIndex].push(
           this.dataDescriptionBox(updatedFileType, fileid, index)
         );
       }
@@ -144,7 +144,7 @@ class Inputpage extends React.Component {
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
     let recommendationNotPossible = this.dataFileTypesAdded.length > 0 ? false:true
 
-    let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats))
+    let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats),this.state.selectedTaskOption);
 
     this.setState({
       inputFileFormats: inputFileFormats,
@@ -181,7 +181,7 @@ class Inputpage extends React.Component {
     }    
 
 
-  let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats))
+  let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption);
 
 
     this.setState({
@@ -193,16 +193,18 @@ class Inputpage extends React.Component {
     console.log(this.state.inputConfigurationData)
   }
 
-  getRecommendationOutput(input,task,fileCount)
+  getRecommendationOutput(input,taskList,fileCount,selectedTask)
   {
     let recommendationInputSpec = {}
     let recommendationOutputSpec = []
     let currentRecommendationOutput = this.state.recommendationOutputSpec
+
+    console.log("We are testing this out.", selectedTask);
         
     //Total File Count
     if(fileCount>0)
     {
-      recommendationInputSpec = createInputSpec(JSON.stringify(input), task)
+      recommendationInputSpec = createInputSpec(JSON.stringify(input),taskList, selectedTask )
       recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
       if(currentRecommendationOutput["tasks"] === undefined) recommendationOutputSpec["tasks"] = ["overview"]
       else recommendationOutputSpec["tasks"] = currentRecommendationOutput["tasks"].length === 0 ? ["overview"] : currentRecommendationOutput["tasks"]
@@ -361,15 +363,18 @@ class Inputpage extends React.Component {
 
     let selectedTaskFullSpec = taskLists.filter(val => val["selected"])
     let activeTasks = selectedTaskFullSpec.map(val => val["task"])
-    console.log(activeTasks)
     let recommendationOutputSpec = this.state.recommendationOutputSpec
     if(activeTasks.length>0) recommendationOutputSpec["tasks"] = activeTasks
     else recommendationOutputSpec["tasks"] = ["overview"]
 
+    let recommendationOutput = this.getRecommendationOutput(this.state.inputConfigurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),stateTaskVal);
+
+
     this.setState({
       taskList:taskLists,
       selectedTaskOption: stateTaskVal,
-      recommendationOutputSpec,
+      recommendationInputSpec:recommendationOutput.recommendationInputSpec,
+      recommendationOutputSpec:recommendationOutput.recommendationOutputSpec,
       recommendationNotPossible:false
     }, ()=> console.log(this.state))
   }
