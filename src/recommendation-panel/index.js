@@ -21,7 +21,7 @@ function RecommendationPanel(props) {
 							<div className="w3-row">
 								<div className="w3-col s9 w3-center"><h5>{`Option ${parseInt(i + 1)}`}</h5></div>
 								<div className="w3-col s3 w3-center">
-									<a href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(spec))}`} download="filename.json" className="w3-button w3-block w3-dark-gray w3-theme" > <i className="fa fa-external-link"></i> Export </a>
+									<a href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(spec))}`} download="gosling-spec.json" className="w3-button w3-block w3-dark-gray w3-theme" > <i className="fa fa-external-link"></i> Export </a>
 								</div>
 							</div>
 						</div>
