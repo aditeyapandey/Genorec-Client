@@ -1,8 +1,9 @@
 import { encodingToTrack } from "./encoding";
+import { getGeneAnnotation } from "./gene-annotation";
 // import { getIdeogram } from "./ideogram";
 
 // A flag variable to print log messages while debugging
-const IS_DEBUG = true;
+const IS_DEBUG = false;
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
@@ -18,18 +19,18 @@ export function genorecToGosling(geno = [], width = 100) {
 	geno.forEach(genoOption => {
 		const { 
 			viewPartition: partition, 
-			viewArrangement: arrangement,
-			viewConnectionType: connection,
+			/*  viewArrangement: arrangement, */
+			/* viewConnectionType: connection, */
 			geneAnnotation,
-			ideogramDisplayed: ideogram,
+			/* ideogramDisplayed: ideogram, */
 			views,
-			tasks,
+			/* tasks, */
 		} = genoOption;
 
 		const gosViews = [];
 		views.forEach(view => {
 			const {
-				trackAlignment: alignment,
+				/* trackAlignment: alignment, */
 				sequenceName: assembly,
 				tracks
 			} = view;
@@ -41,7 +42,7 @@ export function genorecToGosling(geno = [], width = 100) {
 				const {
 					layout: trackLayout,
 					fileName,
-					interconnectionType,
+					/* interconnectionType, */
 					encodings: subTracks
 				} = track;
 
@@ -59,12 +60,17 @@ export function genorecToGosling(geno = [], width = 100) {
 					if(partition === "segregated") {
 						// In this case, we want to add multiple views each of which represent different chromosomes.
 						for(let i = 0; i <= 5; i++) {
+							const adjustedGosTrack = {
+								...JSON.parse(JSON.stringify(gosTrack)),
+								width: width / 2.0 + width / 2.0 / (i + 1), // TODO: Need more accurate width considering the actual length.
+								height: JSON.parse(JSON.stringify(gosTrack)).height / 2.0
+							};
 							gosViews.push({
-								tracks: [{
-									...JSON.parse(JSON.stringify(gosTrack)),
-									width: width / 2.0 + width / 2.0 / (i + 1), // TODO: Need more accurate width considering the actual length.
-									height: JSON.parse(JSON.stringify(gosTrack)).height / 2.0
-								}],
+								tracks: (
+									geneAnnotation ? 
+										[{ ...getGeneAnnotation(width, 50), width: adjustedGosTrack.width}, adjustedGosTrack] :
+										[adjustedGosTrack]
+								),
 								xDomain: { chromosome: `chr${i + 1}` }
 							});	
 						}
@@ -81,7 +87,11 @@ export function genorecToGosling(geno = [], width = 100) {
 				gosViews.push({
 					layout,
 					assembly,
-					tracks: gosTracks
+					tracks: (
+						geneAnnotation ? 
+							[getGeneAnnotation(width, 100), ...gosTracks] :
+							gosTracks
+					)
 				});
 			}
 		});
@@ -91,7 +101,7 @@ export function genorecToGosling(geno = [], width = 100) {
 			style: { enableSmoothPath: true },
 			assembly: "hg38",
 			arrangement: "vertical",
-			centerRadius: 0.6,
+			centerRadius: 0.3,
 			views: gosViews
 		});
 	});
