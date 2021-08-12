@@ -23,6 +23,7 @@ export const createInputSpec = function (dataDescription, taskList, selectedTask
     let featureDescription = `${inputConfigData["granularity"]}_${inputConfigData["availability"]}`;
     let assemblyBuildCounts = inputConfigData["assembly2"] === "N.A." ? 1 : 2;
   
+    console.log("hello")
 
     if(inputConfigData["fileType"] === "cooler" || inputConfigData["fileType"] === "bedpe")
     {interconnection = checkInterconnection(inputConfigData,featureDescription)}
