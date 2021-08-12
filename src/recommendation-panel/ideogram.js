@@ -1,4 +1,97 @@
-export const getIdeogram = (A, B, width, block = true) => {
+export function getOverview(width, height) {
+	return {
+		static: true,
+		alignment: "overlay",
+		title: "Whole Genome",
+		"data": {
+			"url": "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv",
+			"type": "csv",
+			"chromosomeField": "Chromosome",
+			"genomicFields": ["chromStart", "chromEnd"]
+		},
+		"tracks": [
+			{
+				"mark": "rect",
+				"color": {
+					"field": "Chromosome",
+					"type": "nominal",
+					"domain": [
+						"chr1",
+						"chr2",
+						"chr3",
+						"chr4",
+						"chr5",
+						"chr6",
+						"chr7",
+						"chr8",
+						"chr9",
+						"chr10",
+						"chr11",
+						"chr12",
+						"chr13",
+						"chr14",
+						"chr15",
+						"chr16",
+						"chr17",
+						"chr18",
+						"chr19",
+						"chr20",
+						"chr21",
+						"chr22",
+						"chrX",
+						"chrY"
+					],
+					"range": ["#F6F6F6", "black"]
+				},
+				"x": {"field": "chromStart", "type": "genomic", "aggregate": "min"},
+				"xe": {"field": "chromEnd", "aggregate": "max", "type": "genomic"},
+			},
+			{
+				mark: "brush",
+				x: { linkingId: "A" },
+				// color: { value: 'blue' },
+				stroke: { value: "black" },
+				strokeWidth: { value: 2 }
+			},
+			{
+				mark: "brush",
+				x: { linkingId: "B" },
+				// color: { value: 'red' },
+				stroke: { value: "black" },
+				strokeWidth: { value: 2 }
+			}
+		],
+		"stroke": {"value": "gray"},
+		"strokeWidth": {"value": 0.5},
+		"style": {"outline": "black"},
+		width,
+		height
+	};
+}
+export function getIdeogram(width, height) {
+	return {
+		title: "Ideogram",
+		"template": "ideogram",
+		"data": {
+			"url": "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv",
+			"type": "csv",
+			"chromosomeField": "Chromosome",
+			"genomicFields": ["chromStart", "chromEnd"]
+		},
+		"encoding": {
+			"startPosition": {"field": "chromStart"},
+			"endPosition": {"field": "chromEnd"},
+			"stainBackgroundColor": {"field": "Stain"},
+			"stainLabelColor": {"field": "Stain"},
+			"name": {"field": "Name"},
+			"stainStroke": {"value": "black"}
+		},
+		width,
+		height
+	};
+}
+
+export const _getIdeogram = (A, B, width, block = true) => {
 	if(block) {
 		return {
 			static: true,
