@@ -10,7 +10,6 @@
 
 
 export const createInputSpec = function (dataDescription, taskList, selectedTask, geneAnnotation = true, ideogramDisplayed = false) {
-  console.log(ideogramDisplayed)
   let localDataDescription = JSON.parse(dataDescription);
 
   //This code is currently for files with 1 assembly
@@ -24,8 +23,6 @@ export const createInputSpec = function (dataDescription, taskList, selectedTask
     let featureDescription = `${inputConfigData["granularity"]}_${inputConfigData["availability"]}`;
     let assemblyBuildCounts = inputConfigData["assembly2"] === "N.A." ? 1 : 2;
   
-    console.log("hello")
-
     if(inputConfigData["fileType"] === "cooler" || inputConfigData["fileType"] === "bedpe")
     {interconnection = checkInterconnection(inputConfigData,featureDescription)}
   
@@ -128,11 +125,13 @@ function getSequences(seqName, seqid, data,featureConnection) {
     if(returnedFeature!=="undefined")
     {features.push(returnedFeature)}
   });
-  // let f = features === "undefined" ? []: features
+
   return { sequenceId, sequenceName, interFeatureTasks, features };
 }
 
 function getFeatures(fId,fName,data,featureConnection) {
+  
+  
   let featureId ="feature_"+fId;
   let featureGranularity = fName.split("_")[0].toLowerCase();
   let featureDensity = fName.split("_")[1].toLowerCase() ;
@@ -144,20 +143,10 @@ function getFeatures(fId,fName,data,featureConnection) {
   let attr = [];
   let globalAttrIndex = 0;
 
-  // Object.keys(data["attributes"]).map((attributeType) => {
-  //   for(let i=0;i<data["attributes"][attributeType];i++){
-  //       attr.push(getAttributes(globalAttrIndex,attributeType,featureConnection,fName))
-  //       globalAttrIndex++
-  //   }
-  //})
-
-  //Populating Attributes to include file names
-  console.log("Checking if something is selected",data);
-
   //Checking if a data attribute has been added
-  if(data["attributes"]["quant"]===0 && data["attributes"]["cat"]===0 && data["attributes"]["text"]===0 )
+  if(data["attributes"]["quant"]===0 && data["attributes"]["cat"]===0 && data["attributes"]["text"]===0)
   {
-     return "undefined"
+     return "undefined";
   }
   else
   {
@@ -166,11 +155,13 @@ function getFeatures(fId,fName,data,featureConnection) {
   const copyVarofDataWithAttrKeys = Object.keys(copyVarofDataWithAttr);
 
   copyVarofDataWithAttrKeys.forEach(keyVal =>{
-    Object.keys(copyVarofDataWithAttr[keyVal]).forEach((attributeType)=>{
-      for(let i=0;i<copyVarofDataWithAttr[keyVal][attributeType];i++){
+    Object.keys(copyVarofDataWithAttr[keyVal]).forEach((attributeType,index)=>{
+      for(let i=0;i<copyVarofDataWithAttr[keyVal][attributeType];i++)
+      {
+        //Notes: check attribute for each to see if we can 
         let localFeatureInterconnection = false;
         let localDenseInterconnection = false;
-        if(featureInterconnection && i===0)
+        if(featureInterconnection && keyVal.includes("bedpe") && index===0)
         {
           localFeatureInterconnection = featureInterconnection;
           localDenseInterconnection = denseInterconnection;
@@ -184,17 +175,17 @@ function getFeatures(fId,fName,data,featureConnection) {
   return {featureId,featureGranularity,featureDensity,featureLabel,featureInterconnection,denseInterconnection,intraFeatureTasks,interactivity,attr}
   }
 
-
 }
 
 function getAttributes(id,type,featureInterconnectionIp,denseInterconnectionIp,fName,fileNameInput,encodingNameInput)
 {
-    let dataTypeMapping = {"quant":"quantitative","cat":"categorical","text":"text"}
+    console.log("Input to attr variable", id,type,featureInterconnectionIp,denseInterconnectionIp,fName,fileNameInput,encodingNameInput);
+    let dataTypeMapping = {"quant":"quantitative","cat":"categorical","text":"text"};
     let attrId = "attribute_"+id;
     let dataType = dataTypeMapping[type];
     let intraAttrTask = [];
-    let featureInterconnection = featureInterconnectionIp;
-    let denseInterconnection = denseInterconnectionIp;
+    let featureInterconnection = featureInterconnectionIp 
+    let denseInterconnection = denseInterconnectionIp 
     let fileName = fileNameInput;
     let encodingName = encodingNameInput;
 
@@ -243,10 +234,10 @@ function activateTasks(taskList, assemblyBuilds) {
 
 function checkInterconnection (inputConfigData,featureDescription)
 {
-  let denseInterConnection = false
-  let sparseInterConnection = false
-  let featureInterconnection = false
-  let featureInterconnectionDense = false
+  let denseInterConnection = false;
+  let sparseInterConnection = false;
+  let featureInterconnection = false;
+  let featureInterconnectionDense = false;
   let connectionType = "none";
 
   //Cooler file format should have interconnection
