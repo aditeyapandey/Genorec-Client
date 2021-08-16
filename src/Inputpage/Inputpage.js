@@ -54,7 +54,8 @@ class Inputpage extends React.Component {
     this.toggleTaskCardSelection = this.toggleTaskCardSelection.bind(this);
     this.getRecommendationOutput = this.getRecommendationOutput.bind(this);
     this.handleRecommendationClick = this.handleRecommendationClick.bind(this);
-    this.toggleGeneAnnotation = this.toggleGeneAnnotation.bind(this)
+    this.toggleGeneAnnotation = this.toggleGeneAnnotation.bind(this);
+    this.toggleIdeoGram = this.toggleIdeoGram.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
     this.finalRecommendationOutputSpec = []
@@ -442,7 +443,14 @@ class Inputpage extends React.Component {
 
   toggleIdeoGram()
   {
-    
+    let updatedIdeogram = !this.state.showIdeogram;
+    let recommendationOutput = this.getRecommendationOutput(this.state.inputConfigurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption,this.state.showGeneAnnotation, updatedIdeogram);
+
+      this.setState({
+       showIdeogram: updatedIdeogram,
+       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
+       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
+      },()=> console.log(this.state))
   }
 
 
@@ -539,7 +547,7 @@ class Inputpage extends React.Component {
                           </div>
                           <div className="w3-row">
                             <div className="w3-half">
-                              <input  checked={this.state.showIdeogram} className="w3-check"  type="checkbox" ></input>
+                              <input  checked={this.state.showIdeogram}  onChange={this.toggleIdeoGram} className="w3-check"  type="checkbox" ></input>
                               <label className="w3-margin"> Show Ideogram </label> 
                             </div>
                             <div className="w3-half">
