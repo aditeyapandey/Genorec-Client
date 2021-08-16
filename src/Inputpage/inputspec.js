@@ -9,7 +9,8 @@
 
 
 
-export const createInputSpec = function (dataDescription, taskList, selectedTask) {
+export const createInputSpec = function (dataDescription, taskList, selectedTask, geneAnnotation = true, ideogramDisplayed = false) {
+  console.log(ideogramDisplayed)
   let localDataDescription = JSON.parse(dataDescription);
 
   //This code is currently for files with 1 assembly
@@ -90,13 +91,13 @@ export const createInputSpec = function (dataDescription, taskList, selectedTask
 
   console.log("Assembly Builds",assemblyBuilds);
 
-  let recommendationInputSpec = specStructure(assemblyBuilds,interconnection,selectedTask);
+  let recommendationInputSpec = specStructure(assemblyBuilds,interconnection,selectedTask,geneAnnotation, ideogramDisplayed);
   activateTasks(taskList, assemblyBuilds);
   console.log("InputSpec",recommendationInputSpec);
   return recommendationInputSpec;
 };
 
-function specStructure(assemblyBuilds,interconnection,selectedTask) {
+function specStructure(assemblyBuilds,interconnection,selectedTask,geneAnnotationInput, ideogramDisplayedInput) {
 
   let sequences = [];
   let intraSequenceTask = {"connectedNodes":[],"sequenceConservation":[],"edgeValues":[]};
@@ -105,8 +106,8 @@ function specStructure(assemblyBuilds,interconnection,selectedTask) {
   let connectionType = interconnection.connectionType;
   //Need to populate these variables
   let tasks = [selectedTask];
-  let geneAnnotation = true;
-  let ideogramDisplayed = true;
+  let geneAnnotation = geneAnnotationInput;
+  let ideogramDisplayed = ideogramDisplayedInput;
 
   Object.keys(assemblyBuilds).map((val, index) => {
     sequences.push(

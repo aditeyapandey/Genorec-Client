@@ -43,7 +43,9 @@ class Inputpage extends React.Component {
       screenHeight: window.innerHeight,
       recommendationInputSpec:{},
       recommendationOutputSpec:[],
-      recommendationPanelWidth:800
+      recommendationPanelWidth:800,
+      showIdeogram:false,
+      showGeneAnnotation:true
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -52,6 +54,7 @@ class Inputpage extends React.Component {
     this.toggleTaskCardSelection = this.toggleTaskCardSelection.bind(this);
     this.getRecommendationOutput = this.getRecommendationOutput.bind(this);
     this.handleRecommendationClick = this.handleRecommendationClick.bind(this);
+    this.toggleGeneAnnotation = this.toggleGeneAnnotation.bind(this)
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
     this.finalRecommendationOutputSpec = []
@@ -144,7 +147,7 @@ class Inputpage extends React.Component {
     let showTaskPanel = this.dataFileTypesAdded.length > 0 ? true:false
     let recommendationNotPossible = this.dataFileTypesAdded.length > 0 ? false:true
 
-    let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats),this.state.selectedTaskOption);
+    let recommendationOutput = this.getRecommendationOutput(currentDataConfigurationInput,this.state.taskList,this.countTotalFiles(inputFileFormats),this.state.selectedTaskOption,this.state.showGeneAnnotation, this.state.showIdeogram);
 
     this.setState({
       inputFileFormats: inputFileFormats,
@@ -181,7 +184,7 @@ class Inputpage extends React.Component {
     }    
 
 
-  let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption);
+  let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption,this.state.showGeneAnnotation,this.state.showIdeogram);
 
 
     this.setState({
@@ -193,18 +196,18 @@ class Inputpage extends React.Component {
     console.log(this.state.inputConfigurationData)
   }
 
-  getRecommendationOutput(input,taskList,fileCount,selectedTask)
+  getRecommendationOutput(input,taskList,fileCount,selectedTask,geneAnnotation, ideogramDisplayed)
   {
     let recommendationInputSpec = {}
     let recommendationOutputSpec = []
     let currentRecommendationOutput = this.state.recommendationOutputSpec
 
-    console.log("We are testing this out.", selectedTask);
+    console.log("We are testing this out.", ideogramDisplayed);
         
     //Total File Count
     if(fileCount>0)
     {
-      recommendationInputSpec = createInputSpec(JSON.stringify(input),taskList, selectedTask )
+      recommendationInputSpec = createInputSpec(JSON.stringify(input),taskList, selectedTask , geneAnnotation, ideogramDisplayed)
       recommendationOutputSpec = genorecEngine.getRecommendation(recommendationInputSpec)
       if(currentRecommendationOutput["tasks"] === undefined) recommendationOutputSpec["tasks"] = ["overview"]
       else recommendationOutputSpec["tasks"] = currentRecommendationOutput["tasks"].length === 0 ? ["overview"] : currentRecommendationOutput["tasks"]
@@ -343,15 +346,6 @@ class Inputpage extends React.Component {
     if(inputTaskVal === stateTaskVal) stateTaskVal = ""
     else stateTaskVal = inputTaskVal
 
-    // taskLists.map(val =>{
-    //   if(!val["disabled"]) {
-    //     let id = val["task"]
-    //     if(targetId === id){
-    //       val["selected"] = !val["selected"]
-    //     }
-    //   }
-    // })
-
     taskLists.map(val =>{
       if(stateTaskVal === val["task"]){
           val["selected"] = true
@@ -359,15 +353,13 @@ class Inputpage extends React.Component {
       else val["selected"] = false
     })
 
-    
-
     let selectedTaskFullSpec = taskLists.filter(val => val["selected"])
     let activeTasks = selectedTaskFullSpec.map(val => val["task"])
     let recommendationOutputSpec = this.state.recommendationOutputSpec
     if(activeTasks.length>0) recommendationOutputSpec["tasks"] = activeTasks
     else recommendationOutputSpec["tasks"] = ["overview"]
 
-    let recommendationOutput = this.getRecommendationOutput(this.state.inputConfigurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),stateTaskVal);
+    let recommendationOutput = this.getRecommendationOutput(this.state.inputConfigurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),stateTaskVal,this.state.showGeneAnnotation, this.state.showIdeogram);
 
 
     this.setState({
@@ -436,11 +428,24 @@ class Inputpage extends React.Component {
     }, ()=> console.log(this.state))
   }
 
-  // getClientWidthOfRecommendationPanel(id)
-  // {
-  //   console.log(id);
-  //   console.log(document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth);
-  // }
+  toggleGeneAnnotation()
+  {
+    let updatedGeneAnnotation = !this.state.showGeneAnnotation;
+    let recommendationOutput = this.getRecommendationOutput(this.state.inputConfigurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption,updatedGeneAnnotation, this.state.showIdeogram);
+
+      this.setState({
+       showGeneAnnotation: updatedGeneAnnotation,
+       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
+       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
+      },()=> console.log(this.state))
+  }
+
+  toggleIdeoGram()
+  {
+    
+  }
+
+
 
   componentDidMount() {
     // If we have a snapshot value, we've just added new items.
@@ -526,9 +531,23 @@ class Inputpage extends React.Component {
                         <i className="fa fa-th-list w3-margin-right"></i>{" "}
                         Recommendation{" "}
                       </h3>
-                      <button className="notification" onClick={this.handleRecommendationClick} className="w3-button w3-indigo" disabled={this.state.recommendationNotPossible}>
-                          {this.state.recommendationButtonString} {" "}
-                      </button>
+                      <div className="w3-containter">
+                          <div className="w3-row">
+                            <button className="notification" onClick={this.handleRecommendationClick} className="w3-button w3-indigo" disabled={this.state.recommendationNotPossible}>
+                                {this.state.recommendationButtonString} {" "}
+                            </button>
+                          </div>
+                          <div className="w3-row">
+                            <div className="w3-half">
+                              <input  checked={this.state.showIdeogram} className="w3-check"  type="checkbox" ></input>
+                              <label className="w3-margin"> Show Ideogram </label> 
+                            </div>
+                            <div className="w3-half">
+                              <input checked={this.state.showGeneAnnotation} onChange={this.toggleGeneAnnotation} className="w3-check" type="checkbox"  ></input>
+                              <label className="w3-margin"> Show Gene Annotation </label> 
+                            </div>
+                          </div>
+                      </div>
                     </div>
                   </div>
                   <div id="recommendationOutputPanel" className="w3-row w3-center w3-display-container w3-margin recommendationOutputPanel">
