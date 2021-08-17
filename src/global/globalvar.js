@@ -62,7 +62,7 @@ export const fileInputFieldsActive = {
     assembly2: false,
     interconnection: false,
     granularity: true,
-    availability: false,
+    availability: true,
     data: true,
   },
 };
@@ -117,7 +117,7 @@ export const defaultInputForFiles = {
     assembly1: "hg38",
     assembly2: "N.A.",
     interconnection: false,
-    granularity: "Segment",
+    granularity: "Point",
     availability: "Sparse",
     data: { quant: 1, cat: 0, text: 0 },
     fileType:"vcf"
