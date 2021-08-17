@@ -12,6 +12,7 @@
     "genorec-engine": "1.0.3",
     "gosling.js": "0.9.1",
     "husky": "^4.2.5",
+    "lodash": "^4.17.21",
     "pixi.js": "^5.3.8",
     "react": "16.13.1",
     "react-dom": "16.14.0",

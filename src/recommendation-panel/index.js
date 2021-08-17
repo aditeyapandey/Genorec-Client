@@ -1,20 +1,19 @@
 import React from "react";
 import { GoslingComponent } from "gosling.js";
-import { genorecToGosling } from "./convert";
+import { genorecToGosling, IS_DEBUG_RECOMMENDATION_PANEL } from "./convert";
 // import exampleSpecs from "./examples";
 import "./index.css";
 
 function RecommendationPanel(props) {
 	const {
-		// data: genorec, // final specs
+		data: genorec, // final specs
 		_data: _genorecForDev, // specs for development which allows not to click on a button everytime
 		width
 	} = props;
 
 	return (
 		<div className="gosling-recommendation-output">
-			{/* TODO: Use `genorec` instead for the deployment */}
-			{genorecToGosling(JSON.parse(JSON.stringify(_genorecForDev)), width - 40).map((spec, i) => {
+			{genorecToGosling(JSON.parse(JSON.stringify(IS_DEBUG_RECOMMENDATION_PANEL ? _genorecForDev : genorec)), width - 40).map((spec, i) => {
 				return i < 10 ?
 					<div key={JSON.stringify(spec)}>
 						<div className="w3-center w3-light-grey w3-padding recommendation-header">

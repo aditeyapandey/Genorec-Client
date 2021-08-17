@@ -1,5 +1,5 @@
 import { getSampleColor } from "./color";
-import { IS_DEBUG } from "./convert";
+import { IS_DEBUG_RECOMMENDATION_PANEL } from "./convert";
 
 export const EXAMPLE_DATASETS = {
 	multivec: "https://resgen.io/api/v1/tileset_info/?d=UvVPeLHuRDiYA3qwFlm7xQ",
@@ -247,7 +247,7 @@ export function encodingToTrack(encoding, config) {
 			opacity: { "value": 0.8 }
 		};
 	default:
-		if(IS_DEBUG) console.log(`%c Unsupported Encoding: ${encoding}`, "color: orange; font-size: 24px");
+		if(IS_DEBUG_RECOMMENDATION_PANEL) console.log(`%c Unsupported Encoding: ${encoding}`, "color: orange; font-size: 24px");
 		return {
 			...JSON.parse(JSON.stringify(trackBase)),
 			...JSON.parse(JSON.stringify(getMultivecData(index))),

@@ -4,7 +4,7 @@ import { getIdeogram, getOverview } from "./ideogram";
 // import { getIdeogram } from "./ideogram";
 
 // A flag variable to print log messages while debugging
-export const IS_DEBUG = false;
+export const IS_DEBUG_RECOMMENDATION_PANEL = false;
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
@@ -14,7 +14,7 @@ export const IS_DEBUG = false;
  * @returns {Array} An array of gosling specs.
  */
 export function genorecToGosling(geno = [], width = 100) {
-	if(IS_DEBUG) console.log("%cGenoREC Output Spec", "color: green; font-size: 18px", geno);
+	if(IS_DEBUG_RECOMMENDATION_PANEL) console.log("%cGenoREC Output Spec", "color: green; font-size: 18px", geno);
 
 	const gos = [];
 	geno.forEach(genoOption => {
@@ -23,20 +23,20 @@ export function genorecToGosling(geno = [], width = 100) {
 			viewArrangement: arrangement,
 			viewConnectionType: connection,
 			geneAnnotation,
-			// ideogramDisplayed: ideogram,
+			ideogramDisplayed: ideogram,
 			views,
 			tasks: task, // One of 'singleROI', 'compareMultipleROI', and 'overview'
 		} = genoOption;
 
 		if(arrangement !== "stack" && arrangement !== "orthogonal") {
-			if(IS_DEBUG) console.log(`%c Unsupported arrangement: ${arrangement}`, "color: orange; font-size: 24px");
+			if(IS_DEBUG_RECOMMENDATION_PANEL) console.log(`%c Unsupported arrangement: ${arrangement}`, "color: orange; font-size: 24px");
 		}
 		if(connection === "dense") {
 			//
 		} else if(connection === "none") {
 			// We do nothing for this.
 		} else {
-			if(IS_DEBUG) console.log(`%c Unsupported view connection: ${connection}`, "color: orange; font-size: 24px");
+			if(IS_DEBUG_RECOMMENDATION_PANEL) console.log(`%c Unsupported view connection: ${connection}`, "color: orange; font-size: 24px");
 		}
 
 		const gosViews = [];
@@ -63,7 +63,7 @@ export function genorecToGosling(geno = [], width = 100) {
 			} = view;
 
 			if(alignment !== "stack") {
-				if(IS_DEBUG) console.log(`%c Unsupported alignment: ${alignment}`, "color: orange; font-size: 24px");
+				if(IS_DEBUG_RECOMMENDATION_PANEL) console.log(`%c Unsupported alignment: ${alignment}`, "color: orange; font-size: 24px");
 			}
 
 			const gosTracks = [];
@@ -96,7 +96,7 @@ export function genorecToGosling(geno = [], width = 100) {
 				} else if (interconnection === "none"){
 					// We do nothing for this.
 				} else {
-					if(IS_DEBUG) console.log(`%c Unsupported interconnection: ${interconnection}`, "color: orange; font-size: 24px");
+					if(IS_DEBUG_RECOMMENDATION_PANEL) console.log(`%c Unsupported interconnection: ${interconnection}`, "color: orange; font-size: 24px");
 				}
 
 				subTracks.forEach(subTrack => {
@@ -127,12 +127,15 @@ export function genorecToGosling(geno = [], width = 100) {
 								width: width / 2.0 + width / 2.0 / (i + 1), // TODO: Need more accurate width considering the actual length.
 								height: JSON.parse(JSON.stringify(gosTrack)).height / 2.0
 							};
+							let tracksToAdd = [adjustedGosTrack];
+							if(geneAnnotation) {
+								tracksToAdd = [{ ...getGeneAnnotation(width, 50), width: adjustedGosTrack.width}, ...tracksToAdd];
+							}
+							if(ideogram) {
+								tracksToAdd = [{ ...getIdeogram(width, 20), width: adjustedGosTrack.width}, ...tracksToAdd];
+							}
 							gosViews.push({
-								tracks: (
-									geneAnnotation ? 
-										[{ ...getGeneAnnotation(width, 50), width: adjustedGosTrack.width}, adjustedGosTrack] :
-										[adjustedGosTrack]
-								),
+								tracks: tracksToAdd,
 								xDomain: { chromosome: `chr${i + 1}` }
 							});	
 						}
@@ -160,7 +163,7 @@ export function genorecToGosling(geno = [], width = 100) {
 				// !! We already added views for this case.
 			} else {
 				if(task?.toLowerCase() === "singleroi" || task?.toLowerCase() === "comparemultipleroi") {
-					// Add an ideogram overview
+					// Add an overview
 					gosViews.push({
 						layout: "linear",
 						assembly,
@@ -169,22 +172,32 @@ export function genorecToGosling(geno = [], width = 100) {
 					
 					if(task?.toLowerCase() === "singleroi") {
 						// Zoom to show local regions
+						let tracksToAdd = gosTracks;
+						if(geneAnnotation) {
+							tracksToAdd = [getGeneAnnotation(width, 100), ...tracksToAdd];
+						}
+						if(ideogram) {
+							tracksToAdd = [getIdeogram(width, 20), ...tracksToAdd];
+						}
 						gosViews.push({
 							layout,
 							assembly,
 							xDomain: { chromosome: "3" },
 							linkingId: "A",
-							tracks: (
-								geneAnnotation ? 
-									[getGeneAnnotation(width, 100), ...gosTracks] :
-									gosTracks
-							)
+							tracks: tracksToAdd
 						});						
 					} else if(task?.toLowerCase() === "comparemultipleroi") {
 						// Zoom to show local regions with two views
 						// In this case, we need to add two views juxtaposed.
 						const spacing = 20;
 						const viewWidth = width / 2.0 - spacing / 2.0;
+						let tracksToAdd = gosTracks.map(d => { return {...d, width: viewWidth };} );
+						if(geneAnnotation) {
+							tracksToAdd = [getGeneAnnotation(viewWidth, 100), ...tracksToAdd];
+						}
+						if(ideogram) {
+							tracksToAdd = [getIdeogram(viewWidth, 20), ...tracksToAdd];
+						}
 						gosViews.push({
 							arrangement: "horizontal",
 							spacing,
@@ -194,44 +207,31 @@ export function genorecToGosling(geno = [], width = 100) {
 									assembly,
 									xDomain: { chromosome: "3" },
 									linkingId: "A",
-									tracks: (
-										geneAnnotation ? 
-											[
-												getIdeogram(viewWidth, 20),
-												getGeneAnnotation(viewWidth, 100), 
-												...gosTracks.map(d => { return {...d, width: viewWidth };} )
-											] :
-											gosTracks.map(d => { return {...d, width: viewWidth };} )
-									)
+									tracks: JSON.parse(JSON.stringify(tracksToAdd))
 								},
 								{
 									layout,
 									assembly,
 									xDomain: { chromosome: "6" },
 									linkingId: "B",
-									tracks: (
-										geneAnnotation ? 
-											[
-												getIdeogram(viewWidth, 20),
-												getGeneAnnotation(viewWidth, 100), 
-												...gosTracks.map(d => { return {...d, width: viewWidth };} )
-											] :
-											gosTracks.map(d => { return {...d, width: viewWidth };} )
-									)
+									tracks: JSON.parse(JSON.stringify(tracksToAdd))
 								}
 							]
 						});						
 					}
 				} else {
 					// This means an overview task is selected.
+					let tracksToAdd = gosTracks;
+					if(geneAnnotation) {
+						tracksToAdd = [getGeneAnnotation(width, 100), ...tracksToAdd];
+					}
+					if(ideogram) {
+						tracksToAdd = [getIdeogram(width, 20), ...tracksToAdd];
+					}
 					gosViews.push({
 						layout,
 						assembly,
-						tracks: (
-							geneAnnotation ? 
-								[getGeneAnnotation(width, 100), ...gosTracks] :
-								gosTracks
-						)
+						tracks: tracksToAdd
 					});
 				}
 			}
@@ -247,6 +247,6 @@ export function genorecToGosling(geno = [], width = 100) {
 		});
 	});
 
-	if(IS_DEBUG) console.log("%cConverted Gosling Spec", "color: blue; font-size: 18px", gos);
+	if(IS_DEBUG_RECOMMENDATION_PANEL) console.log("%cConverted Gosling Spec", "color: blue; font-size: 18px", gos);
 	return gos;
 }

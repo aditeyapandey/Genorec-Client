@@ -16,6 +16,7 @@ import {
   createAvailablityInput,
   createDataTypeInput,
 } from "./createdomcomponents";
+import { debounce } from "lodash";
 
 var genorecEngine = require("genorec-engine")
 
@@ -461,9 +462,20 @@ class Inputpage extends React.Component {
     // (snapshot here is the value returned from getSnapshotBeforeUpdate)
     console.log('test')
     console.log(document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth);
+
+    // Upon resizing, use new width for the recommendation panel
+    window.addEventListener(
+      "resize",
+      debounce((e) => {
+        this.setState({
+          recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth
+        });
+      }, 1000)
+    );
+
     this.setState({
       recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth
-    }, ()=> console.log(this.state) )
+    }, ()=> console.log(this.state) );
   }
 
   render() {
