@@ -24,9 +24,6 @@ var genorecEngine = require("genorec-engine")
 class Inputpage extends React.Component {
   constructor(props) {
     super(props);
-    // let recommendation = genorecEngine.getRecommendation(recommendationSpec)
-    // console.log(recommendation)
-    
     this.state = {
       minFiles: 0,
       maxFiles: 20,
