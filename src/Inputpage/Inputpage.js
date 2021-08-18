@@ -59,7 +59,7 @@ class Inputpage extends React.Component {
     this.toggleIdeoGram = this.toggleIdeoGram.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
-    this.finalRecommendationOutputSpec = []
+    this.finalRecommendationOutputSpec = [];
 
     // !! TODO: set default input data and task descriptions
     // this.onChangeFileQuantity({ target: { name: 'bigwig', value: '1' } });
@@ -185,17 +185,14 @@ class Inputpage extends React.Component {
       configurationData[fileid][componentid] = value;
     }    
 
-
   let recommendationOutput = this.getRecommendationOutput(configurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption,this.state.showGeneAnnotation,this.state.showIdeogram);
 
-
-    this.setState({
+  this.setState({
       inputConfigurationData: configurationData,
       recommendationInputSpec:recommendationOutput.recommendationInputSpec,
       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec,
       recommendationNotPossible:false
         }, ()=> console.log(this.state));
-    console.log(this.state.inputConfigurationData)
   }
 
   getRecommendationOutput(input,taskList,fileCount,selectedTask,geneAnnotation, ideogramDisplayed)
@@ -203,8 +200,6 @@ class Inputpage extends React.Component {
     let recommendationInputSpec = {}
     let recommendationOutputSpec = []
     let currentRecommendationOutput = this.state.recommendationOutputSpec
-
-    console.log("We are testing this out.", ideogramDisplayed);
         
     //Total File Count
     if(fileCount>0)
@@ -422,11 +417,10 @@ class Inputpage extends React.Component {
 
   handleRecommendationClick()
   {
-    // let showRecommendation = this.state.showRecommendation ? true: true
-    this.finalRecommendationOutputSpec =  JSON.parse(JSON.stringify(this.state.recommendationOutputSpec))
+    this.finalRecommendationOutputSpec =  JSON.parse(JSON.stringify(this.state.recommendationOutputSpec));
     this.setState({
       showRecommendation:true,
-      recommendationNotPossible:true
+      recommendationNotPossible:true    
     }, ()=> console.log(this.state))
   }
 
@@ -435,11 +429,13 @@ class Inputpage extends React.Component {
     let updatedGeneAnnotation = !this.state.showGeneAnnotation;
     let recommendationOutput = this.getRecommendationOutput(this.state.inputConfigurationData,this.state.taskList,this.countTotalFiles(this.state.inputFileFormats),this.state.selectedTaskOption,updatedGeneAnnotation, this.state.showIdeogram);
 
-      this.setState({
+    this.setState({
        showGeneAnnotation: updatedGeneAnnotation,
        recommendationInputSpec:recommendationOutput.recommendationInputSpec,
-       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
-      },()=> console.log(this.state))
+       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec,
+       recommendationNotPossible:false
+      },() => { 
+        console.log(this.state);})
   }
 
   toggleIdeoGram()
@@ -450,7 +446,8 @@ class Inputpage extends React.Component {
       this.setState({
        showIdeogram: updatedIdeogram,
        recommendationInputSpec:recommendationOutput.recommendationInputSpec,
-       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec
+       recommendationOutputSpec:recommendationOutput.recommendationOutputSpec,
+       recommendationNotPossible:false
       },()=> console.log(this.state))
   }
 
@@ -460,8 +457,6 @@ class Inputpage extends React.Component {
     // If we have a snapshot value, we've just added new items.
     // Adjust scroll so these new items don't push the old ones out of view.
     // (snapshot here is the value returned from getSnapshotBeforeUpdate)
-    console.log('test')
-    console.log(document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth);
 
     // Upon resizing, use new width for the recommendation panel
     window.addEventListener(
