@@ -17,7 +17,7 @@ export function genorecToGosling(geno = [], width = 100) {
 	if(IS_DEBUG_RECOMMENDATION_PANEL) console.log("%cGenoREC Output Spec", "color: green; font-size: 18px", geno);
 
 	const gos = [];
-	geno.forEach(genoOption => {
+	(geno.length > 5 ? geno.slice(0, 5) : geno).forEach(genoOption => {
 		const { 
 			viewPartition: partition, 
 			viewArrangement: arrangement,
