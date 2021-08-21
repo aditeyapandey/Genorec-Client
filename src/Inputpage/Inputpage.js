@@ -24,6 +24,7 @@ var genorecEngine = require("genorec-engine");
 class Inputpage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       minFiles: 0,
       maxFiles: 20,
@@ -43,7 +44,8 @@ class Inputpage extends React.Component {
       recommendationOutputSpec:[],
       recommendationPanelWidth:800,
       showIdeogram:false,
-      showGeneAnnotation:true
+      showGeneAnnotation:true,
+      showRecommendationPanel: this.props.data
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -535,7 +537,7 @@ class Inputpage extends React.Component {
           
               </div>
 
-              <div className="w3-half">
+              <div style={{display: this.state.showRecommendationPanel ==="App-Mode" ? "" : "none"}}  className="w3-half">
                 <div className="w3-row">
                   <div className="w3-row w3-display-container">
                     <div className="w3-center w3-padding">
@@ -571,6 +573,11 @@ class Inputpage extends React.Component {
                     />
                   </div>
                 </div>
+              </div>
+			
+              {/* In the specification */}
+              <div style={{display: this.state.showRecommendationPanel ==="Eval-Mode" ? "" : "none"}}  className="w3-half">
+				
               </div>
             </div>
           </div>

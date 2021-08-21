@@ -35,7 +35,7 @@ class App extends React.Component{
         <BrowserRouter>
           <Switch>
             <Route path="/app">
-              <Inputpage />
+              <Inputpage data={"App-Mode"} />
             </Route>
             <Route path="/evaluation">
               <Evaluation />
