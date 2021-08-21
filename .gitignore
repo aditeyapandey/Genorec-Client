@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-/src/encodingselection
 /src/assets/input copy.json
 /src/assets/datafiles
 
