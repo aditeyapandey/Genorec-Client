@@ -1,0 +1,72 @@
+{"stimuliList":[
+        {
+        "taskId": 1,
+        "recommendationSpec":[{
+            "viewPartition": "contiguous",
+            "partitionPredictionScore": 0.35355339059327373,
+            "views": [
+                {
+                    "trackAlignment": "stack",
+                    "trackAlignmentPrediction": 0.7071067811865475,
+                    "tracks": [
+                        {
+                            "layout": "linear",
+                            "layoutPredictionScore": 0.4999999999999999,
+                            "fileName": "BIGWIG1",
+                            "encodings": [
+                                {
+                                    "encoding": "lineChart",
+                                    "encodingPredictionScore": 0.6123724356957945,
+                                    "columnName": "quant1",
+                                    "encodingName": "quant1"
+                                }
+                            ],
+                            "interconnectionType": "none"
+                        }
+                    ],
+                    "sequenceName": "hg38"
+                }
+            ],
+            "viewArrangement": "stack",
+            "viewArrangementPredictionScore": 0.5773502691896257,
+            "viewConnectionType": "none",
+            "geneAnnotation": true,
+            "ideogramDisplayed": false,
+            "tasks": ""
+        },
+        {
+            "viewPartition": "segregated",
+            "partitionPredictionScore": 0.35355339059327373,
+            "views": [
+                {
+                    "trackAlignment": "stack",
+                    "trackAlignmentPrediction": 0.7071067811865475,
+                    "tracks": [
+                        {
+                            "layout": "linear",
+                            "layoutPredictionScore": 0.4999999999999999,
+                            "fileName": "BIGWIG1",
+                            "encodings": [
+                                {
+                                    "encoding": "lineChart",
+                                    "encodingPredictionScore": 0.6123724356957945,
+                                    "columnName": "quant1",
+                                    "encodingName": "quant1"
+                                }
+                            ],
+                            "interconnectionType": "none"
+                        }
+                    ],
+                    "sequenceName": "hg38"
+                }
+            ],
+            "viewArrangement": "stack",
+            "viewArrangementPredictionScore": 0.5773502691896257,
+            "viewConnectionType": "none",
+            "geneAnnotation": true,
+            "ideogramDisplayed": false,
+            "tasks": ""
+        }]
+        }
+    ]
+}
