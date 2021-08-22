@@ -58,7 +58,7 @@ class Evaluation extends React.Component{
           <button className="w3-button w3-light-green w3-right" onClick={this.moveToNextTask} disabled={this.state.currentTaskCompleted}>Next Task</button> 
         </div>
         <div key={this.state.recommendationTaskId} className="">
-          <Inputpage data={this.state.mode} />
+          <Inputpage data={this.state.mode} id={this.state.recommendationTaskId} />
         </div>
       </>
     );

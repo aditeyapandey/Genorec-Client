@@ -17,6 +17,7 @@ import {
   createDataTypeInput,
 } from "./createdomcomponents";
 import { debounce } from "lodash";
+import stimuli from "../assets/evaluationstimuli/stimuli.json";
 
 var genorecEngine = require("genorec-engine");
 
@@ -46,7 +47,8 @@ class Inputpage extends React.Component {
       recommendationPanelWidthEval:800,
       showIdeogram:false,
       showGeneAnnotation:true,
-      showRecommendationPanel: this.props.data
+      showRecommendationPanel: this.props.data,
+      outputForEvaluation: []
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -57,10 +59,12 @@ class Inputpage extends React.Component {
     this.handleRecommendationClick = this.handleRecommendationClick.bind(this);
     this.toggleGeneAnnotation = this.toggleGeneAnnotation.bind(this);
     this.toggleIdeoGram = this.toggleIdeoGram.bind(this);
+    this.handleShowRecommendationForEvaluation = this.handleShowRecommendationForEvaluation.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
     this.finalRecommendationOutputSpec = [];
-
+    
+  
     // !! TODO: set default input data and task descriptions
     // this.onChangeFileQuantity({ target: { name: 'bigwig', value: '1' } });
   }
@@ -451,8 +455,6 @@ class Inputpage extends React.Component {
     },()=> console.log(this.state));
   }
 
-
-
   componentDidMount() {
     // If we have a snapshot value, we've just added new items.
     // Adjust scroll so these new items don't push the old ones out of view.
@@ -474,6 +476,17 @@ class Inputpage extends React.Component {
       recommendationPanelWidthEval: document.getElementsByClassName("recommendationOutputPanelEval")[0].offsetWidth
     }, ()=> console.log(this.state) );
   }
+
+  //Handle Evaluation Click
+  handleShowRecommendationForEvaluation()
+  {
+    let updatedRecommendation = [stimuli.stimuliList[0].recommendationSpec[0]];
+    this.setState({
+      outputForEvaluation: updatedRecommendation,
+      recommendationNotPossible:true    
+    });
+  }
+
 
   render() {
     const fileFormatDivs = [];    
@@ -587,29 +600,19 @@ class Inputpage extends React.Component {
                       </h3>
                       <div className="w3-containter">
                         <div className="w3-row">
-                          <button className="notification w3-button w3-indigo" onClick={this.handleRecommendationClick} disabled={this.state.recommendationNotPossible}>
+                          <button className="notification w3-button w3-indigo" onClick={this.handleShowRecommendationForEvaluation} disabled={this.state.recommendationNotPossible}>
                             {this.state.recommendationButtonString} {" "}
                           </button>
                         </div>
-                        {/* <div className="w3-row">
-                          <div className="w3-half">
-                            <input  checked={this.state.showIdeogram}  onChange={this.toggleIdeoGram} className="w3-check"  type="checkbox" ></input>
-                            <label className="w3-margin"> Show Ideogram </label> 
-                          </div>
-                          <div className="w3-half">
-                            <input checked={this.state.showGeneAnnotation} onChange={this.toggleGeneAnnotation} className="w3-check" type="checkbox"  ></input>
-                            <label className="w3-margin"> Show Gene Annotation </label> 
-                          </div>
-                        </div> */}
                       </div>
                     </div>
                   </div>
                   <div id="recommendationOutputPanelEval" className="w3-row w3-center w3-display-container w3-margin recommendationOutputPanelEval">
                     <RecommendationPanel 
                       className="w3-center" 
-                      data={this.finalRecommendationOutputSpec} 
+                      data={this.state.outputForEvaluation} 
                       width={this.state.recommendationPanelWidthEval} 
-                      _data={this.state.recommendationOutputSpec}
+                      _data={this.state.outputForEvaluation}
                     />
                   </div>
                 </div>
