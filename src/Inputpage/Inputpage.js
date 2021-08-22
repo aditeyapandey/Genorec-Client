@@ -43,6 +43,7 @@ class Inputpage extends React.Component {
       recommendationInputSpec:{},
       recommendationOutputSpec:[],
       recommendationPanelWidth:800,
+      recommendationPanelWidthEval:800,
       showIdeogram:false,
       showGeneAnnotation:true,
       showRecommendationPanel: this.props.data
@@ -462,19 +463,20 @@ class Inputpage extends React.Component {
       "resize",
       debounce(() => {
         this.setState({
-          recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth
+          recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth,
+          recommendationPanelWidthEval: document.getElementsByClassName("recommendationOutputPanelEval")[0].offsetWidth
         });
       }, 1000)
     );
 
     this.setState({
-      recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth
+      recommendationPanelWidth: document.getElementsByClassName("recommendationOutputPanel")[0].offsetWidth,
+      recommendationPanelWidthEval: document.getElementsByClassName("recommendationOutputPanelEval")[0].offsetWidth
     }, ()=> console.log(this.state) );
   }
 
   render() {
-    const fileFormatDivs = [];
-    
+    const fileFormatDivs = [];    
     const taskCards = this.createHTMLLayoutTasks(this.state.taskList);
 
     for (let value of Object.keys(this.state.inputFileFormats)) {
@@ -534,9 +536,9 @@ class Inputpage extends React.Component {
 
                   <div className="w3-row">{taskCards}</div>
                 </div>
-          
               </div>
 
+              {/* App Recommendation Output */}
               <div style={{display: this.state.showRecommendationPanel ==="App-Mode" ? "" : "none"}}  className="w3-half">
                 <div className="w3-row">
                   <div className="w3-row w3-display-container">
@@ -574,10 +576,43 @@ class Inputpage extends React.Component {
                   </div>
                 </div>
               </div>
-			
-              {/* In the specification */}
+              {/* Evaluation Recommendation Output */}
               <div style={{display: this.state.showRecommendationPanel ==="Eval-Mode" ? "" : "none"}}  className="w3-half">
-				
+                <div className="w3-row">
+                  <div className="w3-row w3-display-container">
+                    <div className="w3-center w3-padding">
+                      <h3>
+                        <i className="fa fa-th-list w3-margin-right"></i>{" "}
+                        Recommendation{" "}
+                      </h3>
+                      <div className="w3-containter">
+                        <div className="w3-row">
+                          <button className="notification w3-button w3-indigo" onClick={this.handleRecommendationClick} disabled={this.state.recommendationNotPossible}>
+                            {this.state.recommendationButtonString} {" "}
+                          </button>
+                        </div>
+                        {/* <div className="w3-row">
+                          <div className="w3-half">
+                            <input  checked={this.state.showIdeogram}  onChange={this.toggleIdeoGram} className="w3-check"  type="checkbox" ></input>
+                            <label className="w3-margin"> Show Ideogram </label> 
+                          </div>
+                          <div className="w3-half">
+                            <input checked={this.state.showGeneAnnotation} onChange={this.toggleGeneAnnotation} className="w3-check" type="checkbox"  ></input>
+                            <label className="w3-margin"> Show Gene Annotation </label> 
+                          </div>
+                        </div> */}
+                      </div>
+                    </div>
+                  </div>
+                  <div id="recommendationOutputPanelEval" className="w3-row w3-center w3-display-container w3-margin recommendationOutputPanelEval">
+                    <RecommendationPanel 
+                      className="w3-center" 
+                      data={this.finalRecommendationOutputSpec} 
+                      width={this.state.recommendationPanelWidthEval} 
+                      _data={this.state.recommendationOutputSpec}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

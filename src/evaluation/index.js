@@ -10,7 +10,8 @@ class Evaluation extends React.Component{
     super(props);
     this.state = {
       recommendationTaskId: 0,
-      currentTaskCompleted: false
+      currentTaskCompleted: false,
+      mode:"Eval-Mode"
     };
     this.moveToNextTask = this.moveToNextTask.bind(this);
 
@@ -26,7 +27,7 @@ class Evaluation extends React.Component{
     if(currentTaskId<globalData.evaluationTasks.length-1)
     {
       this.setState({
-        recommendationTaskId: currentTaskId + 1
+        recommendationTaskId: currentTaskId + 1      
       });
     }
     else{
@@ -47,18 +48,18 @@ class Evaluation extends React.Component{
             <div className="w3-center w3-padding">
               <h3>
                 {" "}
-                <i className="fa fa-flask" aria-hidden="true"></i> Evaluation Task {" "}
+                <i className="fa fa-flask" aria-hidden="true"></i> Evaluation Task {`${this.state.recommendationTaskId+1}/${globalData.evaluationTasks.length}`} {" "}
               </h3>
             </div>
           </div>
-          <h4>Data Description: {globalData.evaluationTasks[this.state.recommendationTaskId].dataDescription} </h4>
-          <h4>Task Description: {globalData.evaluationTasks[this.state.recommendationTaskId].taskDescription} </h4>
-          <h4>Objective Description: {globalData.evaluationTasks[this.state.recommendationTaskId].objectiveTaskDescription} </h4>
-          <button className="w3-button w3-light-green" onClick={this.moveToNextTask} disabled={this.state.currentTaskCompleted}>Next Task</button> 
-
+          <h4> <strong> Data Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].dataDescription} <strong>Task Description: </strong>  {globalData.evaluationTasks[this.state.recommendationTaskId].taskDescription} </h4>
+          <h4> </h4>
+          <h4> <strong> Objective Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].objectiveTaskDescription} </h4>
+          <button className="w3-button w3-light-green w3-right" onClick={this.moveToNextTask} disabled={this.state.currentTaskCompleted}>Next Task</button> 
         </div>
-        <Inputpage data={"Eval-Mode"}/>
-  
+        <div key={this.state.recommendationTaskId} className="">
+          <Inputpage data={this.state.mode} />
+        </div>
       </>
     );
   }
