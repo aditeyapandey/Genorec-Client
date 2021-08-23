@@ -60,8 +60,8 @@ class Evaluation extends React.Component{
               </h3>
             </div>
           </div>
-          <h4> <strong> Data Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].dataDescription} <strong>Task Description: </strong>  {globalData.evaluationTasks[this.state.recommendationTaskId].taskDescription} </h4>
-          <h4> </h4>
+          <h4> <strong> Data Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].dataDescription}  </h4>
+          <h4> <strong>Task Description: </strong>  {globalData.evaluationTasks[this.state.recommendationTaskId].taskDescription} </h4>
           <h4> <strong> Objective Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].objectiveTaskDescription} </h4>
           <button className="w3-button w3-light-green w3-right" onClick={this.moveToNextTask} disabled={this.state.currentNotTaskCompleted}>Next Task</button> 
         </div>

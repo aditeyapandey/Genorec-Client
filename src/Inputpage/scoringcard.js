@@ -6,7 +6,7 @@ function ScoringCardUI(props){
   return (
     <>
       <div style={{display: props.display?"":"none"}} className="w3-container">
-        <h4> On a score 1-5, how willing are you to accept the recommendation.</h4>
+        <h4> On a scale of 1-5 how willing are you to accept the recommended visualization?</h4>
         <p> 
           <label>Less Willing</label>  
           <input className="w3-radio w3-margin" type="radio" name="score" value="1" />
