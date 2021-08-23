@@ -23,8 +23,8 @@ function ScoringCardUI(props){
         </p>
 
         <h5 style={{display: props.id === 1?"":"none"}}> After you have scored click on Submit to move to the next option.</h5>
-        <h5 style={{display: props.id === 2?"":"none"}}> After you have scored click on Next Task button on top to move to the next task.</h5>
-        <button style={{display: props.id === 1?"":"none"}} onClick={props.handler}> Submit </button>
+        <h5 style={{display: props.id === 2?"":"none"}}> Submit the score and click on Next Task button on top to move to the next task.</h5>
+        <button onClick={props.handler}> Submit </button>
       </div>
     </>
   );

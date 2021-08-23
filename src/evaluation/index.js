@@ -10,10 +10,11 @@ class Evaluation extends React.Component{
     super(props);
     this.state = {
       recommendationTaskId: 0,
-      currentTaskCompleted: false,
+      currentNotTaskCompleted: true,
       mode:"Eval-Mode"
     };
     this.moveToNextTask = this.moveToNextTask.bind(this);
+    this.makeTaskButtonActive = this.makeTaskButtonActive.bind(this);
 
   }
 
@@ -32,9 +33,16 @@ class Evaluation extends React.Component{
     }
     else{
       this.setState({
-        currentTaskCompleted: true
+        currentNotTaskCompleted: false
       });
     }
+  }
+
+  makeTaskButtonActive()
+  {
+    this.setState({
+      currentNotTaskCompleted: false
+    });
   }
 
 
@@ -55,10 +63,10 @@ class Evaluation extends React.Component{
           <h4> <strong> Data Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].dataDescription} <strong>Task Description: </strong>  {globalData.evaluationTasks[this.state.recommendationTaskId].taskDescription} </h4>
           <h4> </h4>
           <h4> <strong> Objective Description: </strong> {globalData.evaluationTasks[this.state.recommendationTaskId].objectiveTaskDescription} </h4>
-          <button className="w3-button w3-light-green w3-right" onClick={this.moveToNextTask} disabled={this.state.currentTaskCompleted}>Next Task</button> 
+          <button className="w3-button w3-light-green w3-right" onClick={this.moveToNextTask} disabled={this.state.currentNotTaskCompleted}>Next Task</button> 
         </div>
         <div key={this.state.recommendationTaskId} className="">
-          <Inputpage data={this.state.mode} id={this.state.recommendationTaskId} />
+          <Inputpage data={this.state.mode} id={this.state.recommendationTaskId} enableNextTask={this.makeTaskButtonActive} />
         </div>
       </>
     );

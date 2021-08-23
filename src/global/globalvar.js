@@ -141,7 +141,7 @@ export const evaluationTasks = [
   {taskid:2, 
     dataDescription: "You are given a set of regulatory regions in human in a BED file along with conservation scores for human and mouse genomes in BIGWIG files mapped to human genome coordinates.", 
     taskDescription: "Identify regulatory regions that are highly conserved in both human and mouse.",
-    objectiveTaskDescription:"Select 4 BIGWIG Files and Identify ROI task."},
+    objectiveTaskDescription:"Select 1 BIGWIG and 1 BED File and Identify ROI task."},
 ];
 
 

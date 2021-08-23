@@ -499,10 +499,16 @@ class Inputpage extends React.Component {
       if(ele[i].checked)
       {
         let updatedRecommendation = [stimuli.stimuliList[0].recommendationSpec[1]];
-        this.setState({
-          outputForEvaluation: updatedRecommendation,
-          currenEvalOption:2
-        });
+        if(this.state.currenEvalOption===1)
+        {
+          this.setState({
+            outputForEvaluation: updatedRecommendation,
+            currenEvalOption:2
+          });
+        }
+        else{
+          this.props.enableNextTask();
+        }
         return;
       }
     }
