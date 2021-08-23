@@ -185,7 +185,7 @@ function getAttributes(id,type,featureInterconnectionIp,denseInterconnectionIp,f
   let featureInterconnection = featureInterconnectionIp; 
   let denseInterconnection = denseInterconnectionIp; 
   let fileName = fileNameInput.toUpperCase();
-  let encodingName = encodingNameInput;
+  let encodingName = encodingNameInput.toUpperCase();
 
   if(dataType==="quantitative") intraAttrTask.push("identify");
   else intraAttrTask.push("identify");
