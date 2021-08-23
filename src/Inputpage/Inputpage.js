@@ -18,6 +18,7 @@ import {
 } from "./createdomcomponents";
 import { debounce } from "lodash";
 import stimuli from "../assets/evaluationstimuli/stimuli.json";
+import ScoringCardUI from "../Inputpage/scoringcard";
 
 var genorecEngine = require("genorec-engine");
 
@@ -48,7 +49,8 @@ class Inputpage extends React.Component {
       showIdeogram:false,
       showGeneAnnotation:true,
       showRecommendationPanel: this.props.data,
-      outputForEvaluation: []
+      outputForEvaluation: [],
+      currenEvalOption:1
     };
     this.onChangeFileQuantity = this.onChangeFileQuantity.bind(this);
     this.createDivForFileInput = this.createDivForFileInput.bind(this);
@@ -60,6 +62,7 @@ class Inputpage extends React.Component {
     this.toggleGeneAnnotation = this.toggleGeneAnnotation.bind(this);
     this.toggleIdeoGram = this.toggleIdeoGram.bind(this);
     this.handleShowRecommendationForEvaluation = this.handleShowRecommendationForEvaluation.bind(this);
+    this.optionUpdateHandle = this.optionUpdateHandle.bind(this);
     this.dataFileTypesAdded = [];
     this.dataDescriptionBoxes = [];
     this.finalRecommendationOutputSpec = [];
@@ -483,8 +486,29 @@ class Inputpage extends React.Component {
     let updatedRecommendation = [stimuli.stimuliList[0].recommendationSpec[0]];
     this.setState({
       outputForEvaluation: updatedRecommendation,
-      recommendationNotPossible:true    
+      recommendationNotPossible:true,
+      showRecommendation:true
     });
+  }
+
+  optionUpdateHandle()
+  {
+    var ele = document.getElementsByName("score");
+              
+    for(let i = 0; i < ele.length; i++) {
+      if(ele[i].checked)
+      {
+        let updatedRecommendation = [stimuli.stimuliList[0].recommendationSpec[1]];
+        this.setState({
+          outputForEvaluation: updatedRecommendation,
+          currenEvalOption:2
+        });
+        return;
+      }
+    }
+
+    alert("Please select a score before submitting and moving on.");
+
   }
 
 
@@ -614,6 +638,7 @@ class Inputpage extends React.Component {
                       width={this.state.recommendationPanelWidthEval} 
                       _data={this.state.outputForEvaluation}
                     />
+                    <ScoringCardUI key={this.state.currenEvalOption} id={this.state.currenEvalOption}  display={this.state.showRecommendation} handler={this.optionUpdateHandle} />
                   </div>
                 </div>
               </div>

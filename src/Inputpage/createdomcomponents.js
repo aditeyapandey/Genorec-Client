@@ -60,7 +60,7 @@ export const createNetworkInput = (defaultValue,fileid,componentid,onChangeFileD
   }
   return (
     <>
-    <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
+      <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
         <p> Connection  </p>
       </div>
       <div className={"w3-center w3-hover-opacity w3-third"}>
@@ -120,7 +120,7 @@ export const createGranularityInput = (granularity,fileid,componentid,onChangeFi
 
   return (
     <>
-     <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
+      <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
         <p> Feature Extent </p>
         {/* <p> Granularity </p> */}
       </div>
@@ -181,7 +181,7 @@ export const createAvailablityInput = (availability,fileid,componentid,onChangeF
   }  
   return (
     <>
-         <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
+      <div className={"w3-center w3-margin-top w3-hover-opacity w3-third"}>
         <p> Feature Density</p>
       </div>
       <div  className="w3-center w3-hover-opacity w3-third">
@@ -230,19 +230,19 @@ export const createDataTypeInput = (dataTypeInput,fileid,componentid,onChangeAss
           value = {"1"}
         /> */}
         <select
-        className="w3-center w3-padding w3-select"
-        disabled={dataTypeInput}
-        name={"quant"}
-        id={fileid+componentid+"quant"}
-        onChange={handleChangeEvent}
-      >
-        {quantVals.map((val) => (
-          <option key={val} value={val}>
-            {val}
-          </option>
-        ))}
-      </select>
-      <p>Quant</p>
+          className="w3-center w3-padding w3-select"
+          disabled={dataTypeInput}
+          name={"quant"}
+          id={fileid+componentid+"quant"}
+          onChange={handleChangeEvent}
+        >
+          {quantVals.map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
+        </select>
+        <p>Quant</p>
 
       </div>
       <div className="w3-center  w3-third">
@@ -252,19 +252,19 @@ export const createDataTypeInput = (dataTypeInput,fileid,componentid,onChangeAss
           type="number"
           value={defaultValue["cat"]}
         /> */}
-               <select
-        className="w3-center w3-padding w3-select"
-        disabled={dataTypeInput}
-        name={"cat"}
-        id={fileid+componentid+"cat"}
-        onChange={handleChangeEvent}
-      >
-        {textorcatVals.map((val) => (
-          <option key={val} value={val}>
-            {val}
-          </option>
-        ))}
-      </select>
+        <select
+          className="w3-center w3-padding w3-select"
+          disabled={dataTypeInput}
+          name={"cat"}
+          id={fileid+componentid+"cat"}
+          onChange={handleChangeEvent}
+        >
+          {textorcatVals.map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
+        </select>
         
         <p>Categorical</p>
       </div>
@@ -276,18 +276,18 @@ export const createDataTypeInput = (dataTypeInput,fileid,componentid,onChangeAss
           value={defaultValue["text"]}
         /> */}
         <select
-        className="w3-center w3-padding w3-select"
-        disabled={dataTypeInput}
-        name={"text"}
-        id={fileid+componentid+"text"}
-        onChange={handleChangeEvent}
-      >
-        {textorcatVals.map((val) => (
-          <option key={val} value={val}>
-            {val}
-          </option>
-        ))}
-      </select>
+          className="w3-center w3-padding w3-select"
+          disabled={dataTypeInput}
+          name={"text"}
+          id={fileid+componentid+"text"}
+          onChange={handleChangeEvent}
+        >
+          {textorcatVals.map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
+        </select>
         <p>Text</p>
       </div>
     </>

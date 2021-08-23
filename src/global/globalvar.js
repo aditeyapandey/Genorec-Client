@@ -144,6 +144,7 @@ export const evaluationTasks = [
     objectiveTaskDescription:"Select 4 BIGWIG Files and Identify ROI task."},
 ];
 
+
 export default {
   inputFileFormats: inputFileFormats,
   colorScheme: colorScheme,
