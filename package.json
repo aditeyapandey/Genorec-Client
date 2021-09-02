@@ -10,7 +10,7 @@
     "babel-preset-react-app": "9.1.2",
     "generate-react-cli": "5.2.3",
     "genorec-engine": "1.1.0",
-    "gosling.js": "0.9.3",
+    "gosling.js": "^0.9.8",
     "husky": "^4.2.5",
     "lodash": "^4.17.21",
     "pixi.js": "^5.3.8",
