@@ -6,20 +6,18 @@ function ScoringCardUI(props){
   return (
     <>
       <div style={{display: props.display?"":"none"}} className="w3-container">
-        <h4> On a scale of 1-5 how willing are you to accept the recommended visualization?</h4>
+        <h4> I am willing to use the recommended visualization for the analysis of the data and task description. </h4>
         <p> 
-          <label>Less Willing</label>  
-          <input className="w3-radio w3-margin" type="radio" name="score" value="1" />
-          <label>1</label>
-          <input className="w3-radio w3-margin" type="radio" name="score" value="2" />
-          <label>2</label>
-          <input className="w3-radio w3-margin" type="radio" name="score" value="3" />
-          <label>3</label>
-          <input className="w3-radio w3-margin" type="radio" name="score" value="4" />
-          <label>4</label>
-          <input className="w3-radio w3-margin" type="radio" name="score" value="5" />
-          <label>5</label>
-          <label className="w3-margin"> More Willing</label>  
+          <input className="w3-radio w3-margin-left" type="radio" name="score" value="1" />
+          <label>Strongly Disagree</label>
+          <input className="w3-radio w3-margin-left" type="radio" name="score" value="2" />
+          <label>Disagree</label>
+          <input className="w3-radio w3-margin-left" type="radio" name="score" value="3" />
+          <label>Neutral</label>
+          <input className="w3-radio w3-margin-left" type="radio" name="score" value="4" />
+          <label>Agree</label>
+          <input className="w3-radio w3-margin-left" type="radio" name="score" value="5" />
+          <label>Strongly Agree</label>
         </p>
 
         <h5 style={{display: props.id === 1?"":"none"}}> After you have scored click on Submit to move to the next option.</h5>

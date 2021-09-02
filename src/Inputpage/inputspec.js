@@ -151,19 +151,22 @@ function getFeatures(fId,fName,data,featureConnection) {
     const copyVarofDataWithAttr = JSON.parse(JSON.stringify(data));
     delete copyVarofDataWithAttr.attributes;
     const copyVarofDataWithAttrKeys = Object.keys(copyVarofDataWithAttr);
+    let interConnectionSet = false;
 
     copyVarofDataWithAttrKeys.forEach(keyVal =>{
-      Object.keys(copyVarofDataWithAttr[keyVal]).forEach((attributeType,index)=>{
+      Object.keys(copyVarofDataWithAttr[keyVal]).forEach((attributeType)=>{
         for(let i=1;i<=copyVarofDataWithAttr[keyVal][attributeType];i++)
         {
           //Notes: check attribute for each to see if we can 
           let localFeatureInterconnection = false;
           let localDenseInterconnection = false;
-          if(featureInterconnection && keyVal.includes("bedpe") && index===0)
+          if(featureInterconnection && keyVal.includes("bedpe") && !interConnectionSet)
           {
             localFeatureInterconnection = featureInterconnection;
             localDenseInterconnection = denseInterconnection;
+            interConnectionSet = true;
           }
+
           attr.push(getAttributes(globalAttrIndex,attributeType,localFeatureInterconnection,localDenseInterconnection,fName,keyVal,attributeType+i));
           globalAttrIndex++;
         }
