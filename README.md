@@ -1,5 +1,17 @@
 # Genorec-Client
 
+## Development
+
+Run the following commands to install dependent packages and run the application on your browser:
+
+```sh
+yarn install && yarn start
+```
+
+Use `http://localhost:3000/` to run the regular GenoREC interface or `http://localhost:3000/evaluation` to see the interface for a user study.
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
