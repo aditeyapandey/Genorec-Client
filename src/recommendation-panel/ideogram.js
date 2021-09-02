@@ -70,7 +70,7 @@ export function getOverview(width, height) {
 }
 export function getIdeogram(width, height) {
   return {
-    title: "Ideogram",
+    title: "IDEOGRAM",
     "template": "ideogram",
     "data": {
       "url": "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv",

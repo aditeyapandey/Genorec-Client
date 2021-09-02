@@ -8,7 +8,9 @@ export const EXAMPLE_DATASETS = {
   interaction: "https://resgen.io/api/v1/tileset_info/?d=JzccFAJUQEiz-0188xaWZg",
   clinvar: "https://cgap-higlass.com/api/v1/tileset_info/?d=clinvar_20200824_hg38",
   region: "https://resgen.io/api/v1/gt/paper-data/tileset_info/?d=SYZ89snRRv2YcxRwG_25_Q",
-  region2: "https://resgen.io/api/v1/gt/paper-data/tileset_info/?d=HT4KNWdTQs2iN477vqDKWg"
+  region2: "https://resgen.io/api/v1/gt/paper-data/tileset_info/?d=HT4KNWdTQs2iN477vqDKWg",
+  // https://github.com/hms-dbmi/cistrome-explorer/blob/b12238aeadbaf4a41f5445c32dbe3d6518d6fd1d/src/viewconfigs/horizontal-multivec-1.js#L145
+  gwas: 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb'
 };
 
 /**
@@ -201,8 +203,8 @@ export function encodingToTrack(encoding, config) {
         "type": "matrix"
       },
       mark: "rect",
-      x: { "field": "position1", "type": "genomic", "axis": "top" },
-      y: { "field": "position2", "type": "genomic", "axis": "right" },
+      x: { "field": "position1", "type": "genomic", "axis": "none" },
+      y: { "field": "position2", "type": "genomic", "axis": "none" },
       color: { "field": "value", "type": "quantitative", "range": "warm" },
       width,
       height: width

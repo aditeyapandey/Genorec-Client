@@ -4,7 +4,7 @@ import { getIdeogram, getOverview } from "./ideogram";
 // import { getIdeogram } from "./ideogram";
 
 // A flag variable to print log messages while debugging
-export const IS_DEBUG_RECOMMENDATION_PANEL = false;
+export const IS_DEBUG_RECOMMENDATION_PANEL = true;
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
@@ -41,21 +41,27 @@ export function genorecToGosling(geno = [], width = 100) {
 
     const gosViews = [];
 
-    if(connection === "dense" && arrangement === "orthogonal") {
+    const isAddMatrix = connection === "dense" && arrangement === "orthogonal";
+    if(isAddMatrix && views.length === 0) {
+      let tracksToAdd = [encodingToTrack("matrix", { 
+        title: "MATRIX", 
+        width
+      })];
+      if(geneAnnotation) {
+        tracksToAdd = [getGeneAnnotation(width, 100), ...tracksToAdd];
+      }
+      if(ideogram) {
+        tracksToAdd = [getIdeogram(width, 20), ...tracksToAdd];
+      }
       // we want to add a matrix
       gosViews.push({
         // assembly, // we do not have this information, lets use a default one
         // xOffset: width / 2.0,
-        tracks: [
-          encodingToTrack("matrix", { 
-            title: "matrix", 
-            width
-          })
-        ]
+        tracks: tracksToAdd
       });
     }
 
-    views.forEach(view => {
+    views.forEach((view, i) => {
       const {
         trackAlignment: alignment,
         sequenceName: assembly,
@@ -70,6 +76,7 @@ export function genorecToGosling(geno = [], width = 100) {
       let trackCount = 0;
       let layout = "linear"; // don't know why this is specified in the tracks, but have another version here in the view level.
       let isSparseInterconnectionCircularLayout = false;
+      let lastFileName = '';
       tracks.forEach(track => {
         const {
           layout: trackLayout,
@@ -78,6 +85,7 @@ export function genorecToGosling(geno = [], width = 100) {
           encodings: subTracks
         } = track;
 				
+        lastFileName = fileName;
         layout = trackLayout;
 
         if(interconnection === "sparse") {
@@ -85,7 +93,7 @@ export function genorecToGosling(geno = [], width = 100) {
           if(layout === "linear") {
             gosTracks.push(
               encodingToTrack("link", { 
-                title: "arc", 
+                title: fileName, 
                 width
               })
             );
@@ -153,7 +161,7 @@ export function genorecToGosling(geno = [], width = 100) {
         // We need to add a arc track for interconnection
         gosTracks.push(
           encodingToTrack("link", { 
-            title: "arc", 
+            title: lastFileName, 
             width
           })
         );
@@ -179,6 +187,9 @@ export function genorecToGosling(geno = [], width = 100) {
             if(ideogram) {
               tracksToAdd = [getIdeogram(width, 20), ...tracksToAdd];
             }
+            if(isAddMatrix) {
+              tracksToAdd = [...tracksToAdd, encodingToTrack("matrix", { title: "MATRIX", width })];
+            }
             gosViews.push({
               layout,
               assembly,
@@ -197,6 +208,9 @@ export function genorecToGosling(geno = [], width = 100) {
             }
             if(ideogram) {
               tracksToAdd = [getIdeogram(viewWidth, 20), ...tracksToAdd];
+            }
+            if(isAddMatrix) {
+              tracksToAdd = [...tracksToAdd, encodingToTrack("matrix", { title: "MATRIX", width: viewWidth })];
             }
             gosViews.push({
               arrangement: "horizontal",
@@ -227,6 +241,9 @@ export function genorecToGosling(geno = [], width = 100) {
           }
           if(ideogram) {
             tracksToAdd = [getIdeogram(width, 20), ...tracksToAdd];
+          }
+          if(isAddMatrix) {
+            tracksToAdd = [...tracksToAdd, encodingToTrack("matrix", { title: "MATRIX", width })];
           }
           gosViews.push({
             layout,
