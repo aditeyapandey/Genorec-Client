@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.2.1",
     "babel-preset-react-app": "9.1.2",
     "generate-react-cli": "5.2.3",
+    "genorec-engine": "1.1.0",
     "gosling.js": "0.9.3",
     "husky": "^4.2.5",
     "lodash": "^4.17.21",
