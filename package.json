@@ -13,7 +13,7 @@
     "gosling.js": "^0.9.8",
     "husky": "^4.2.5",
     "lodash": "^4.17.21",
-    "pixi.js": "^5.3.8",
+    "pixi.js": "6.0.4",
     "react": "16.13.1",
     "react-dom": "16.14.0",
     "react-json-prettify": "^0.2.0",
