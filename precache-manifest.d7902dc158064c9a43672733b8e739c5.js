@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ff302339cbc65c9984d164bd08f525bb",
+    "revision": "b5b5109b6c34a0af9aa2f9926fc3b0df",
     "url": "/Genorec-Client/index.html"
   },
   {
-    "revision": "f05d0b55e92eb692940f",
+    "revision": "b7c7516b91c0f1e3d66e",
     "url": "/Genorec-Client/static/css/main.3b0ac3ed.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Genorec-Client/static/js/2.292b1b4e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f05d0b55e92eb692940f",
-    "url": "/Genorec-Client/static/js/main.586138a0.chunk.js"
+    "revision": "b7c7516b91c0f1e3d66e",
+    "url": "/Genorec-Client/static/js/main.d9ff946f.chunk.js"
   },
   {
     "revision": "0612826d757a39f6bf82",
