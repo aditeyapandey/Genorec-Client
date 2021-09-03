@@ -7446,10 +7446,10 @@ generic-filehandle@^2.0.0, generic-filehandle@^2.0.3:
     es6-promisify "^6.1.1"
     file-uri-to-path "^2.0.0"
 
-genorec-engine@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/genorec-engine/-/genorec-engine-1.1.0.tgz#33845eb9f01106369e9cec3055d2c8aa662879d7"
-  integrity sha512-mvASR0JwJOmWe3imEMBUxTykUJHk109fLHzJUxuH2GeHFY+56PiqTSwmxy5T23L4sP8OEVkniIqoV7MkoBnjuQ==
+genorec-engine@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/genorec-engine/-/genorec-engine-1.1.1.tgz#32133e2489ae09b88e6667ecf38c94096e9e62ee"
+  integrity sha512-ZQDZpEUy5sHiaZIzZWoQAocaD+9uvwlkcQtmxyuKAFEMvu/wOaGYPEvPY5TMktbd12xPxdttKlYZZbX0ux45pA==
   dependencies:
     csv-parser "2.3.3"
     d3 "6.0.0"

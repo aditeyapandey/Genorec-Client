@@ -1,6 +1,6 @@
 export function getGeneAnnotation(width, height) {
   return  {
-    title: "Genes",
+    title: "GENES",
     "template": "gene",
     "data": {
       "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
