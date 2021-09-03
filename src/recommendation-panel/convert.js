@@ -61,7 +61,7 @@ export function genorecToGosling(geno = [], width = 100) {
       });
     }
 
-    views.forEach((view, i) => {
+    views.forEach((view) => {
       const {
         trackAlignment: alignment,
         sequenceName: assembly,
@@ -76,7 +76,7 @@ export function genorecToGosling(geno = [], width = 100) {
       let trackCount = 0;
       let layout = "linear"; // don't know why this is specified in the tracks, but have another version here in the view level.
       let isSparseInterconnectionCircularLayout = false;
-      let lastFileName = '';
+      let lastFileName = "";
       tracks.forEach(track => {
         const {
           layout: trackLayout,

@@ -10,7 +10,7 @@ export const EXAMPLE_DATASETS = {
   region: "https://resgen.io/api/v1/gt/paper-data/tileset_info/?d=SYZ89snRRv2YcxRwG_25_Q",
   region2: "https://resgen.io/api/v1/gt/paper-data/tileset_info/?d=HT4KNWdTQs2iN477vqDKWg",
   // https://github.com/hms-dbmi/cistrome-explorer/blob/b12238aeadbaf4a41f5445c32dbe3d6518d6fd1d/src/viewconfigs/horizontal-multivec-1.js#L145
-  gwas: 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb'
+  gwas: "https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb"
 };
 
 /**
@@ -69,15 +69,14 @@ export const getGWASData = () => {
         {"index": 10, "name": "pvalue_txt", "type": "nominal"}
       ]
     }
-  }
-}
+  };
+};
 
 export function encodingToTrackSparse(encoding, config) {
   const { 
     title, 
     width, 
-    index = 0,
-    density // "continous" or "sparse"
+    index = 0
   } = config;
 
   const trackBase = {
@@ -136,19 +135,19 @@ export function encodingToTrackSparse(encoding, config) {
       ...JSON.parse(JSON.stringify(trackBase)),
       ...JSON.parse(JSON.stringify(getGWASData(index))),
       dataTransform: [
-        {type: 'filter', field: 'disease', oneOf: ['asthema', 'Breast cancer', 'Hematocrit', 'Plateletcrit']},
-        {type: 'replace', field: 'disease', newField: 'c', replace: [
-          {from: 'asthema', to: 'A'}, 
-          {from: 'Breast cancer', to: 'B'},
-          {from: 'Hematocrit', to: 'C'},
-          {from: 'Plateletcrit', to: 'D'}]
-      },
+        {type: "filter", field: "disease", oneOf: ["asthema", "Breast cancer", "Hematocrit", "Plateletcrit"]},
+        {type: "replace", field: "disease", newField: "c", replace: [
+          {from: "asthema", to: "A"}, 
+          {from: "Breast cancer", to: "B"},
+          {from: "Hematocrit", to: "C"},
+          {from: "Plateletcrit", to: "D"}]
+        },
       ],
       mark: "rect",
       x: { "field": "start", "type": "genomic" },
       // xe: { "field": "end", "type": "genomic" },
-      stroke: { "field": "c", "type": "nominal", domain: ['A', 'B', 'C', 'D'] },
-      color: { "field": "c", "type": "nominal", legend: true, domain: ['A', 'B', 'C', 'D']},
+      stroke: { "field": "c", "type": "nominal", domain: ["A", "B", "C", "D"] },
+      color: { "field": "c", "type": "nominal", legend: true, domain: ["A", "B", "C", "D"]},
       strokeWidth: { value: 4 },
     };
   case "heatmap":
@@ -159,8 +158,8 @@ export function encodingToTrackSparse(encoding, config) {
       mark: "rect",
       x: { field: "start", type: "genomic" },
       // xe: { field: "end", type: "genomic" },
-      stroke: { field: "pvalue", type: "quantitative", range: 'grey'},
-      color: { field: "pvalue", type: "quantitative", legend: true, range: 'grey' },
+      stroke: { field: "pvalue", type: "quantitative", range: "grey"},
+      color: { field: "pvalue", type: "quantitative", legend: true, range: "grey" },
       strokeWidth: { value: 4 },
       // opacity: { value: 0.8 }
     };
@@ -254,7 +253,6 @@ export function encodingToTrackContinuous(encoding, config) {
     title, 
     width, 
     index = 0,
-    density // "continous" or "sparse"
   } = config;
 
   const trackBase = {
@@ -306,7 +304,7 @@ export function encodingToTrackContinuous(encoding, config) {
     };
   case "barChartCN":
   case "intervalBarChartCN":
-    console.warn('intervalBarChartCN with coutiguous feature should not be selected.');
+    console.warn("intervalBarChartCN with coutiguous feature should not be selected.");
     return {
       ...JSON.parse(JSON.stringify(trackBase)),
       "data": {
@@ -320,8 +318,8 @@ export function encodingToTrackContinuous(encoding, config) {
       },
       mark: "rect",
       x: { field: "start", type: "genomic" },
-      color: { field: 'sample', type: 'nominal', legend: true },
-      stroke: { field: 'sample', type: 'nominal', legend: true },
+      color: { field: "sample", type: "nominal", legend: true },
+      stroke: { field: "sample", type: "nominal", legend: true },
       strokeWidth: { value: 4 },
     };
     // return {
@@ -457,7 +455,7 @@ export function encodingToTrackContinuous(encoding, config) {
   }
 }
 export function encodingToTrack(encoding, config) {
-  if(config.density === 'sparse') return encodingToTrackSparse(encoding, config);
+  if(config.density === "sparse") return encodingToTrackSparse(encoding, config);
   else return encodingToTrackContinuous(encoding, config);
 }
 
