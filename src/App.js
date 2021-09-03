@@ -2,8 +2,7 @@ import React from "react";
 import "./App.css";
 import Inputpage from "./Inputpage/Inputpage";
 import Evaluation from "./evaluation/index";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import { HashRouter as BrowserRouter, Route, Switch } from "react-router-dom";
 
 class App extends React.Component{ 
 
@@ -32,12 +31,12 @@ class App extends React.Component{
     return (
       <div className="App">
         <Header className="Header"/>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Switch>
-            <Route path="/">
+            <Route exact path='/'>
               <Inputpage data={"App-Mode"} />
             </Route>
-            <Route path="/evaluation">
+            <Route path='/evaluation'>
               <Evaluation />
             </Route>
           </Switch>

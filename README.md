@@ -8,7 +8,7 @@ Run the following commands to install dependent packages and run the application
 yarn install && yarn start
 ```
 
-Use `http://localhost:3000/` to run the regular GenoREC interface or `http://localhost:3000/evaluation` to see the interface for a user study.
+Use `http://localhost:3000/` to run the regular GenoREC interface or `http://localhost:3000/#/evaluation` to see the interface for a user study.
 
 ---
 
