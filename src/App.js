@@ -34,10 +34,10 @@ class App extends React.Component{
         <Header className="Header"/>
         <BrowserRouter>
           <Switch>
-            <Route path="/">
+            <Route exact path="/" component={Inputpage}>
               <Inputpage data={"App-Mode"} />
             </Route>
-            <Route path="/evaluation">
+            <Route path="/evaluation"  component={Evaluation}>
               <Evaluation />
             </Route>
           </Switch>

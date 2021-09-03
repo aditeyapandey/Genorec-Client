@@ -8,6 +8,7 @@ class Evaluation extends React.Component{
 
   constructor(props) {
     super(props);
+    console.log("test");
     this.state = {
       recommendationTaskId: 0,
       currentNotTaskCompleted: true,
