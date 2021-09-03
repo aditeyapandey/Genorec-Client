@@ -135,41 +135,22 @@ export function encodingToTrackSparse(encoding, config) {
     return {
       ...JSON.parse(JSON.stringify(trackBase)),
       ...JSON.parse(JSON.stringify(getGWASData(index))),
-      dataTransform: [{type: 'filter', field: 'disease', oneOf: ['asthema', 'Breast cancer', 'Depression', 'Hematocrit', 'Plateletcrit']}],
+      dataTransform: [
+        {type: 'filter', field: 'disease', oneOf: ['asthema', 'Breast cancer', 'Hematocrit', 'Plateletcrit']},
+        {type: 'replace', field: 'disease', newField: 'c', replace: [
+          {from: 'asthema', to: 'A'}, 
+          {from: 'Breast cancer', to: 'B'},
+          {from: 'Hematocrit', to: 'C'},
+          {from: 'Plateletcrit', to: 'D'}]
+      },
+      ],
       mark: "rect",
       x: { "field": "start", "type": "genomic" },
       // xe: { "field": "end", "type": "genomic" },
-      stroke: { "field": "disease", "type": "nominal", domain: ['asthema', 'Breast cancer', 'Depression', 'Hematocrit', 'Plateletcrit'] },
-      color: { "field": "disease", "type": "nominal", legend: true, domain: ['asthema', 'Breast cancer', 'Depression', 'Hematocrit', 'Plateletcrit']},
+      stroke: { "field": "c", "type": "nominal", domain: ['A', 'B', 'C', 'D'] },
+      color: { "field": "c", "type": "nominal", legend: true, domain: ['A', 'B', 'C', 'D']},
       strokeWidth: { value: 4 },
     };
-    // https://github.com/hms-dbmi/cistrome-explorer/blob/b12238aeadbaf4a41f5445c32dbe3d6518d6fd1d/src/viewconfigs/horizontal-multivec-1.js#L136
-    // return {
-    // 	...JSON.parse(JSON.stringify(trackBase)),
-    // 	"data": {
-    // 		"url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb",
-    // 		"type": "beddb",
-    // 		"genomicFields": [
-    // 			{"index": 1, "name": "start"},
-    // 			{"index": 2, "name": "end"}
-    // 		],
-    // 		"valueFields": [
-    // 			{"index": 3, "name": "pubmedid", "type": "nominal"},
-    // 			{"index": 4, "name": "date", "type": "nominal"},
-    // 			{"index": 5, "name": "link", "type": "nominal"},
-    // 			{"index": 6, "name": "pvalue", "type": "quantitative"},
-    // 			{"index": 8, "name": "disease", "type": "nominal"},
-    // 			{"index": 9, "name": "pvalue_log", "type": "quantitative"},
-    // 			{"index": 10, "name": "pvalue_txt", "type": "nominal"}
-    // 		]
-    // 	},
-    // 	mark: "rect",
-    // 	x: { field: "start", type: "genomic" },
-    // 	xe: {field: "end", "type": "genomic" },
-    // 	color: { field: "disease", type: "nominal", legend: true },
-    // 	stroke: { field: "disease", type: "nominal" },
-    // 	strokeWidth: { value: 5 }
-    // };
   case "heatmap":
   case "intervalHeatmap":
     return {
@@ -177,11 +158,11 @@ export function encodingToTrackSparse(encoding, config) {
       ...JSON.parse(JSON.stringify(getGWASData(index))),
       mark: "rect",
       x: { field: "start", type: "genomic" },
-      xe: { field: "end", type: "genomic" },
-      stroke: { field: "pvalue", type: "quantitative", range: "grey" },
-      color: { field: "pvalue", type: "quantitative", range: "grey", legend: true },
+      // xe: { field: "end", type: "genomic" },
+      stroke: { field: "pvalue", type: "quantitative", range: 'grey'},
+      color: { field: "pvalue", type: "quantitative", legend: true, range: 'grey' },
       strokeWidth: { value: 4 },
-      opacity: { value: 0.8 }
+      // opacity: { value: 0.8 }
     };
   case "link":
     return {
@@ -325,68 +306,59 @@ export function encodingToTrackContinuous(encoding, config) {
     };
   case "barChartCN":
   case "intervalBarChartCN":
+    console.warn('intervalBarChartCN with coutiguous feature should not be selected.');
     return {
       ...JSON.parse(JSON.stringify(trackBase)),
       "data": {
-        "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
-        "type": "beddb",
-        "genomicFields": [
-          { "index": 1, "name": "start" },
-          { "index": 2, "name": "end" }
-        ],
-        "valueFields": [
-          { "index": 5, "name": "strand", "type": "nominal" },
-          { "index": 3, "name": "name", "type": "nominal" },
-          { "index": 4, "name": "4", "type": "nominal" },
-          { "index": 6, "name": "6", "type": "nominal" },
-          { "index": 7, "name": "7", "type": "nominal" },
-          { "index": 8, "name": "8", "type": "nominal" },
-          { "index": 9, "name": "9", "type": "nominal" },
-          { "index": 10, "name": "10", "type": "nominal" },
-          { "index": 11, "name": "11", "type": "nominal" },
-        ],
-        "exonIntervalFields": [
-          { "index": 12, "name": "start" },
-          { "index": 13, "name": "end" }
-        ]
+        "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=cistrome-multivec",
+        "type": "multivec",
+        "row": "sample",
+        "column": "position",
+        "value": "peak",
+        "categories": ["A", "B", "C", "D"],
+        "binSize": 4
       },
-      "dataTransform": [
-        { type: "filter", "field": "type", "oneOf": ["gene"] },
-        { type: "filter", "field": "strand", "oneOf": ["+"] }
-      ],
       mark: "rect",
-      x: { "field": "start", "type": "genomic" },
-      xe: { "field": "end", "type": "genomic" },
-      stroke: { "field": "8", "type": "nominal" },
+      x: { field: "start", type: "genomic" },
+      color: { field: 'sample', type: 'nominal', legend: true },
+      stroke: { field: 'sample', type: 'nominal', legend: true },
       strokeWidth: { value: 4 },
-      color: { "field": "8", "type": "nominal", legend: true, domain: ["protein-coding", "ncRNA", "snRNA"] },
     };
-    // https://github.com/hms-dbmi/cistrome-explorer/blob/b12238aeadbaf4a41f5445c32dbe3d6518d6fd1d/src/viewconfigs/horizontal-multivec-1.js#L136
     // return {
-    // 	...JSON.parse(JSON.stringify(trackBase)),
-    // 	"data": {
-    // 		"url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb",
-    // 		"type": "beddb",
-    // 		"genomicFields": [
-    // 			{"index": 1, "name": "start"},
-    // 			{"index": 2, "name": "end"}
-    // 		],
-    // 		"valueFields": [
-    // 			{"index": 3, "name": "pubmedid", "type": "nominal"},
-    // 			{"index": 4, "name": "date", "type": "nominal"},
-    // 			{"index": 5, "name": "link", "type": "nominal"},
-    // 			{"index": 6, "name": "pvalue", "type": "quantitative"},
-    // 			{"index": 8, "name": "disease", "type": "nominal"},
-    // 			{"index": 9, "name": "pvalue_log", "type": "quantitative"},
-    // 			{"index": 10, "name": "pvalue_txt", "type": "nominal"}
-    // 		]
-    // 	},
-    // 	mark: "rect",
-    // 	x: { field: "start", type: "genomic" },
-    // 	xe: {field: "end", "type": "genomic" },
-    // 	color: { field: "disease", type: "nominal", legend: true },
-    // 	stroke: { field: "disease", type: "nominal" },
-    // 	strokeWidth: { value: 5 }
+    //   ...JSON.parse(JSON.stringify(trackBase)),
+    //   "data": {
+    //     "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
+    //     "type": "beddb",
+    //     "genomicFields": [
+    //       { "index": 1, "name": "start" },
+    //       { "index": 2, "name": "end" }
+    //     ],
+    //     "valueFields": [
+    //       { "index": 5, "name": "strand", "type": "nominal" },
+    //       { "index": 3, "name": "name", "type": "nominal" },
+    //       { "index": 4, "name": "4", "type": "nominal" },
+    //       { "index": 6, "name": "6", "type": "nominal" },
+    //       { "index": 7, "name": "7", "type": "nominal" },
+    //       { "index": 8, "name": "8", "type": "nominal" },
+    //       { "index": 9, "name": "9", "type": "nominal" },
+    //       { "index": 10, "name": "10", "type": "nominal" },
+    //       { "index": 11, "name": "11", "type": "nominal" },
+    //     ],
+    //     "exonIntervalFields": [
+    //       { "index": 12, "name": "start" },
+    //       { "index": 13, "name": "end" }
+    //     ]
+    //   },
+    //   "dataTransform": [
+    //     { type: "filter", "field": "type", "oneOf": ["gene"] },
+    //     { type: "filter", "field": "strand", "oneOf": ["+"] }
+    //   ],
+    //   mark: "rect",
+    //   x: { "field": "start", "type": "genomic" },
+    //   xe: { "field": "end", "type": "genomic" },
+    //   stroke: { "field": "8", "type": "nominal" },
+    //   strokeWidth: { value: 4 },
+    //   color: { "field": "8", "type": "nominal", legend: true, domain: ["protein-coding", "ncRNA", "snRNA"] },
     // };
   case "heatmap":
   case "intervalHeatmap":
