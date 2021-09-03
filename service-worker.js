@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Genorec-Client/precache-manifest.b47a0999a467ec2795be006bd0592b5a.js"
+  "/Genorec-Client/precache-manifest.90a207c1a9fad9f3ef890dc01d95cc9b.js"
 );
 
 self.addEventListener('message', (event) => {

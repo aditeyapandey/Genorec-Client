@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "046d968ecc2d415be4018559afc0baa3",
+    "revision": "ff302339cbc65c9984d164bd08f525bb",
     "url": "/Genorec-Client/index.html"
   },
   {
