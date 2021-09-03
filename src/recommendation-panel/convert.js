@@ -4,7 +4,7 @@ import { getIdeogram, getOverview } from "./ideogram";
 // import { getIdeogram } from "./ideogram";
 
 // A flag variable to print log messages while debugging
-export const IS_DEBUG_RECOMMENDATION_PANEL = false;
+export const IS_DEBUG_RECOMMENDATION_PANEL = true;
 
 /**
  * Convert a Genorec recommendation spec into a list of Gosling.js specs.
@@ -110,7 +110,8 @@ export function genorecToGosling(geno = [], width = 100) {
         subTracks.forEach(subTrack => {
           const {
             encoding: encodingName,
-            columnName: featureName
+            columnName: featureName,
+            availability: density // "continous" or "sparse"
           } = subTrack;
 
           const title = `${fileName} - ${featureName}`;
@@ -121,7 +122,8 @@ export function genorecToGosling(geno = [], width = 100) {
             { 
               title, 
               width, 
-              index: trackCount++ 
+              index: trackCount++,
+              density
             }
           );
 					

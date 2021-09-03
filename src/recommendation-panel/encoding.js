@@ -46,11 +46,234 @@ export const getMultivecData = (/* i = 0, granularity, availability */) => {
   };
 };
 
-export function encodingToTrack(encoding, config) {
+export const getGWASData = () => {
+  return {
+    "data": {
+      "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb",
+      "type": "beddb",
+      "genomicFields": [
+        {"index": 1, "name": "start"},
+        {"index": 2, "name": "end"}
+      ],
+      "valueFields": [
+        {"index": 3, "name": "pubmedid", "type": "nominal"},
+        {"index": 4, "name": "date", "type": "nominal"},
+        {"index": 5, "name": "link", "type": "nominal"},
+        {"index": 6, "name": "pvalue", "type": "quantitative"},
+        {"index": 8, "name": "disease", "type": "nominal"},
+        {
+          "index": 9,
+          "name": "pvalue_log",
+          "type": "quantitative"
+        },
+        {"index": 10, "name": "pvalue_txt", "type": "nominal"}
+      ]
+    }
+  }
+}
+
+export function encodingToTrackSparse(encoding, config) {
   const { 
     title, 
     width, 
-    index = 0
+    index = 0,
+    density // "continous" or "sparse"
+  } = config;
+
+  const trackBase = {
+    title,
+    style: { outlineWidth: 1 },
+    width,
+    height: 100
+  };
+
+  switch(encoding) {
+  case "lineChart":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      ...JSON.parse(JSON.stringify(getGWASData(index))),
+      alignment: "overlay",
+      tracks: [
+        { mark: "line" },
+        { mark: "point", size: { value: 2 } },
+      ],
+      x: { field: "start", type: "genomic" },
+      y: { field: "pvalue", type: "quantitative", axis: "right", grid: true },
+      color: { value: getSampleColor(index) },
+      size: { value: 1 },
+      opacity: { value: 0.8 }
+    };
+  case "dotPlot":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      ...JSON.parse(JSON.stringify(getGWASData(index))),
+      mark: "point", 
+      x: { field: "start", type: "genomic" },
+      xe: { field: "end", type: "genomic" },
+      y: { field: "pvalue", type: "quantitative", axis: "right", grid: true },
+      color: { value: getSampleColor(index) },
+      size: { value: 4 },
+      opacity: { value: 0.8 }
+    };
+  case "barChart":
+  case "intervalBarChart":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      ...JSON.parse(JSON.stringify(getGWASData(index))),
+      mark: "bar",
+      x: { field: "start", type: "genomic" },
+      // xe: { field: "end", type: "genomic" },
+      y: { field: "pvalue", type: "quantitative", axis: "right", grid: true },
+      color: { value: getSampleColor(index) },
+      stroke: { value: getSampleColor(index) },
+      strokeWidth: { value: 0.5 },
+      opacity: { value: 0.8 },
+      size: {value: 3},
+    };
+  case "barChartCN":
+  case "intervalBarChartCN":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      ...JSON.parse(JSON.stringify(getGWASData(index))),
+      dataTransform: [{type: 'filter', field: 'disease', oneOf: ['asthema', 'Breast cancer', 'Depression', 'Hematocrit', 'Plateletcrit']}],
+      mark: "rect",
+      x: { "field": "start", "type": "genomic" },
+      // xe: { "field": "end", "type": "genomic" },
+      stroke: { "field": "disease", "type": "nominal", domain: ['asthema', 'Breast cancer', 'Depression', 'Hematocrit', 'Plateletcrit'] },
+      color: { "field": "disease", "type": "nominal", legend: true, domain: ['asthema', 'Breast cancer', 'Depression', 'Hematocrit', 'Plateletcrit']},
+      strokeWidth: { value: 4 },
+    };
+    // https://github.com/hms-dbmi/cistrome-explorer/blob/b12238aeadbaf4a41f5445c32dbe3d6518d6fd1d/src/viewconfigs/horizontal-multivec-1.js#L136
+    // return {
+    // 	...JSON.parse(JSON.stringify(trackBase)),
+    // 	"data": {
+    // 		"url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gwas-beddb",
+    // 		"type": "beddb",
+    // 		"genomicFields": [
+    // 			{"index": 1, "name": "start"},
+    // 			{"index": 2, "name": "end"}
+    // 		],
+    // 		"valueFields": [
+    // 			{"index": 3, "name": "pubmedid", "type": "nominal"},
+    // 			{"index": 4, "name": "date", "type": "nominal"},
+    // 			{"index": 5, "name": "link", "type": "nominal"},
+    // 			{"index": 6, "name": "pvalue", "type": "quantitative"},
+    // 			{"index": 8, "name": "disease", "type": "nominal"},
+    // 			{"index": 9, "name": "pvalue_log", "type": "quantitative"},
+    // 			{"index": 10, "name": "pvalue_txt", "type": "nominal"}
+    // 		]
+    // 	},
+    // 	mark: "rect",
+    // 	x: { field: "start", type: "genomic" },
+    // 	xe: {field: "end", "type": "genomic" },
+    // 	color: { field: "disease", type: "nominal", legend: true },
+    // 	stroke: { field: "disease", type: "nominal" },
+    // 	strokeWidth: { value: 5 }
+    // };
+  case "heatmap":
+  case "intervalHeatmap":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      ...JSON.parse(JSON.stringify(getGWASData(index))),
+      mark: "rect",
+      x: { field: "start", type: "genomic" },
+      xe: { field: "end", type: "genomic" },
+      stroke: { field: "pvalue", type: "quantitative", range: "grey" },
+      color: { field: "pvalue", type: "quantitative", range: "grey", legend: true },
+      strokeWidth: { value: 4 },
+      opacity: { value: 0.8 }
+    };
+  case "link":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      data: {
+        url: "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/circos-segdup-edited.txt",
+        type: "csv",
+        chromosomeField: "c2",
+        genomicFields: ["s1", "e1", "s2", "e2"]
+      },
+      mark: "withinLink",
+      x: { field: "s1", type: "genomic" },
+      xe: { field: "e1", type: "genomic" },
+      x1: { field: "s2", type: "genomic" },
+      x1e: { field: "e2", type: "genomic" },
+      color: { value: "none" },
+      stroke: { value: "gray" },
+      opacity: { value: 0.3 }
+    };
+  case "matrix":
+    // custom encoding key for dense-orthogonal interaction
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      data: {
+        "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=hffc6-microc-hg38",
+        "type": "matrix"
+      },
+      mark: "rect",
+      x: { "field": "position1", "type": "genomic", "axis": "none" },
+      y: { "field": "position2", "type": "genomic", "axis": "none" },
+      color: { "field": "value", "type": "quantitative", "range": "warm" },
+      width,
+      height: width
+    };
+  case "annotation":
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      "data": {
+        "url": "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
+        "type": "beddb",
+        "genomicFields": [
+          { "index": 1, "name": "start" },
+          { "index": 2, "name": "end" }
+        ],
+        "valueFields": [
+          { "index": 5, "name": "strand", "type": "nominal" },
+          { "index": 3, "name": "name", "type": "nominal" },
+          { "index": 4, "name": "4", "type": "nominal" },
+          { "index": 6, "name": "6", "type": "nominal" },
+          { "index": 7, "name": "7", "type": "nominal" },
+          { "index": 8, "name": "8", "type": "nominal" },
+          { "index": 9, "name": "9", "type": "nominal" },
+          { "index": 10, "name": "10", "type": "nominal" },
+          { "index": 11, "name": "11", "type": "nominal" },
+        ],
+        "exonIntervalFields": [
+          { "index": 12, "name": "start" },
+          { "index": 13, "name": "end" }
+        ]
+      },
+      "dataTransform": [
+        { type: "filter", "field": "type", "oneOf": ["gene"] },
+        { type: "filter", "field": "strand", "oneOf": ["+"] }
+      ],
+      mark: "text",
+      text: { field: "name", "type": "nominal" }, // lets always use the name
+      // text: { field: ["name", "strand", "4", "6", "7", "8", "9", "10", "11"][i % 4], "type": "nominal" },
+      x: { "field": "start", "type": "genomic" },
+      xe: { "field": "end", "type": "genomic" },
+      displacement: {"type": "pile", "padding": 30},
+      color: { value: "gray" },
+      opacity: { "value": 0.8 }
+    };
+  default:
+    if(IS_DEBUG_RECOMMENDATION_PANEL) console.log(`%c Unsupported Encoding: ${encoding}`, "color: orange; font-size: 24px");
+    return {
+      ...JSON.parse(JSON.stringify(trackBase)),
+      ...JSON.parse(JSON.stringify(getMultivecData(index))),
+      mark: "rect",
+      x: { field: "start", type: "genomic" },
+      xe: { field: "end", type: "genomic" },
+      color: { field: "peak", type: "quantitative", range: "grey", legend: true },
+      opacity: { value: 0.8 }
+    };
+  }
+}
+export function encodingToTrackContinuous(encoding, config) {
+  const { 
+    title, 
+    width, 
+    index = 0,
+    density // "continous" or "sparse"
   } = config;
 
   const trackBase = {
@@ -260,6 +483,10 @@ export function encodingToTrack(encoding, config) {
       opacity: { value: 0.8 }
     };
   }
+}
+export function encodingToTrack(encoding, config) {
+  if(config.density === 'sparse') return encodingToTrackSparse(encoding, config);
+  else return encodingToTrackContinuous(encoding, config);
 }
 
 // const height = 40;
