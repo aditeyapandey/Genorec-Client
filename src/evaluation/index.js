@@ -50,6 +50,49 @@ class Evaluation extends React.Component{
   render(){
     return(
       <>
+
+        {/* <div id="evalInstruction" className="w3-padding w3-display-container w3-margin">
+          <div className="w3-row w3-center">
+            <h2>User Study</h2>
+          </div>
+
+          <div className="w3-row">
+            <h4> Referece Id: RANDOM NUMBER </h4>
+          </div>
+        </div> */}
+
+        <div className="w3-row-padding w3-padding-64 w3-container">
+          <div className="w3-content">
+            <div className="w3-twothird">
+              <h1>GenoREC Study</h1>
+              <h3 className="">Referece Id: RANDOM NUMBER</h3>
+
+
+              <p className="w3-text-grey">In this study, we will ask you to anlayze and rate the visualization recommendation from GenoREC system. 
+              We estimate that this study will take you 15-20 mins. 
+              Before starting this study please complete the three tasks listed in the Pre-Evaluation Tasks panel.</p>
+
+              <p> If you have any questions, please email: <a href="mailto:pandey.ad@northeastern.edu">pandey.ad@northeastern.edu</a> or <a href="mailtosehi_lyi@hms.harvard.edu">sehi_lyi@hms.harvard.edu</a>  </p>
+
+              <div className="userinstruction">
+                <h3 className="w3-padding-16">Pre-Evaluation Tasks</h3>
+                <ol className="w3-ul w3-large">
+                  <li>Read the informational document. </li>
+                  <li>Complete a short informational survey. You will need the Reference Id to complete the survey.</li>
+                  <li>Watch the GenoREC Tutorial.</li>
+                </ol>
+              </div>
+
+              <h3>Questions? <i className="fa fa-fw fa-envelope"></i> <a href="mailto:pandey.ad@northeastern.edu">pandey.ad@northeastern.edu</a> or <a href="mailtosehi_lyi@hms.harvard.edu">sehi_lyi@hms.harvard.edu</a>   </h3>
+
+
+
+            </div>
+
+
+          </div>
+        </div>
+
            
         <div id="evaluation" className="w3-padding w3-display-container w3-margin">
 
